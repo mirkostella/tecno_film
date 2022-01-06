@@ -1,0 +1,12 @@
+<tr>
+    <th scope="row" id="%idUtente%" headers="us">%username%</th>
+    <td data-title="Stato" headers="st %idUtente%">%stato%</td>
+    <td data-title="Vedi segnalazioni" headers="s %idUtente%">
+        <form action="segnalazioni.php" method="get" class="segnalazione">
+            <input type="hidden" value="%id%">
+            <input type="submit" value="vedi">
+        </form>
+    </td>
+    <td data-title="Segnalazioni" headers="ns %idUtente%">%nSegnalazioni%</td>
+    <td data-title="Email" headers="em %idUtente%">%email%</td>
+</tr>
