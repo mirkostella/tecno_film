@@ -22,11 +22,20 @@
     echo "</br>";
     
     $pagina=file_get_contents('../html/pagina_film.html');
+    $acquistoNoleggio=file_get_contents('../componenti/pulsanti_acquisto_noleggio.html');
+    $pagina=str_replace('%pulsantiAcquistoNoleggio%',$acquistoNoleggio,$pagina);
     $struttura=new Struttura();
     $provaElimina=false;
     $provaInserisci=false;
     $erroreTesto="";
     $erroreValutazione="";
+
+    //acquisto
+    if(isset($_POST['acquisto'])){}
+
+    //noleggio
+    if(isset($_POST['noleggio'])){}
+
     //se sono arrivato alla pagina eliminando una recensione
     if(isset($_POST['eliminaRecensione'])){
         $idRecensione=$_POST['idRecensione'];
