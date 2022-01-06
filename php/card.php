@@ -54,6 +54,24 @@
         }
 
     }
+    function creaListaCard($queryResult){
+        $listaCards="";
+        foreach($queryResult as $valore){
+            $cardAttuale=new Card($valore);
+            $listaCards=$listaCards.$cardAttuale->aggiungiBase();
+        }
+        return $listaCards;
+    }
+    function creaListaCardClassificata($queryResult){
+        $posizione=1;
+        $listaCards="";
+        foreach($queryResult as $valore){
+            $cardAttuale=new CardClassificata($valore,$posizione);
+            $listaCards=$listaCards.$cardAttuale->aggiungiBaseClassificata();
+            $posizione++;
+        }
+        return $listaCards;
+    }
 
 
 ?>

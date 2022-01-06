@@ -156,6 +156,11 @@ header{
     width: 20%;
     margin-right: 0.6em;
 }
+#menuPrincipale #attivo{
+    background-color: yellow;
+    color:red;
+    padding: 1em 0;
+}
 
 #novita{
     background-color: var(--colore-news);
@@ -170,7 +175,7 @@ header{
     margin-top: 0.5em;
     margin-bottom: 0.5em;
 }
-#menuPrincipale #attivo{
+#menuPrincipale {
     font-weight: bold;
     color: red;
     background-color: yellow;

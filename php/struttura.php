@@ -37,8 +37,9 @@
                 $pagina=str_replace("%account%",$acc, $pagina);
             }
         }
-        public function aggiungiMenu(&$pagina){
+        public function aggiungiMenu(&$pagina,$InAttivo,$attivo){
             $menu=file_get_contents("../componenti/menu.html");
+            $menu=str_replace($InAttivo,$attivo,$menu); 
 	        $pagina=str_replace('%menu%',$menu,$pagina);
         }
         public function aggiungiFormRecensione(&$pagina){

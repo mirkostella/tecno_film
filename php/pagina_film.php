@@ -101,7 +101,7 @@
     
         $struttura->aggiungiHeader($pagina);
         $struttura->aggiungiAccount($pagina);
-        $struttura->aggiungiMenu($pagina);
+        $struttura->aggiungiMenu($pagina,"","");
 
         //reperisco le informazioni relative al film
         //creo array con i dati del film che mi interessano
