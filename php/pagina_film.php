@@ -5,6 +5,9 @@
     require_once ('card.php');
     require_once ('recensione.php');
     require_once ('ResocontoRecensioni.php');
+    require_once ('sessione.php');
+    require_once ('info_film.php');
+
     
     date_default_timezone_set("Europe/Rome");
     $data=date("d/m/Y H:m:s");
@@ -22,9 +25,8 @@
     echo "</br>";
     
     $pagina=file_get_contents('../html/pagina_film.html');
-    $acquistoNoleggio=file_get_contents('../componenti/pulsanti_acquisto_noleggio.html');
-    $pagina=str_replace('%pulsantiAcquistoNoleggio%',$acquistoNoleggio,$pagina);
     $struttura=new Struttura();
+    $struttura->aggiungiAcquistoNoleggio($pagina);
     $provaElimina=false;
     $provaInserisci=false;
     $erroreTesto="";
@@ -117,30 +119,10 @@
         $info=array();
 
         //preparo le query
-        $queryMediaValutazioni="SELECT AVG(valutazione) as media from recensione where ID_film=".$_POST['idFilm']." GROUP BY ID_film";
-        $queryInfo="SELECT titolo,trama,TIME_TO_SEC(durata) as durata,data_uscita,prezzo_acquisto,prezzo_noleggio,path,descrizione,nome_genere
-         FROM film JOIN foto_film ON (film.ID=foto_film.ID) JOIN appartenenza ON (film.ID=appartenenza.ID_film)";
-        
-        $connessione=new Connessione();
-        $connessione->apriConnessione();
-        $media=$connessione->interrogaDB($queryMediaValutazioni);
-        $info=$connessione->interrogaDB($queryInfo);
-
-        $infoFilm=array(
-            'id'=>$_POST['idFilm'],
-            'copertina'=>$info[0]['path'],
-            'descrizione'=>$info[0]['descrizione'],
-            'titolo'=>$info[0]['titolo'],
-            'genere'=>$info[0]['nome_genere'],
-            'valutazione'=>$media[0]['media'],
-            'prezzoN'=>$info[0]['prezzo_noleggio'],
-            'prezzoA'=>$info[0]['prezzo_acquisto'],
-            'annoUscita'=>$info[0]['data_uscita'],
-            'trama'=>$info[0]['trama'],
-            'durata'=>$info[0]['durata']
-        );
+        $infoFilm=recuperaInfo($_POST['idFilm']);
 
         $film=new Card($infoFilm);
+        $pagina=str_replace('%idFilm%',$film->id,$pagina);
         $pagina=str_replace('%titolo%',$film->titolo,$pagina);
         $pagina=str_replace('%path%',$film->copertina,$pagina);
         $pagina=str_replace('%annoUscita%',$film->annoUscita,$pagina);
@@ -163,6 +145,8 @@
         //recensioni utenti
         
         $queryRecensioniUtenti="SELECT recensione.ID as idRecensione,ID_film,ID_utente,path,username,data,testo,valutazione FROM utente JOIN recensione ON (recensione.ID_utente=utente.ID) JOIN foto_utente ON(utente.ID=foto_utente.ID) WHERE ID_film=".$_POST['idFilm']." ORDER BY data ASC";
+        $connessione=new Connessione();
+        $connessione->apriConnessione();
         $recensioniUtenti=$connessione->interrogaDB($queryRecensioniUtenti);
         //lista con tutte le recensioni relative al film 
         $listaRecensioni="";

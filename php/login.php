@@ -13,7 +13,7 @@
     $struttura = new Struttura();
     $struttura->aggiungiHeader($pagina);
     $struttura->aggiungiAccount($pagina);
-    $struttura->aggiungiMenu($pagina);
+    $struttura->aggiungiMenu($pagina,"","");
 
     $error = NULL;
     $email = NULL;
