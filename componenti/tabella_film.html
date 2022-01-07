@@ -1,0 +1,38 @@
+<table class="tbl">
+    <caption>Panoramica film</caption>
+    <summary>tabella che descrive il prezzo di noleggio,prezzo di acquisto,numero di noleggi,numero di acquisti,
+        incassi dei noleggi,incassi degli acquisti e la somma degli incassi dei noleggi/acquisti di <strong>ciascun</strong> Film
+        presente in Tecno film. Infine viene riportato il totale del numero di noleggi,numero di acquisti,
+        incassi dei noleggi,incassi degli acquisti e degli incassi noleggi/acquisti di <strong>tutti</strong> i film presenti in Tecno film.
+    </summary>
+    <thead>
+        <tr>
+            <th scope="col" id="titolo">Titolo</th>
+            <th scope="col" id="prn">Prezzo noleggio</th>
+            <th scope="col" id="pra">Prezzo acquisto</th>
+            <th scope="col" id="noleggi">Noleggi</th>
+            <th scope="col" id="acquisti">Acquisti</th>
+            <th colspan="3" scope="col" id="incassi">Incassi</th>
+        </tr>
+        <tr>
+            <th></th><th></th><th></th><th></th><th></th>
+            <th scope="col" id="pn">Parziale noleggi</th>
+            <th scope="col" id="pa">Parziale acquisti</th>
+            <th scope="col" id="pan">Parziale acquisti/noleggi</th>
+        </tr>
+    </thead>
+    <tbody>
+        %rFilm%
+    </tbody>
+    <tfoot>
+        <tr>
+            <th scope="row" id="totale">Totale:</th>
+            <td colspan="2"></td>
+            <td data-title="Numero noleggi" class="grassetto" headers="totale noleggi">%totNoleggi%</td>
+            <td data-title="Numero acquisti" class="grassetto" headers="totale acquisti">%totAcquisti%</td>
+            <td data-title="Incassi noleggi" class="grassetto" headers="totale incassi pn">%totINoleggi%&euro;</td>
+            <td data-title="Incassi acquisti" class="grassetto" headers="totale incassi pa">%totIAcquisti%&euro;</td>
+            <td data-title="Incassi noleggi/acquisti" class="grassetto" headers="totale incassi pan">%totIncassi%&euro;</td>
+        </tr>
+    </tfoot>
+</table>
