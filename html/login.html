@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xml:lang="it" lang="it">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="author" content="Mirko Elton Sonia Ruth"/>
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+    <title>Login-Tecno film</title>
+    <link rel="stylesheet" type="text/css" href="../css/stile.css"/>
+</head>
+<body id="inizioPagina">
+    <header>
+        %header%
+    </header>
+    <nav id="breadcrumb">
+        Ti trovi in: <span class="grassetto">Login</span>
+    </nav>
+    <div id="impaginazione">
+        <div id="menu-news">
+            <nav id="menuPrincipale">
+                %menu%
+            </nav>
+        </div>
+        <div id="contenuto">
+            %errore_conn%
+            <form action="login.php" method="POST" class="reg_log" id="login">
+                <fieldset>
+                    <legend>Login</legend>
+                    %errore_credenziali%
+                    <fieldset id="datiAccount">
+                        <legend>Dati login</legend>
+                        <label for="email">Email:</label>
+                        <input type="text" name="email" id="email" placeholder="Inserisci email" required="required" class="soloBordoBottom">  
+                        <label for="password">Password:</label>
+                        <input type="password" name="password" id="password" placeholder="Inserisci password" required="required" class="soloBordoBottom">
+                    </fieldset>
+                    <input type="submit" name="invia" id="invia" value="Accedi" class="btn btnAzione">
+                    <span>Non possiedi ancora un account?</span><a href="registrazione.php">Registrati</a>
+                </fieldset>
+            </form>
+            
+            <!-- fine contenuto -->
+        </div> 
+        <!-- fine impaginazione -->
+    </div>   
+</body>
+</html>

@@ -1,0 +1,23 @@
+
+<div class ="card %nascosto%">
+	%classifica%
+	<dt>
+		<form action="pagina_film.php" method="get" class="copertina">
+			<input type="hidden" value="%id%" name="idFilm">
+			<input type="image" src="%path%" alt="%desc%" value="vedi">
+		</form>
+	</dt>
+	<dd class="dettagli">
+		<form action="pagina_film.php" method="get" class="titolo">
+			<input type="hidden" value="%id%" name="idFilm">
+			<input  type="submit" value="%titolo%" title="vai alla pagina di %titolo% ">
+		</form>
+		<span class="genere">%gen%</span>
+		<div class="valutazionePrezzo">
+			<div class="valutazione">
+				%valutazione%
+			</div>
+			<span class="prezzo">%prezzo%&euro;</span>
+		</div>
+	</dd>
+</div>

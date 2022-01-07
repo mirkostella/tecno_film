@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xml:lang="it" lang="it">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="author" content=""/>
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+    <title>Admin-Tecno film-aggiuntaFilm</title>
+    <link rel="stylesheet" type="text/css" href="../css/stile.css"/>
+</head>
+<body id="inizioPagina">
+    <header>
+       %headerAdmin%
+    </header>
+    <nav id="breadcrumb">
+        Ti trovi in: <span class="grassetto">Aggiungi film</span>
+    </nav>
+    <div id="impaginazione">
+        <div id="menu-news">
+            <nav id="menuPrincipale">
+                %menuAdmin%
+            </nav>
+        </div>
+        <div id="contenuto">
+            <form action="aggiungi_film.php" class="agg_film" id="aggiunta_film">
+                <fieldset>
+                    <legend>Aggiungi film</legend>
+                        <label for="titolo">Titolo del film:</label>
+                        <input type="text" name="titolo" id="titolo" placeholder="Inserisci il titolo del film" required="required" class="soloBordoBottom">  
+                        <label for="anno di uscita">Anno di uscita:</label>
+                        <input type="number" name="anno di uscita" id="anno_uscita" placeholder="Inserisci l'anno di uscita" required="required" min="1900" max="2022" class="soloBordoBottom">
+						<label for "durata">Durata:</label>
+						<input type="number" name="durata" id="durata" placeholder="Inserisci la durata in minuti" required="required" class="soloBordoBottom">
+						<fieldset id="generi">
+						<legend>Seleziona uno o più generi:</legend>
+							<input type="checkbox" id="azione" name="genere" value="azione" class="checkmark">
+							<label for="azione">Azione</label>
+							<input type="checkbox" id="avventura" name="genere" value="avventura" class="checkmark">
+							<label for="avventura">Avventura</label>
+							<input type="checkbox" id="horror" name="genere" value="horror" class="checkmark">
+							<label for="horrror">Horror</label>
+							<input type="checkbox" id="Drammatico" name="genere" value="drammatico" class="checkmark">
+							<label for="drammatico">Drammatico</label>
+							<input type="checkbox" id="Romantico" name="genere" value="romantico" class="checkmark">
+							<label for="romantico">Romantico</label>
+							<input type="checkbox" id="Thriller" name="genere" value="thriller" class="checkmark">
+							<label for="thriller">Thriller</label>
+							<input type="text" name="genere" placeholder="Inserisci altro genere" class="agg_genere"><input type="button" value="Aggiungi" class="btn_agg_genere">
+						</fieldset>
+						<fieldset id="cast">
+						<legend>CAST</legend>
+							<label for="Regista">Regista:
+								<input type="text" id="nome_cast1" name="nome_cast1" placeholder="Inserisci il nome" required="required" class="soloBordoBottom">
+								<input type="text" id="cognome_cast1" name="cognome_cast1" placeholder="Inserisci il cognome" required="required" class="soloBordoBottom">
+							</label>
+							<input type="button" value="Aggiungi altro" class="agg_cast">
+							<label for="Attore1">Attore:
+								<input type="text" id="nome_cast2" name="nome_cast2" placeholder="Inserisci il nome" required="required" class="soloBordoBottom">
+								<input type="text" id="cognome_cast1" name="cognome_cast1" placeholder="Inserisci il cognome" required="required" class="soloBordoBottom">
+							</label>
+							<label for="Attore2">Attore:
+								<input type="text" id="nome_cast3" name="nome_cast3" placeholder="Inserisci il nome" class="soloBordoBottom">
+								<input type="text" id="cognome_cast3" name="cognome_cast3" placeholder="Inserisci il cognome" class="soloBordoBottom">
+							</label>
+							<label for="Attore3">Attore:
+								<input type="text" id="nome_cast4" name="nome_cast4" placeholder="Inserisci il nome" class="soloBordoBottom">
+								<input type="text" id="cognome_cast4" name="cognome_cast4" placeholder="Inserisci il cognome" class="soloBordoBottom">
+							<input type="button" value="Aggiungi altro" class="agg_cast">
+						</fieldset>
+						<label for "prezzo_acquisto">Prezzo d'acquisto:</label>
+						<input type="number" name="Prezzo d'acquisto" id="Prezzo_acq" placeholder="Inserisci il prezzo d'acquisto" required="required" step="0.01" class="soloBordoBottom">
+						<label for "prezzo_noleggio">Prezzo del noleggio:</label>
+						<input type="number" name="Prezzo noleggio" id="Prezzo_nol" placeholder="Inserisci il prezzo del noleggio" required="required" step="0.01" class="soloBordoBottom">
+						<label for="trama">Trama:</label>
+						<textarea id="trama" name="trama" placeholder="Inserisci la trama" required="required" rows=10 cols=70></textarea>
+						<label for="img_copertina">Carica l'immagine di copertina:</label>
+                        <input type="file">
+                    <input type="submit" name="invia" id="invia" value="Carica film" class="btn btnAzione">
+                </fieldset>
+            </form>
+            
+            <!-- fine contenuto -->
+        </div> 
+        <!-- fine impaginazione -->
+    </div>   
+</body>
+</html>
