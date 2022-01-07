@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xml:lang="it" lang="it">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="author" content="Mirko Elton Sonia Ruth"/>
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+    <title>Home-Tecno film</title>
+    <link rel="stylesheet" type="text/css" href="../css/stile.css"/>
+</head>
+<!-- all'apertura della pagina portare l'utente al modulo di conferma -->
+<body id="inizioPagina">
+    <header>
+        %header%
+    </header>
+    <nav id="breadcrumb">
+        Ti trovi in: <a xml:lang="en" lang="en">Home</a> &gt; %titoloFilmBredcrumb% &gt; <span class="grassetto">Conferma %tipoConferma%</span>
+    </nav>
+    <div id="impaginazione">
+        <div id="menu-news">
+            <nav id="menuPrincipale">
+                %menu%
+            </nav>
+            <aside id="novita">
+                <h2>Novitá</h2>
+                %novita%
+            </aside>
+        </div>
+        <div id="contenuto">
+            <h1>Conferma il tuo %tipoConferma%</h1>
+            <div id="info">
+                <div id="infoFilm">
+                    <div id="votoCopertina">
+                            <img src="%path%" alt="Immagine di copertina %titolo%" id="immagineFilm"> 
+                            <div id="valutazione">
+                                %valutazione%
+                            </div>
+                    </div>   
+                    <dl id="infoPrincipali">
+                        <dt>Anno di uscita:</dt> 
+                        <dd>%annoUscita%</dd>
+                        <dt>Durata:</dt> 
+                        <dd>%durata% minuti</dd>
+                        <dt>Genere:</dt> 
+                        <dd>%genere%</dd>    
+                    </dl>
+                    %pulsantiAcquistoNoleggio%
+                </div>
+            </div>
+            <!-- fine contenuto -->
+        </div> 
+        <!-- fine impaginazione -->
+    </div>   
+</body>
+</html>

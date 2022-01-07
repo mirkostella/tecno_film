@@ -7,38 +7,30 @@
     <meta name="author" content="Mirko Elton Sonia Ruth"/>
     <meta name="description" content=""/>
     <meta name="keywords" content=""/>
-    <title>Login-Tecno film</title>
+    <title>Login Admin-Tecno film</title>
     <link rel="stylesheet" type="text/css" href="../css/stile.css"/>
+
 </head>
 <body id="inizioPagina">
     <header>
-        %header%
+        <a href="#contenuto" aria-label="salta al contenuto"></a>
+        <h1 id="logo">Tecno Film</h1>
     </header>
     <nav id="breadcrumb">
-        Ti trovi in: <span class="grassetto">Login</span>
+        Ti trovi in: <span class="grassetto">Login Amministrazione</span> 
     </nav>
-    <div id="impaginazione">
-        <div id="menu-news">
-            <nav id="menuPrincipale">
-                %menu%
-            </nav>
-        </div>
-        <div id="contenuto">
-            %errore_conn%
-            <form action="login.php" method="POST" class="reg_log" id="login">
+        <div id="contenuto_amministratore">
+            <form action="amministratore_loggato.php" class="reg_log" id="loginAdmin">
                 <fieldset>
-                    <legend>Login</legend>
-                    %errore_credenziali%
+                    <legend>Login Amministratore</legend>
                     <fieldset id="datiAccount">
                         <legend>Dati login</legend>
-                        <label for="email">Email:</label>
+                        <label for="nome">Email:</label>
                         <input type="text" name="email" id="email" placeholder="Inserisci email" required="required" class="soloBordoBottom">  
                         <label for="password">Password:</label>
                         <input type="password" name="password" id="password" placeholder="Inserisci password" required="required" class="soloBordoBottom">
                     </fieldset>
                     <input type="submit" name="invia" id="invia" value="Accedi" class="btn btnAzione">
-                    <span>Non possiedi ancora un account?</span><a href="registrazione.php">Registrati</a>
-
                 </fieldset>
             </form>
             

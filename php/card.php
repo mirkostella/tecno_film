@@ -27,19 +27,19 @@
             $this->durata=$array['durata']/60;
         }
         public function aggiungiBase(){
-            $cardB=file_get_contents("../componenti/card.html");
-            $cardB=str_replace('%id%',$this->id,$cardB);
-            $cardB=str_replace('%path%',$this->copertina,$cardB);
-            $cardB=str_replace('%desc%',$this->descrizione,$cardB);
-            $cardB=str_replace('%gen%',$this->genere,$cardB);
-            $cardB=str_replace('%prezzo%',$this->prezzoN,$cardB);
-            $cardB=str_replace("%titolo%",$this->titolo,$cardB);
-            $stelle=creaStelle($this->valutazione);
-            $cardB=str_replace('%valutazione%',$stelle,$cardB);
-            return $cardB;  
+        $cardB=file_get_contents("../componenti/card.html");
+        $cardB=str_replace('%id%',$this->id,$cardB);
+        $cardB=str_replace('%path%',$this->copertina,$cardB);
+        $cardB=str_replace('%desc%',$this->descrizione,$cardB);
+        $cardB=str_replace('%gen%',$this->genere,$cardB);
+        $cardB=str_replace('%prezzo%',$this->prezzoN,$cardB);
+        $cardB=str_replace("%titolo%",$this->titolo,$cardB);
+        $stelle=creaStelle($this->valutazione);
+        $cardB=str_replace('%valutazione%',$stelle,$cardB);
+        return $cardB;  
         }
-    }
 
+    }
     class CardClassificata extends Card{
         public $pos;
         public function __construct(&$array,$posizione){
@@ -54,6 +54,23 @@
         }
 
     }
-
+    function creaListaCard($queryResult){
+        $listaCards="";
+        foreach($queryResult as $valore){
+            $cardAttuale=new Card($valore);
+            $listaCards=$listaCards.$cardAttuale->aggiungiBase();
+        }
+        return $listaCards;
+    }
+    function creaListaCardClassificata($queryResult){
+        $posizione=1;
+        $listaCards="";
+        foreach($queryResult as $valore){
+            $cardAttuale=new CardClassificata($valore,$posizione);
+            $listaCards=$listaCards.$cardAttuale->aggiungiBaseClassificata();
+            $posizione++;
+        }
+        return $listaCards;
+    }
 
 ?>

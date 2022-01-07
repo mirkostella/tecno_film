@@ -23,7 +23,6 @@
     $inAttivo=file_get_contents("../componenti/menu.html");
     $attivo=file_get_contents("../componenti/menu.html");
     $struttura->aggiungiMenu($pagina,$inAttivo,$attivo);
-
     $email = NULL;
     $psw = NULL;
 
@@ -44,7 +43,6 @@
                 $_SESSION['loggato']=true;
                 $_SESSION['id']= $login_array[0]['ID'];
                 $_SESSION['admin']=false;
-
                 $connessione->chiudiConnessione();
                 header('location: index.php');
                 exit();
@@ -56,9 +54,7 @@
             $pagina = str_replace('%errore_conn%', "<div class=\"msg_box error_box\">Errore di connessione al database</div>", $pagina);
         }
     }
-
     $pagina=str_replace('%errore_conn%', '', $pagina);
     $pagina=str_replace('%errore_credenziali%', '', $pagina);
-
     echo $pagina;
 ?>

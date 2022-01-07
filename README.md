@@ -1,1 +1,1 @@
-# tecno_film
+# tec

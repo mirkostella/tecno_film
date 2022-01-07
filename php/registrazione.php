@@ -13,7 +13,6 @@
 	$inAttivo=file_get_contents("../componenti/menu.html");
 	$attivo=file_get_contents("../componenti/menu.html");
     $struttura->aggiungiMenu($pagina,$inAttivo,$attivo);
-	
 	$nome='';
 	$cognome='';
 	$data_nascita='';
@@ -60,7 +59,6 @@
 		}
 		else
 			$pagina=str_replace('%error_conn%', '', $pagina);
-
 		//controlli input
 
 		if(!check_nome($nome)){
@@ -77,9 +75,6 @@
 		}
 		else
 			$pagina=str_replace('%error_cognome%', '', $pagina);	
-
-
-
 		$date = new DateTime($data_nascita);
 		$now = new DateTime();
 		$delta = $now->diff($date);
@@ -96,7 +91,6 @@
 		}
 		else
 			$pagina=str_replace('%error_email%', '', $pagina);
-
 		$query_email="SELECT * FROM utente WHERE BINARY email='".$email."'"; //CASE SENSITIVE??
 		$query_user ="SELECT * FROM utente WHERE BINARY username='".$username."'"; //CASE SENSITIVE??
 
@@ -129,10 +123,7 @@
 		}
 		else
 			$pagina=str_replace('%error_pwd%', '', $pagina);
-
-
 		//se gli input vanno bene, carico l'immagine profilo
-
 		if($no_error){
 			$gestisci_img = new gestione_img();
 
@@ -185,7 +176,6 @@
 		}
 
 	}
-
 	$pagina=str_replace('%error_conn%', '', $pagina);
 	$pagina=str_replace('%error_nome%', '', $pagina);
 	$pagina=str_replace('%error_cognome%', '', $pagina);
@@ -198,8 +188,6 @@
 	$pagina=str_replace('%error_foto%', '', $pagina);
 	$pagina=str_replace('%error_reg%', '', $pagina);
 	$pagina=str_replace('%msg_reg%', '', $pagina);
-
 	echo $pagina;
-	
 ?>
 
