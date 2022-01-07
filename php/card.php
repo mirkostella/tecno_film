@@ -37,7 +37,7 @@
         $stelle=creaStelle($this->valutazione);
         $cardB=str_replace('%valutazione%',$stelle,$cardB);
         return $cardB;  
-    }
+        }
 
     }
     class CardClassificata extends Card{
@@ -72,6 +72,5 @@
         }
         return $listaCards;
     }
-
 
 ?>

@@ -34,7 +34,8 @@ h1{
 h2{
     font-size: 1.9em;
     text-align: center;
-	font-weight: bold;
+	  font-weight: bold;
+    margin:0.5em 0;
 }
 h3{margin:0.9em 0}
 hr{
@@ -87,9 +88,7 @@ ul li{
     list-style-type: none;
     display: inline-block;
 }
-
 fieldset{text-align: center;}
-
 /* intestazione */
 header{
     width: 100%;
@@ -144,6 +143,28 @@ header{
     border: 2px solid var(--colore-bordo-header);
 }
 
+/* messaggi di errore */
+
+.msg_box {
+    padding: 0.5em;
+    margin: 0.5em 0 1em; 
+    font-size: 1em; 
+}
+
+.error_box{
+    background-color: #fce4e4;
+    border: 1px solid #fcc2c3;
+    color: #cc0033;
+}
+
+.success_box{
+    background-color:#e9ffd9;
+    border:1px solid #a6ca8a;
+    color: #000;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
 /* ------------------------- menu ------------------------- */
 #impaginazione{
     display: flex;
@@ -156,6 +177,7 @@ header{
     width: 20%;
     margin-right: 0.6em;
 }
+
 #menuPrincipale #attivo{
     background-color: yellow;
     color:red;
@@ -363,7 +385,6 @@ header{
 }
 #bottoni form{text-align: center;}
 #bottoni form:first-child input{margin-top: 0em;}
-
 #scriviRecensione{
     display: block;
 }
@@ -395,7 +416,6 @@ header{
     transition: ease-in-out 0s;
     
 } 
-
 #recensioni  li{
     display: block;
     list-style-type: none;
@@ -654,6 +674,7 @@ summary{display: none;}
         margin-right: 0;
         width: 100%;
     }
+
     #novita{
         margin-top: 0;
         border: 1px solid var(--colore-bordo-header);

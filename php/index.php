@@ -9,11 +9,6 @@
     
     $pagina=file_get_contents("../html/index.html");
     $struttura=new Struttura();
-    
-    
-    //seleziona tutti i film per data piú recente
-    //seleziona tutti i film che l'utente ha recensito con valutazioni superiori a 3
-    //seleziona tutti i film di azione
     $struttura->aggiungiHeader($pagina);
     $struttura->aggiungiAccount($pagina);
     $inAttivo="<li><a href=\"../php/index.php\" xml:lang=\"en\" lang=\"en\">Home</a></li>";

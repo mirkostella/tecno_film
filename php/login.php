@@ -3,8 +3,15 @@
     require_once('struttura.php');
     require_once('connessione.php');
 
+    //se la sessione è già aperta come admin, effettua il logout e mi porta alla home
+    if($_SESSION['loggato'] == true && $_SESSION['admin'] == true)
+    {
+        header('location: logout.php');
+        exit();
+    }
 
-    if($_SESSION['loggato'] == true){
+    //se la sessione è già aperta come utente normale, mi porta direttamente alla home
+    if($_SESSION['loggato'] == true && $_SESSION['admin'] == false){
         header('location: index.php');
         exit();
     }
@@ -13,9 +20,9 @@
     $struttura = new Struttura();
     $struttura->aggiungiHeader($pagina);
     $struttura->aggiungiAccount($pagina);
-    $struttura->aggiungiMenu($pagina,"","");
-
-    $error = NULL;
+    $inAttivo=file_get_contents("../componenti/menu.html");
+    $attivo=file_get_contents("../componenti/menu.html");
+    $struttura->aggiungiMenu($pagina,$inAttivo,$attivo);
     $email = NULL;
     $psw = NULL;
 
@@ -30,12 +37,12 @@
         $connessione = new Connessione();
         if($connessione->apriConnessione()){
             if(!$login_array= $connessione->interrogaDB("SELECT * FROM utente WHERE email = \"$email\" AND password = \"$psw\"")){
-                $error = "<div class=\"msg_error_box\">La query non è andata a buon fine o le credenziali non sono corrette</div>";
+                $pagina = str_replace('%errore_credenziali%', "<div class=\"msg_box error_box\">Le credenziali non sono corrette</div>", $pagina);
             }
             else{
                 $_SESSION['loggato']=true;
                 $_SESSION['id']= $login_array[0]['ID'];
-
+                $_SESSION['admin']=false;
                 $connessione->chiudiConnessione();
                 header('location: index.php');
                 exit();
@@ -44,10 +51,10 @@
 
         }
         else{
-            $error = "<div class=\"msg_error_box\">Errore di connessione al database</div>";
+            $pagina = str_replace('%errore_conn%', "<div class=\"msg_box error_box\">Errore di connessione al database</div>", $pagina);
         }
     }
-
-    $pagina=str_replace('%error%', $error, $pagina);
+    $pagina=str_replace('%errore_conn%', '', $pagina);
+    $pagina=str_replace('%errore_credenziali%', '', $pagina);
     echo $pagina;
 ?>

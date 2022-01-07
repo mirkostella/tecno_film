@@ -7,5 +7,7 @@
     if(!isset($_SESSION['id'])){
         $_SESSION['id']="";
     }
-    
+    if(!isset($_SESSION['admin'])){
+        $_SESSION['admin']=false;
+    }
 ?>

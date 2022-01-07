@@ -24,16 +24,21 @@
             </nav>
         </div>
         <div id="contenuto">
+            %error_conn%
+            %msg_reg%
+            
             <form action="registrazione.php" method="POST" enctype="multipart/form-data" class="reg_log" id="registrazione">
                 <fieldset>
                     <legend>Registrazione</legend>
-                    %error%
                     <fieldset id="datiAnagrafici">
                         <legend>Dati anagrafici</legend>
+                        %error_nome%
                         <label for="nome">Nome:</label>
                         <input type="text" name="nome" id="nome" placeholder="Inserisci nome" required="required" class="soloBordoBottom">
+                        %error_cognome%
                         <label for="cognome">Cognome:</label>
                         <input type="text" name="cognome" id="cognome" placeholder="Inserisci cognome" required="required" class="soloBordoBottom">
+                        %error_data%
                         <label for="nome">Data di nascita:</label>
                         <input type="date" name="data" id="data" placeholder="Inserisci data di nascita" required="required" class="soloBordoBottom">
                         <label for="sesso">Sesso:</label>
@@ -41,24 +46,33 @@
                             <option value="nonSelezionato">Seleziona</option>
                             <option value="M">Uomo</option>
                             <option value="F">Donna</option>
+                            <!-- <option value="Altro">Altro</option> -->
                         </select>
                     </fieldset>
                     <hr>
+
                     <fieldset id="datiAccount">
                         <legend>Dati account</legend>
+                        %error_email%
+                        %error_email_usata%
                         <label for="nome">Email:</label>
                         <input type="text" name="email" id="email" placeholder="Inserisci email" required="required" class="soloBordoBottom">
+                        %error_username%
                         <label for="nome">Username:</label>
                         <input type="text" name="username" id="username" placeholder="Inserisci username" required="required" class="soloBordoBottom">
+                        %error_pwd%
                         <label for="password">Password:</label>
                         <input type="password" name="password" id="password" placeholder="Inserisci password" required="required" class="soloBordoBottom">
+                        %error_confPwd%
                         <label for="confPassword">Conferma password:</label>
                         <input type="password" name="confPassword" id="confPassword" placeholder="Conferma password" required="required" class="soloBordoBottom">
+                        %error_foto%
                         <label for="immagineProfilo">Immagine profilo:</label>
-                        <img src="../img/img_componenti/profilo.jpg" alt="anteprima immagine profilo">
+                        <img src="img/img_componenti/profilo.jpg" alt="anteprima immagine profilo">
                         <input type="file" name="immagineProfilo">
                     </fieldset>
                     <input type="submit" name="invia" id="invia" value="Registrati" class="btn btnAzione">
+                    %error_reg%
                 </fieldset>
             </form>
             

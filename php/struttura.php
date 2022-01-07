@@ -1,7 +1,6 @@
 <?php
     require_once ('connessione.php');
     require_once ('sessione.php');
-
     echo "struttura";
     echo "</br>";
     echo '$_SESSION:   ';
@@ -31,18 +30,36 @@
             $pagina=str_replace("%header%",$componente,$pagina);
         }
         public function aggiungiAccount(&$pagina){
-            if($_SESSION['loggato']==true){
-                $pagina=str_replace("%account%",'<a href="../php/logout.php">Logout</a>', $pagina);
+            if($_SESSION['loggato']==true && $_SESSION['admin']==false){
+                $acc = file_get_contents("../componenti/account.html");
+                $acc=str_replace('<a href="../php/registrazione.php">Registrati</a>', '', $acc);
+                $acc=str_replace('<a href="../php/login.php">Login</a>', '<a href="../php/logout.php">Logout</a>', $acc);
+                $pagina=str_replace('%account%', $acc, $pagina);
             }
             else{
                 $acc = file_get_contents("../componenti/account.html");
                 $pagina=str_replace("%account%",$acc, $pagina);
             }
         }
-        public function aggiungiMenu(&$pagina,$InAttivo,$attivo){
+         public function aggiungiMenu(&$pagina,$InAttivo,$attivo){
             $menu=file_get_contents("../componenti/menu.html");
+
+            if($_SESSION['loggato']==false || $_SESSION['admin']==true){
+                $menu=str_replace('<li><a href="../php/raccolta.php">I miei film</a></li>', '', $menu);
+            }
+            
             $menu=str_replace($InAttivo,$attivo,$menu); 
-	        $pagina=str_replace('%menu%',$menu,$pagina);
+            $pagina=str_replace('%menu%',$menu,$pagina);
+        }
+      public function aggiungMenu_admin(&$pagina)
+        {
+            $menu = file_get_contents("../componenti/menu_admin_log.html");
+            $pagina=str_replace("%menuAdmin%", $menu, $pagina);
+        }
+
+        public function aggiungiHeader_admin(&$pagina){
+            $header = file_get_contents("../componenti/header_admin_log.html");
+            $pagina = str_replace("%headerAdmin%", $header, $pagina);
         }
         public function aggiungiFormRecensione(&$pagina){
         
@@ -114,9 +131,7 @@
                 ,$pulsanti);
                 $pagina=str_replace('%pulsantiAcquistoNoleggio%',$pulsanti,$pagina);
         }
-    }
-    
+    }    
 }
 
-        
 ?>

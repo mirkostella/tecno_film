@@ -41,7 +41,4 @@ class Connessione{
         }
         else
             return false;
-    }    
-}
-
 ?>

@@ -4,18 +4,19 @@ START TRANSACTION;
 SET @@session.time_zone = "+01:00";
 
 SET FOREIGN_KEY_CHECKS=0;
+DROP TABLE IF EXISTS admin;
 DROP TABLE IF EXISTS recitazione;
 DROP TABLE IF EXISTS regia;
 DROP TABLE IF EXISTS acquisto;
 DROP TABLE IF EXISTS noleggio;
 DROP TABLE IF EXISTS appartenenza;
+DROP TABLE IF EXISTS recensione;
 DROP TABLE IF EXISTS genere;
+DROP TABLE IF EXISTS film;
+DROP TABLE IF EXISTS utente;
 DROP TABLE IF EXISTS cast;
 DROP TABLE IF EXISTS segnalazione;
 DROP TABLE IF EXISTS utile;
-DROP TABLE IF EXISTS recensione;
-DROP TABLE IF EXISTS film;
-DROP TABLE IF EXISTS utente;
 DROP TABLE IF EXISTS foto_film;
 DROP TABLE IF EXISTS foto_utente;
 
@@ -61,6 +62,7 @@ CREATE TABLE `foto_utente`(
 `segnalazioni` INT(3) DEFAULT 0
 )ENGINE = InnoDB;
 
+
 INSERT INTO `foto_utente`(`path`,`descrizione`) VALUES ('../img/img_componenti/profilo.jpg','immagine dell utente'),
 ('../img/img_componenti/profilo.jpg','immagine dell utente'),
 ('../img/img_componenti/profilo.jpg','immagine dell utente'),
@@ -90,9 +92,7 @@ INSERT INTO `utente` (`username`,`password`,`email`,`nome`,`cognome`,`data_nasci
 ('mirkos','mgm','shfk@jdkj','mirko','stella','2013-11-03','M',1),
 ('mirkos','mgm','shfk@jdkj','mirko','stella','2013-11-03','M',1),
 ('mirkos','mgm','shfk@jdkj','mirko','stella','2013-11-03','M',1),
-('mirkos','mgm','shfk@jdkj','mirko','stella','2013-11-03','M',1)
-;
-
+('mirkos','mgm','shfk@jdkj','mirko','stella','2013-11-03','M',1);
 
 CREATE TABLE `cast` (
 `ID` int(10) PRIMARY KEY AUTO_INCREMENT,
@@ -102,8 +102,6 @@ CREATE TABLE `cast` (
 
 INSERT INTO `cast` (`nome`,`cognome`) VALUES 
 ('Brad','Pitt');
-
-
 
 CREATE TABLE `recitazione`(
 `ID_film` int(10),
@@ -164,7 +162,6 @@ INSERT INTO `genere` (`nome`) VALUES
 ('comico')
 ;
 
-
 CREATE TABLE `appartenenza`(
 `ID_film` INT(10),
 `nome_genere` VARCHAR(32),
@@ -179,9 +176,7 @@ INSERT INTO `appartenenza` (`ID_film`,`nome_genere`) VALUES
 (3,'romantico'),
 (4,'comico'),
 (5,'azione'),
-(6,'comico')
-;
-
+(6,'comico');
 
 CREATE TABLE `recensione`(
 `ID` INT(10) PRIMARY KEY AUTO_INCREMENT,
@@ -190,6 +185,11 @@ CREATE TABLE `recensione`(
 `testo` text NOT NULL,
 `data` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
 `valutazione` enum('1','2','3','4','5') NOT NULL,
+`segnalazioni` INT(3) DEFAULT 0,
+`like` INT(3) DEFAULT 0,
+PRIMARY KEY (`ID_film`,`ID_utente`),
+FOREIGN KEY (`ID_film`) REFERENCES `film`(`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+FOREIGN KEY (`ID_utente`) REFERENCES `utente`(`ID`) ON DELETE CASCADE ON UPDATE CASCADE);
 FOREIGN KEY (`ID_film`) REFERENCES `film`(`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
 FOREIGN KEY (`ID_utente`) REFERENCES `utente`(`ID`) ON DELETE CASCADE ON UPDATE CASCADE
 )ENGINE = InnoDB;
@@ -207,6 +207,16 @@ INSERT INTO `recensione` (`ID_film`,`ID_utente`,`testo`,`valutazione`) VALUES
 (1,7,'ciao',3),
 (5,1,'ciao',4)
 ;
+
+CREATE TABLE `admin`(
+  `ID` int(11) NOT NULL,
+  `email` varchar(64) NOT NULL,
+  `password` varchar(32) NOT NULL,
+  PRIMARY KEY(`ID`)
+);
+
+INSERT INTO `admin` (`ID`, `email`, `password`) VALUES
+(1, 'admin@tecnofilm.com', '1AdminOnly');
 
 CREATE TABLE `segnalazione`(
 `ID_utente` INT(10),
