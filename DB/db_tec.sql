@@ -19,6 +19,7 @@ DROP TABLE IF EXISTS segnalazione;
 DROP TABLE IF EXISTS utile;
 DROP TABLE IF EXISTS foto_film;
 DROP TABLE IF EXISTS foto_utente;
+DROP TABLE IF EXISTS segnalazione_foto_utente;
 
 CREATE TABLE `foto_film` (
 `ID` int(10) PRIMARY KEY AUTO_INCREMENT,
@@ -58,10 +59,8 @@ INSERT INTO `film` (`titolo`,`copertina`,`trama`,`durata`,`data_uscita`,`prezzo_
 CREATE TABLE `foto_utente`(
 `ID` INT(10) PRIMARY KEY AUTO_INCREMENT,
 `path` text NOT NULL,
-`descrizione` text,
-`segnalazioni` INT(3) DEFAULT 0
+`descrizione` text
 )ENGINE = InnoDB;
-
 
 INSERT INTO `foto_utente`(`path`,`descrizione`) VALUES ('../img/img_componenti/profilo.jpg','immagine dell utente'),
 ('../img/img_componenti/profilo.jpg','immagine dell utente'),
@@ -71,6 +70,16 @@ INSERT INTO `foto_utente`(`path`,`descrizione`) VALUES ('../img/img_componenti/p
 ('../img/img_componenti/profilo.jpg','immagine dell utente'),
 ('../img/img_componenti/profilo.jpg','immagine dell utente'),
 ('../img/img_componenti/profilo.jpg','immagine dell utente');
+
+CREATE TABLE `segnalazione_foto_utente`(
+`ID_utente` INT(10),
+`ID_segnalante` INT(10),
+PRIMARY KEY (`ID_utente`,`ID_segnalante`),
+FOREIGN KEY (`ID_utente`) REFERENCES `utente`(`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+FOREIGN KEY (`ID_segnalante`) REFERENCES `utente`(`ID`) ON DELETE CASCADE ON UPDATE CASCADE 
+)ENGINE = InnoDB;
+
+INSERT INTO `segnalazione_foto_utente`(`ID_utente`,`ID_segnalante`) VALUES (1,2);
 
 CREATE TABLE `utente` (
 `ID` INT(10) PRIMARY KEY AUTO_INCREMENT,
@@ -142,6 +151,7 @@ CREATE TABLE `noleggio`(
 `ID_film` int(10),
 `ID_utente` INT(10),
 `data_noleggio` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+`scadenza_noleggio` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
 PRIMARY KEY (`ID_film`,`ID_utente`,`data_noleggio`),
 FOREIGN KEY (`ID_film`) REFERENCES `film`(`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
 FOREIGN KEY (`ID_utente`) REFERENCES `utente`(`ID`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -187,9 +197,6 @@ CREATE TABLE `recensione`(
 `valutazione` enum('1','2','3','4','5') NOT NULL,
 `segnalazioni` INT(3) DEFAULT 0,
 `like` INT(3) DEFAULT 0,
-PRIMARY KEY (`ID_film`,`ID_utente`),
-FOREIGN KEY (`ID_film`) REFERENCES `film`(`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
-FOREIGN KEY (`ID_utente`) REFERENCES `utente`(`ID`) ON DELETE CASCADE ON UPDATE CASCADE);
 FOREIGN KEY (`ID_film`) REFERENCES `film`(`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
 FOREIGN KEY (`ID_utente`) REFERENCES `utente`(`ID`) ON DELETE CASCADE ON UPDATE CASCADE
 )ENGINE = InnoDB;
