@@ -1,5 +1,6 @@
 <?php
     
+    
     require_once ('connessione.php');
     require_once ('struttura.php');
     require_once ('card.php');
@@ -7,7 +8,13 @@
     require_once ('ResocontoRecensioni.php');
     require_once ('sessione.php');
     require_once ('info_film.php');
-
+    
+    $idFilm="";
+    if(isset($_POST['inviaRecensione'])){
+        $idFilm=$_POST['idFilm'];
+    }
+    else
+        $idFilm=$_GET['idFilm'];
     
     date_default_timezone_set("Europe/Rome");
     $data=date("d/m/Y H:m:s");
@@ -33,14 +40,14 @@
     $erroreValutazione="";
 
     //acquisto
-    if(isset($_POST['acquisto'])){}
+    if(isset($_GET['acquisto'])){}
 
     //noleggio
-    if(isset($_POST['noleggio'])){}
+    if(isset($_GET['noleggio'])){}
 
     //se sono arrivato alla pagina eliminando una recensione
-    if(isset($_POST['eliminaRecensione'])){
-        $idRecensione=$_POST['idRecensione'];
+    if(isset($_GET['eliminaRecensione'])){
+        $idRecensione=$_GET['idRecensione'];
         $provaElimina=false;
         if(RecensioneUtente::elimina($idRecensione)){
             $pagina=str_replace('%messaggioEsitoRecensione%',"Recensione eliminata con successo!",$pagina);
@@ -57,7 +64,7 @@
         $valutazione=$_POST['valutazioneRecensione'];
         
         $datiRecensione=array(
-            'idFilm'=>$_POST['idFilm'],
+            'idFilm'=>$idFilm,
             'idUtente'=>$_SESSION['id'],
             'data'=>$data,
             'testo'=>$testo,
@@ -97,17 +104,17 @@
         $pagina=str_replace('%errValutazione%',"",$pagina);
         $pagina=str_replace('%messaggioEsitoRecensione%',"",$pagina);
     }
-    if(isset($_POST['utile'])){
-        RecensioneUtente::utile($_POST['idRecensione']);
+    if(isset($_GET['utile'])){
+        RecensioneUtente::utile($_GET['idRecensione']);
     }
-    if(isset($_POST['segnala'])){
-        RecensioneUtente::segnala($_POST['idRecensione']);
+    if(isset($_GET['segnala'])){
+        RecensioneUtente::segnala($_GET['idRecensione']);
     }
-    if(isset($_POST['annullaUtile'])){
-        RecensioneUtente::rimuoviUtile($_POST['idRecensione']);
+    if(isset($_GET['annullaUtile'])){
+        RecensioneUtente::rimuoviUtile($_GET['idRecensione']);
     }
-    if(isset($_POST['annullaSegnalazione'])){
-        RecensioneUtente::rimuoviSegnala($_POST['idRecensione']);
+    if(isset($_GET['annullaSegnalazione'])){
+        RecensioneUtente::rimuoviSegnala($_GET['idRecensione']); 
     }
     
         $struttura->aggiungiHeader($pagina);
@@ -119,7 +126,7 @@
         $info=array();
 
         //preparo le query
-        $infoFilm=recuperaInfo($_POST['idFilm']);
+        $infoFilm=recuperaInfo($idFilm);
 
         $film=new Card($infoFilm);
         $pagina=str_replace('%idFilm%',$film->id,$pagina);
@@ -139,12 +146,12 @@
         
     
         //creo il grafico recensioni
-        $grafico=new resocontoRecensioni($_POST['idFilm']);
+        $grafico=new resocontoRecensioni($idFilm);
         $grafico->creaGrafico($pagina);
 
         //recensioni utenti
         
-        $queryRecensioniUtenti="SELECT recensione.ID as idRecensione,ID_film,ID_utente,path,username,data,testo,valutazione FROM utente JOIN recensione ON (recensione.ID_utente=utente.ID) JOIN foto_utente ON(utente.ID=foto_utente.ID) WHERE ID_film=".$_POST['idFilm']." ORDER BY data ASC";
+        $queryRecensioniUtenti="SELECT recensione.ID as idRecensione,ID_film,ID_utente,path,username,data,testo,valutazione FROM utente JOIN recensione ON (recensione.ID_utente=utente.ID) JOIN foto_utente ON(utente.ID=foto_utente.ID) WHERE ID_film=".$idFilm." ORDER BY data ASC";
         $connessione=new Connessione();
         $connessione->apriConnessione();
         $recensioniUtenti=$connessione->interrogaDB($queryRecensioniUtenti);

@@ -81,8 +81,7 @@ class RecensioneUtente extends Recensione{
             $rec=str_replace('%pulsanteSegnalazione%',"",$rec);
             $rec=str_replace('%elimina%',"<input type=\"submit\" value=\"Elimina\" name=\"eliminaRecensione\" class=\"btn btnRecensione\">",$rec);
         }
-        else
-            {
+        if($_SESSION['loggato']==true && $_SESSION['id']!=$this->idUtente){
                 $rec=str_replace('%elimina%',"",$rec);
                 $utile=new Utile($_SESSION['id'],$this->id);
                 $segnalazione=new Segnalazione($_SESSION['id'],$this->id);
@@ -100,6 +99,11 @@ class RecensioneUtente extends Recensione{
                 }
 
                 
+            }
+            if($_SESSION['loggato']==false){
+                $rec=str_replace('%pulsanteUtile%',"",$rec);
+            $rec=str_replace('%pulsanteSegnalazione%',"",$rec);
+            $rec=str_replace('%elimina%',"",$rec);
             }
         return $rec;
     }
