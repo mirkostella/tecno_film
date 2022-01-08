@@ -5,8 +5,11 @@
 
     date_default_timezone_set("Europe/Rome");
     $data=date("Y-m-d H:m:s");
-    $data=
     print_r($data);
+    echo "</br>";
+    $scadenzaNoleggio=date("Y-m-d H:m:s",mktime(0, 0, 0, date("m"),   date("d")+7,   date("Y")));
+    print_r($scadenzaNoleggio);
+    
     echo "ins";
     echo "</br>";
     echo '$_SESSION:   ';
@@ -19,19 +22,26 @@
     print_r($_POST);
     echo "</br>";
 
-    if(isset($_GET['acquisto'])){
+    $pagina=file_get_contents('../html/esito_transazione.html');
+    if(isset($_GET['confermaAcquisto'])){
         $queryAcquisto="INSERT INTO acquisto (ID_film,ID_utente,data_acquisto) VALUES (".$_GET['idFilm'].",".$_SESSION['id'].",".$data.")";
         $connessione=new Connessione();
         $connessione->apriConnessione();
         if($connessione->eseguiQuery($queryAcquisto))
-            echo "film aggiunto con successo";
+            $pagina=str_replace('%esito%',"Transazione avvenuta con successo!Puoi trovare il film nella tua raccolta personale!",$pagina);
         else
-            echo "film non inserito";
+            $pagina=str_replace('%esito%',"Ti preghiamo di riprovare piú tardi!",$pagina);
     }
-    if(isset($_GET['noleggio'])){
-        $queryNoleggio="INSERT INTO noleggio (ID_film,ID_utente,data_noleggio) VALUES ()";
+    if(isset($_GET['confermaNoleggio'])){
+        $scadenzaNoleggio=date("Y-m-d H:m:s",mktime(0, 0, 0, date("m"),   date("d")+7,   date("Y")));
+        $queryNoleggio="INSERT INTO noleggio (ID_film,ID_utente,data_noleggio,scadenza_noleggio) VALUES (".$_GET['idFilm'].",".$_SESSION['id'].",".$data.",".$scadenzaNoleggio.")";
         $connessione=new Connessione();
-        $connessione->eseguiQuery($queryNoleggio);
+        if($connessione->eseguiQuery($queryNoleggio))
+            $pagina=str_replace('%esito%',"Transazione avvenuta con successo!Puoi trovare il film nella tua raccolta personale fino al termine del periodo di noleggio!",$pagina);
+        else
+            $pagina=str_replace('%esito%',"Ti preghiamo di riprovare piú tardi!",$pagina);
     }
+    echo $pagina;
+
 
 ?>
