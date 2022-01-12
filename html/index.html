@@ -34,37 +34,9 @@
                 <li><a href="#scelti">Scelti per te</a></li>
                 <li><a href="#azione">Azione</a></li>
             </ul>
-                <h2 id="nuove">Nuove uscite</h2>
-                <dl class="listaCards">
-                    %listaCardN%
-                </dl>
-                <!-- fine gruppo tipo -->
-                <form action="categoria.php">
-                    <input type="hidden" name="nuoveUscite">
-                    <input type="submit" name="vediNuoveUscite" value="Vedi altro" class="btn centrale"/>
-                </form>
-                <hr>
-
-                <h2 id="scelti">Scelti per te</h2>
-                <dl class="listaCards">
-                    
-                    %listaCardS%
-                </dl>
-                <!-- fine gruppo tipo -->
-                <form action="categoria.php">
-                    <input type="hidden" name="nuoveUscite">
-                    <input type="submit" name="vediNuoveUscite" value="Vedi altro" class="btn centrale"/>
-                </form>
-                <hr>
-                <h2 id="azione">Azione</h2>
-                <dl class="listaCards">
-                    %listaCardA%
-                </dl>
-                <!-- fine gruppo tipo -->
-                <form action="categoria.php">
-                    <input type="hidden" name="nuoveUscite">
-                    <input type="submit" name="vediNuoveUscite" value="Vedi altro" class="btn centrale"/>
-                </form>
+                %nuoveUscite%
+                %sceltiPerTe%
+                %azione%
             <!-- fine contenuto -->
         </div> 
         <!-- fine impaginazione -->

@@ -54,23 +54,51 @@
         }
 
     }
-    function creaListaCard($queryResult){
+    function creaListaCard($risultatoQuery){
         $listaCards="";
-        foreach($queryResult as $valore){
-            $cardAttuale=new Card($valore);
-            $listaCards=$listaCards.$cardAttuale->aggiungiBase();
+        if($risultatoQuery){
+            //ordino le card in base alla valutazione
+            $i=1;
+            foreach($risultatoQuery as $valore){
+                $cardAttuale=new Card($valore);
+                $stringaCard=$cardAttuale->aggiungiBase();
+                if($i==6){
+                    $stringaCard=str_replace('%nascosto%',"nascosto",$stringaCard);
+                }
+                if($i==7){
+                    $stringaCard=str_replace('%nascosto%',"nascosto2",$stringaCard);
+                }
+                $i++;
+                $listaCards=$listaCards.$stringaCard;
+            }
         }
         return $listaCards;
     }
-    function creaListaCardClassificata($queryResult){
-        $posizione=1;
+    
+    function creaListaCardClassificata($risultatoQuery){
         $listaCards="";
-        foreach($queryResult as $valore){
-            $cardAttuale=new CardClassificata($valore,$posizione);
-            $listaCards=$listaCards.$cardAttuale->aggiungiBaseClassificata();
-            $posizione++;
-        }
-        return $listaCards;
+        $posizione=1;
+
+        if($risultatoQuery){
+            //ordino le card in base alla valutazione
+            $i=1;
+                foreach($risultatoQuery as $valore){
+                    $cardAttuale=new CardClassificata($valore,$posizione);
+                    $listaCards=$listaCards.$cardAttuale->aggiungiBaseClassificata();
+                    $posizione++;
+                    
+                    if($i==6){
+                        $stringaCard=str_replace('%nascosto%',"nascosto",$stringaCard);
+                    }
+                    if($i==7){
+                        $stringaCard=str_replace('%nascosto%',"nascosto2",$stringaCard);
+                    }
+                    $i++;
+                    $listaCards=$listaCards.$stringaCard;
+                }
+            }
+            return $listaCards;
+
     }
 
 ?>

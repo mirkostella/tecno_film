@@ -1,7 +1,8 @@
 <?php
     require_once ('connessione.php');
     require_once ('sessione.php');
-
+    require_once ('card.php');
+    
     //recupera le informazioni per costruire una card di un film in base all'id
     function recuperaInfo($id){
         $queryMediaValutazioni="SELECT AVG(valutazione) as media FROM recensione WHERE ID_film=$id GROUP BY ID_film";
@@ -33,24 +34,37 @@
         );
         return $infoFilm;
     }
+    
+    //restitituisce la stringa di card o la stringa vuota se non sono presenti
+    
+    
     //recupera le informazioni per creare le card nuove uscite
     function recuperaNuoveUscite($limite){
-        $connessione=new Connessione();
-        $connessione->apriConnessione();
         $queryCard="SELECT film.ID as id,titolo,nome_genere as genere,copertina,trama,TIME_TO_SEC(durata) as durata,data_uscita as annoUscita,prezzo_acquisto as prezzoA,prezzo_noleggio as prezzoN,
         path as copertina,descrizione,AVG(valutazione) as valutazione FROM film JOIN appartenenza 
         ON(film.ID=appartenenza.ID_film) JOIN genere ON (appartenenza.ID_genere=genere.ID) JOIN foto_film ON(film.copertina=foto_film.ID) LEFT JOIN recensione ON (film.ID=recensione.ID_film) GROUP BY film.ID ORDER BY annoUscita DESC LIMIT $limite";
-        
-        $ris=$connessione->interrogaDB($queryCard);
-        $connessione->chiudiConnessione();
-        return $ris;
-}
-
-//restituisce i film che non sono stati acquistati o noleggiati dello stesso genere dell'ultimo film acquistato o noleggiato.
-//i film vengono ordinati prima per data e poi per valutazione (maggiore uguale a 3 stelle)
-    function recuperaSceltiPerTe($limite){
         $connessione=new Connessione();
         $connessione->apriConnessione();
+        $ris=$connessione->interrogaDB($queryCard);
+        $connessione->chiudiConnessione();
+
+        $listaCard=creaListaCard($ris);
+        if(!$listaCard)
+            return false;
+        else{
+            $categoriaCard=file_get_contents('../componenti/categoria_index.html');
+            $categoriaCard=str_replace('%listaCard%',$listaCard,$categoriaCard);
+            $categoriaCard=str_replace('%spazio%',"",$categoriaCard);
+            $categoriaCard=str_replace('%categoria%',"Nuove uscite",$categoriaCard);
+            $categoriaCard=str_replace('%nomeSubmit%',"vediNuoveUscite",$categoriaCard);
+            return $categoriaCard;
+        }
+
+    }
+    
+    //restituisce i film che non sono stati acquistati o noleggiati dello stesso genere dell'ultimo film acquistato o noleggiato.
+    //i film vengono ordinati prima per data e poi per valutazione (maggiore uguale a 3 stelle)
+    function recuperaSceltiPerTe($limite){
         $queryCard="SELECT film.ID as id,titolo,nome_genere as genere,copertina,trama,TIME_TO_SEC(durata) as durata,data_uscita as annoUscita,prezzo_acquisto as prezzoA,prezzo_noleggio as prezzoN,
         path as copertina,descrizione,AVG(valutazione) as valutazione FROM film JOIN appartenenza 
         ON(film.ID=appartenenza.ID_film) JOIN genere ON (appartenenza.ID_genere=genere.ID) JOIN foto_film ON(film.copertina=foto_film.ID) LEFT JOIN recensione ON (film.ID=recensione.ID_film) 
@@ -63,9 +77,43 @@
         appartenenza ON(appartenenza.ID_film=film.ID) WHERE utente.ID=".$_SESSION['id']." UNION SELECT data_acquisto as data_transizione,ID_genere,film.ID as film FROM utente JOIN 
         acquisto ON (acquisto.ID_utente=utente.ID) JOIN film ON(film.ID=acquisto.ID_film) JOIN appartenenza ON(appartenenza.ID_film=film.ID) WHERE utente.ID=".$_SESSION['id'].")ultime_transizioni)) 
         GROUP BY film.ID ORDER BY valutazione,annoUscita DESC LIMIT 6";
+        $connessione=new Connessione();
+        $connessione->apriConnessione();
         $ris=$connessione->interrogaDB($queryCard);
         $connessione->chiudiConnessione();
-        return $ris;
+        $listaCard=creaListaCard($ris);
+        if(!$listaCard)
+            return false;
+        else{
+            $categoriaCard=file_get_contents('../componenti/categoria_index.html');
+            $categoriaCard=str_replace('%listaCard%',$listaCard,$categoriaCard);
+            $categoriaCard=str_replace('%spazio%',"<hr>",$categoriaCard);
+            $categoriaCard=str_replace('%categoria%',"Scelti per te",$categoriaCard);
+            $categoriaCard=str_replace('%nomeSubmit%',"vediSceltiPerTe",$categoriaCard);
+            return $categoriaCard;
+        }
+    }
+
+    function recuperaAzione($limite){
+        $queryCard="SELECT film.ID as id,titolo,nome_genere as genere,copertina,trama,TIME_TO_SEC(durata) as durata,data_uscita as annoUscita,prezzo_acquisto as prezzoA,prezzo_noleggio as prezzoN,
+        path as copertina,descrizione,AVG(valutazione) as valutazione FROM film JOIN appartenenza 
+        ON(film.ID=appartenenza.ID_film) JOIN genere ON (appartenenza.ID_genere=genere.ID) JOIN foto_film ON(film.copertina=foto_film.ID) LEFT JOIN recensione ON (film.ID=recensione.ID_film) 
+        WHERE nome_genere='azione' ORDER BY valutazione,annoUscita LIMIT $limite";
+        $connessione=new Connessione();
+        $connessione->apriConnessione();
+        $ris=$connessione->interrogaDB($queryCard);
+        $connessione->chiudiConnessione();
+        $listaCard=creaListaCard($ris);
+        if(!$listaCard)
+            return false;
+        else{
+            $categoriaCard=file_get_contents('../componenti/categoria_index.html');
+            $categoriaCard=str_replace('%listaCard%',$listaCard,$categoriaCard);
+            $categoriaCard=str_replace('%spazio%',"<hr>",$categoriaCard);
+            $categoriaCard=str_replace('%categoria%',"Azione",$categoriaCard);
+            $categoriaCard=str_replace('%nomeSubmit%',"vediAzione",$categoriaCard);
+            return $categoriaCard;
+        }
     }
 ?>
 
