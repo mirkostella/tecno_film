@@ -57,6 +57,8 @@
             $categoriaCard=str_replace('%spazio%',"",$categoriaCard);
             $categoriaCard=str_replace('%categoria%',"Nuove uscite",$categoriaCard);
             $categoriaCard=str_replace('%nomeSubmit%',"vediNuoveUscite",$categoriaCard);
+            $categoriaCard=str_replace('%limite%',$limite,$categoriaCard);
+            $categoriaCard=str_replace('%collegamento%',"search_result.php",$categoriaCard);
             return $categoriaCard;
         }
 
@@ -90,6 +92,8 @@
             $categoriaCard=str_replace('%spazio%',"<hr>",$categoriaCard);
             $categoriaCard=str_replace('%categoria%',"Scelti per te",$categoriaCard);
             $categoriaCard=str_replace('%nomeSubmit%',"vediSceltiPerTe",$categoriaCard);
+            $categoriaCard=str_replace('%limite%',$limite,$categoriaCard);
+            $categoriaCard=str_replace('%collegamento%',"search_result.php",$categoriaCard);
             return $categoriaCard;
         }
     }
@@ -112,7 +116,37 @@
             $categoriaCard=str_replace('%spazio%',"<hr>",$categoriaCard);
             $categoriaCard=str_replace('%categoria%',"Azione",$categoriaCard);
             $categoriaCard=str_replace('%nomeSubmit%',"vediAzione",$categoriaCard);
+            $categoriaCard=str_replace('%limite%',$limite,$categoriaCard);
+            $categoriaCard=str_replace('%collegamento%',"search_result.php",$categoriaCard);
             return $categoriaCard;
+        }
+    }
+    function recuperaRaccoltaPersonale($limite){
+        $queryCard="SELECT film.ID as id,titolo,nome_genere as genere,copertina,TIME_TO_SEC(durata) as durata,
+        path as copertina,descrizione FROM film JOIN appartenenza 
+        ON(film.ID=appartenenza.ID_film) JOIN genere ON (appartenenza.ID_genere=genere.ID) JOIN foto_film ON(film.copertina=foto_film.ID) JOIN acquisto ON (film.ID=acquisto.ID_film) WHERE acquisto.ID_utente=".$_SESSION['id']." UNION SELECT film.ID as id,titolo,nome_genere as genere,copertina,TIME_TO_SEC(durata) as durata,
+        path as copertina,descrizione FROM film JOIN appartenenza 
+        ON(film.ID=appartenenza.ID_film) JOIN genere ON (appartenenza.ID_genere=genere.ID) JOIN foto_film ON(film.copertina=foto_film.ID) JOIN noleggio ON (film.ID=noleggio.ID_film) WHERE noleggio.ID_utente=".$_SESSION['id'];
+        $connessione=new Connessione();
+        $connessione->apriConnessione();
+        $ris=$connessione->interrogaDB($queryCard);
+        $connessione->chiudiConnessione();
+        $listaCard=creaListaCardBase($ris);
+        if(!$listaCard)
+            return false;
+        else{
+            $raccoltaCard=file_get_contents('../componenti/categoria_index.html');
+            $raccoltaCard=str_replace('%listaCard%',$listaCard,$raccoltaCard);
+            $raccoltaCard=str_replace('%spazio%',"",$raccoltaCard);
+            $raccoltaCard=str_replace('%categoria%',"",$raccoltaCard);
+            $raccoltaCard=str_replace('%nomeSubmit%',"",$raccoltaCard);
+            $raccoltaCard=str_replace('%prezzo%',"",$raccoltaCard);
+            $raccoltaCard=str_replace('%valutazione%',"",$raccoltaCard);
+            $raccoltaCard=str_replace('%limite%',$limite,$raccoltaCard);
+            $raccoltaCard=str_replace('%collegamento%',"raccolta_personale.php",$raccoltaCard);
+
+
+            return $raccoltaCard;
         }
     }
 ?>

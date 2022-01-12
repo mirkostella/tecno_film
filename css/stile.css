@@ -89,6 +89,9 @@ ul li{
     display: inline-block;
 }
 fieldset{text-align: center;}
+.esitoPositivo{
+    color: green;
+}
 /* intestazione */
 header{
     width: 100%;
@@ -218,6 +221,17 @@ header{
     padding: 1em 0;
 }
 /* ------------------------- contenuto ------------------------- */
+#contenutoFull{
+    width: 100%;
+    background-color: white;
+    border: 2px solid var(--colore-bordo-header); 
+}
+#imgEsito{
+    width: 50%;
+    display: block;
+    border-radius: 100%;
+    margin:auto;
+}
 #contenuto{
     width: 80%;
     background-color: white;
