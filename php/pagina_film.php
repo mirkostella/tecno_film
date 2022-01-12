@@ -149,20 +149,52 @@
         $grafico=new resocontoRecensioni($idFilm);
         $grafico->creaGrafico($pagina);
 
+        $queryRecensioniUtenti="";
+        $selezionato="";
+        $inSelezionato="";
+        $focus=false;
         //recensioni utenti
-        
-        $queryRecensioniUtenti="SELECT recensione.ID as idRecensione,ID_film,ID_utente,path,username,data,testo,valutazione FROM utente JOIN recensione ON (recensione.ID_utente=utente.ID) JOIN foto_utente ON(utente.ID=foto_utente.ID) WHERE ID_film=".$idFilm." ORDER BY data ASC";
+        if(isset($_GET['applica'])){
+            $focus=true;
+            if($_GET['ordine']=='recenti'){
+                $queryRecensioniUtenti="SELECT recensione.ID as idRecensione,ID_film,ID_utente,path,username,data,testo,valutazione FROM utente JOIN recensione ON (recensione.ID_utente=utente.ID) JOIN foto_utente ON(utente.ID=foto_utente.ID) WHERE ID_film=".$idFilm." ORDER BY data DESC";
+                $selezionato="<option value=\"recenti\">Piú recenti</option>";
+                $inSelezionato="<option value=\"recenti\" selected>Piú recenti</option>";
+            }
+            if($_GET['ordine']=='piaciuti'){
+                $queryRecensioniUtenti="SELECT recensione.ID as idRecensione,ID_film,ID_utente,path,username,data,testo,valutazione FROM utente JOIN recensione ON (recensione.ID_utente=utente.ID) JOIN foto_utente ON(utente.ID=foto_utente.ID) WHERE ID_film=".$idFilm." ORDER BY valutazione DESC";
+                $selezionato="<option value=\"piaciuti\">Piú piaciuti</option>";
+                $inSelezionato="<option value=\"piaciuti\" selected>Piú piaciuti</option>";
+            }
+            if($_GET['ordine']=='mRecenti'){
+                $queryRecensioniUtenti="SELECT recensione.ID as idRecensione,ID_film,ID_utente,path,username,data,testo,valutazione FROM utente JOIN recensione ON (recensione.ID_utente=utente.ID) JOIN foto_utente ON(utente.ID=foto_utente.ID) WHERE ID_film=".$idFilm." ORDER BY data ASC";
+                $selezionato="<option value=\"mRecenti\">Meno recenti</option>";
+                $inSelezionato="<option value=\"mRecenti\" selected>Meno recenti</option>";
+
+            }
+            if($_GET['ordine']=='mPiaciuti'){
+                $queryRecensioniUtenti="SELECT recensione.ID as idRecensione,ID_film,ID_utente,path,username,data,testo,valutazione FROM utente JOIN recensione ON (recensione.ID_utente=utente.ID) JOIN foto_utente ON(utente.ID=foto_utente.ID) WHERE ID_film=".$idFilm." ORDER BY valutazione ASC";
+                $selezionato="<option value=\"mPiaciuti\">Meno piaciuti</option>";
+                $inSelezionato="<option value=\"mPiaciuti\" selected>Meno piaciuti</option>";
+            }
+            }
+        else
+            $queryRecensioniUtenti="SELECT recensione.ID as idRecensione,ID_film,ID_utente,path,username,data,testo,valutazione FROM utente JOIN recensione ON (recensione.ID_utente=utente.ID) JOIN foto_utente ON(utente.ID=foto_utente.ID) WHERE ID_film=".$idFilm." ORDER BY data ASC";
+       
         $connessione=new Connessione();
         $connessione->apriConnessione();
         $recensioniUtenti=$connessione->interrogaDB($queryRecensioniUtenti);
-        //lista con tutte le recensioni relative al film 
+        //controllo che siano presenti delle recensioni
         $listaRecensioni="";
-        foreach($recensioniUtenti as $key=>$valore){
-            $datiRecensione=array(
-                'id'=>$valore['idRecensione'],
-                'idFilm'=>$valore['ID_film'],
-                'idUtente'=>$valore['ID_utente'],
-                'profilo'=>$valore['path'],
+        if($recensioniUtenti){
+            $struttura->aggiungiFiltro($pagina,$selezionato,$inSelezionato,$focus);
+            //lista con tutte le recensioni relative al film 
+            foreach($recensioniUtenti as $key=>$valore){
+                $datiRecensione=array(
+                    'id'=>$valore['idRecensione'],
+                    'idFilm'=>$valore['ID_film'],
+                    'idUtente'=>$valore['ID_utente'],
+                    'profilo'=>$valore['path'],
                 'username'=>$valore['username'],
                 'data'=>$valore['data'],
                 'testo'=>$valore['testo'],
@@ -172,6 +204,12 @@
             $stringaRecensione=$recensione->crea();
             $listaRecensioni=$listaRecensioni.$stringaRecensione;
         }
-        $pagina=str_replace('%listaRecensioni%',$listaRecensioni,$pagina);
+    }
+    else
+        $pagina=str_replace('%filtro%',"",$pagina);
+
+
+        $pagina=str_replace('%idFilm%',$idFilm,$pagina); 
+        $pagina=str_replace('%listaRecensioni%',$listaRecensioni,$pagina); 
         echo $pagina;  
 ?>

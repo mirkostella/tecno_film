@@ -161,11 +161,11 @@ INSERT INTO `noleggio` (`ID_film`,`ID_utente`) VALUES
 (1,1);
 
 CREATE TABLE `genere`(
-`nome` varchar(32),
-PRIMARY KEY (`nome`)
+`ID` INT(10) PRIMARY KEY AUTO_INCREMENT,
+`nome_genere` VARCHAR(32) NOT NULL
 )ENGINE = InnoDB;
 
-INSERT INTO `genere` (`nome`) VALUES 
+INSERT INTO `genere` (`nome_genere`) VALUES 
 ('horror'),
 ('azione'),
 ('romantico'),
@@ -174,19 +174,19 @@ INSERT INTO `genere` (`nome`) VALUES
 
 CREATE TABLE `appartenenza`(
 `ID_film` INT(10),
-`nome_genere` VARCHAR(32),
-PRIMARY KEY (`ID_film`,`nome_genere`),
+`ID_genere` INT(10),
+PRIMARY KEY (`ID_film`,`ID_genere`),
 FOREIGN KEY (`ID_film`) REFERENCES `film`(`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
-FOREIGN KEY (`nome_genere`) REFERENCES `genere`(`nome`) ON DELETE CASCADE ON UPDATE CASCADE
+FOREIGN KEY (`ID_genere`) REFERENCES `genere`(`ID`) ON DELETE CASCADE ON UPDATE CASCADE
 )ENGINE = InnoDB;
 
-INSERT INTO `appartenenza` (`ID_film`,`nome_genere`) VALUES 
-(1,'horror'),
-(2,'azione'),
-(3,'romantico'),
-(4,'comico'),
-(5,'azione'),
-(6,'comico');
+INSERT INTO `appartenenza` (`ID_film`,`ID_genere`) VALUES 
+(1,1),
+(2,3),
+(3,1),
+(4,2),
+(5,1),
+(6,4);
 
 CREATE TABLE `recensione`(
 `ID` INT(10) PRIMARY KEY AUTO_INCREMENT,
@@ -212,7 +212,8 @@ INSERT INTO `recensione` (`ID_film`,`ID_utente`,`testo`,`valutazione`) VALUES
 (1,5,'ciao',1),
 (1,6,'ciao',4),
 (1,7,'ciao',3),
-(5,1,'ciao',4)
+(5,1,'ciao',4),
+(6,1,'fafafaw',2)
 ;
 
 CREATE TABLE `admin`(

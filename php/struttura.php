@@ -181,7 +181,17 @@
                 ,$pulsanti);
                 $pagina=str_replace('%pulsantiAcquistoNoleggio%',$pulsanti,$pagina);
         }
-    }    
+    } 
+    public function aggiungiFiltro(&$pagina,$selezionato,$inSelezionato,$focus){
+        $filtro=file_get_contents('../componenti/filtro.html');
+        if($focus)
+            $filtro=str_replace("%focus%","autofocus",$filtro);
+        else
+            $filtro=str_replace("%focus%","",$filtro);
+
+        $filtro=str_replace($selezionato,$inSelezionato,$filtro);
+        $pagina=str_replace('%filtro%',$filtro,$pagina);
+    }   
 }
 
 ?>
