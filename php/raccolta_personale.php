@@ -20,9 +20,11 @@
     $attivo="<li id=\"attivo\">I miei film</li>";
     $struttura->aggiungiMenu($pagina,$inAttivo,$attivo);
     if($_SESSION['loggato']==true){
-    $risultatoCard=recuperaRaccoltaPersonale($limite);
-    if($risultatoCard)
-        $pagina=str_replace('%raccolta%',$risultatoCard,$pagina);
+        $raccoltaCardNoleggi="";
+        $raccoltaCardAcquisti="";
+    recuperaRaccoltaPersonale($limite,$raccoltaCardNoleggi,$raccoltaCardAcquisti);
+    if($raccoltaCardNoleggi || $raccoltaCardAcquisti)
+        $pagina=str_replace('%raccolta%',$raccoltaCardNoleggi.$raccoltaCardAcquisti,$pagina);
     else
         $pagina=str_replace('%raccolta%',"<h1>Non sono ancora presenti film nella tua raccolta</h1>",$pagina);
 

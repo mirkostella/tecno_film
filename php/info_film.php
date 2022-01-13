@@ -121,34 +121,46 @@
             return $categoriaCard;
         }
     }
-    function recuperaRaccoltaPersonale($limite){
-        $queryCard="SELECT film.ID as id,titolo,nome_genere as genere,copertina,TIME_TO_SEC(durata) as durata,
+    function recuperaRaccoltaPersonale($limite,&$raccoltaCardNoleggi,&$raccoltaCardAcquisti){
+        //acquisti dell'utente
+        $queryCardAcquisti="SELECT film.ID as id,titolo,nome_genere as genere,copertina,TIME_TO_SEC(durata) as durata,
         path as copertina,descrizione FROM film JOIN appartenenza 
-        ON(film.ID=appartenenza.ID_film) JOIN genere ON (appartenenza.ID_genere=genere.ID) JOIN foto_film ON(film.copertina=foto_film.ID) JOIN acquisto ON (film.ID=acquisto.ID_film) WHERE acquisto.ID_utente=".$_SESSION['id']." UNION SELECT film.ID as id,titolo,nome_genere as genere,copertina,TIME_TO_SEC(durata) as durata,
-        path as copertina,descrizione FROM film JOIN appartenenza 
+        ON(film.ID=appartenenza.ID_film) JOIN genere ON (appartenenza.ID_genere=genere.ID) JOIN foto_film ON(film.copertina=foto_film.ID) JOIN acquisto ON (film.ID=acquisto.ID_film) WHERE acquisto.ID_utente=".$_SESSION['id'];
+        $queryCardNoleggi="SELECT film.ID as id,titolo,nome_genere as genere,copertina,TIME_TO_SEC(durata) as durata,
+        path as copertina,descrizione,scadenza_noleggio FROM film JOIN appartenenza 
         ON(film.ID=appartenenza.ID_film) JOIN genere ON (appartenenza.ID_genere=genere.ID) JOIN foto_film ON(film.copertina=foto_film.ID) JOIN noleggio ON (film.ID=noleggio.ID_film) WHERE noleggio.ID_utente=".$_SESSION['id'];
         $connessione=new Connessione();
         $connessione->apriConnessione();
-        $ris=$connessione->interrogaDB($queryCard);
+        $risAcquisti=$connessione->interrogaDB($queryCardAcquisti);
+        $risNoleggi=$connessione->interrogaDB($queryCardNoleggi);
         $connessione->chiudiConnessione();
-        $listaCard=creaListaCardBase($ris);
-        if(!$listaCard)
-            return false;
-        else{
-            $raccoltaCard=file_get_contents('../componenti/categoria_index.html');
-            $raccoltaCard=str_replace('%listaCard%',$listaCard,$raccoltaCard);
-            $raccoltaCard=str_replace('%spazio%',"",$raccoltaCard);
-            $raccoltaCard=str_replace('%categoria%',"",$raccoltaCard);
-            $raccoltaCard=str_replace('%nomeSubmit%',"",$raccoltaCard);
-            $raccoltaCard=str_replace('%prezzo%',"",$raccoltaCard);
-            $raccoltaCard=str_replace('%valutazione%',"",$raccoltaCard);
-            $raccoltaCard=str_replace('%limite%',$limite,$raccoltaCard);
-            $raccoltaCard=str_replace('%collegamento%',"raccolta_personale.php",$raccoltaCard);
+        $listaNoleggi=creaListaCardPersonale($risNoleggi);
+        $listaAcquisti=creaListaCardPersonale($risAcquisti);
 
-
-            return $raccoltaCard;
+        if($listaNoleggi){
+            $raccoltaCardNoleggi=file_get_contents('../componenti/categoria_index.html');
+            $raccoltaCardNoleggi=str_replace('%listaCard%',$listaNoleggi,$raccoltaCardNoleggi);
+            $raccoltaCardNoleggi=str_replace('%spazio%',"",$raccoltaCardNoleggi);
+            $raccoltaCardNoleggi=str_replace('%categoria%',"",$raccoltaCardNoleggi);
+            $raccoltaCardNoleggi=str_replace('%nomeSubmit%',"",$raccoltaCardNoleggi);
+            $raccoltaCardNoleggi=str_replace('%prezzo%',"",$raccoltaCardNoleggi);
+            $raccoltaCardNoleggi=str_replace('%valutazione%',"",$raccoltaCardNoleggi);
+            $raccoltaCardNoleggi=str_replace('%limite%',$limite,$raccoltaCardNoleggi);
+            $raccoltaCardNoleggi=str_replace('%collegamento%',"raccolta_personale.php",$raccoltaCardNoleggi);
         }
-    }
+        if($listaAcquisti){
+            $raccoltaCardAcquisti=file_get_contents('../componenti/categoria_index.html');
+            $raccoltaCardAcquisti=str_replace('%listaCard%',$listaAcquisti,$raccoltaCardAcquisti);
+            $raccoltaCardAcquisti=str_replace('%spazio%',"",$raccoltaCardAcquisti);
+            $raccoltaCardAcquisti=str_replace('%categoria%',"",$raccoltaCardAcquisti);
+            $raccoltaCardAcquisti=str_replace('%nomeSubmit%',"",$raccoltaCardAcquisti);
+            $raccoltaCardAcquisti=str_replace('%prezzo%',"",$raccoltaCardAcquisti);
+            $raccoltaCardAcquisti=str_replace('%valutazione%',"",$raccoltaCardAcquisti);
+            $raccoltaCardAcquisti=str_replace('%limite%',$limite,$raccoltaCardAcquisti);
+            $raccoltaCardAcquisti=str_replace('%collegamento%',"raccolta_personale.php",$raccoltaCardAcquisti);
+        }
+            
+        }
 ?>
 
 

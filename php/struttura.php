@@ -24,7 +24,7 @@
             $lista="";
             foreach($suggerimenti as $i=>$valore){
                 $titolo=$suggerimenti[$i]["titolo"];
-                $lista=$lista."<option value=\"$titolo\" />";
+                $lista=$lista."<option value=\"$titolo\">";
             }
             $componente=str_replace("%suggerimenti%",$lista,$componente);
             $pagina=str_replace("%header%",$componente,$pagina);

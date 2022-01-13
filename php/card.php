@@ -7,16 +7,14 @@
         public $descrizione;
         public $titolo;
         public $genere;
-        public $durata;
-
+        
         public function __construct(&$array){
-
+            
             $this->id=$array['id'];
             $this->copertina=$array['copertina'];
             $this->descrizione=$array['descrizione'];
             $this->titolo=$array['titolo'];
             $this->genere=$array['genere'];
-            $this->durata=$array['durata']/60;
         }
         public function aggiungiBase(){
             $cardB=file_get_contents("../componenti/card.html");
@@ -25,9 +23,28 @@
             $cardB=str_replace('%desc%',$this->descrizione,$cardB);
             $cardB=str_replace('%gen%',$this->genere,$cardB);
             $cardB=str_replace("%titolo%",$this->titolo,$cardB);
-            
             return $cardB;  
-            }
+        }
+        
+    }
+    class CardPersonale extends CardBase{
+
+        public $dataScadenza=null;
+        public function __construct(&$array){
+            CardBase::__construct($array);
+            if(isset($array['scadenza_noleggio']))
+                $this->dataScadenza=$array['scadenza_noleggio'];
+            
+        }
+        public function aggiungiBase(){
+            $cardB=CardBase::aggiungiBase();
+            if($this->dataScadenza)
+                $cardB=str_replace("%infoCard%","Scadenza:".$this->dataScadenza,$cardB);
+            else
+                $cardB=str_replace("%infoCard%","",$cardB);
+            return $cardB;  
+        }
+
 
     }
     
@@ -37,6 +54,7 @@
         public $prezzoA;
         public $annoUscita;
         public $trama;
+        public $durata;
         
         public function __construct(&$array){
             
@@ -46,15 +64,16 @@
             $this->prezzoA=$array['prezzoA'];
             $this->annoUscita=$array['annoUscita'];
             $this->trama=$array['trama'];
+            $this->durata=$array['durata']/60;
         }
         public function aggiungiBase(){
-        $cardB=CardBase::aggiungiBase();
-        $cardB=str_replace('%prezzo%',$this->prezzoN,$cardB);
-        $stelle=creaStelle($this->valutazione);
-        $cardB=str_replace('%valutazione%',$stelle,$cardB);
-        return $cardB;  
+            $cardB=CardBase::aggiungiBase();
+            $cardB=str_replace('%infoCard%',$this->prezzoN." &euro;",$cardB);
+            $stelle=creaStelle($this->valutazione);
+            $cardB=str_replace('%valutazione%',$stelle,$cardB);
+            return $cardB;  
         }
-
+        
     }
     class CardClassificata extends Card{
         public $pos;
@@ -70,13 +89,13 @@
         }
 
     }
-    function creaListaCardBase($risultatoQuery){
+    function creaListaCardPersonale($risultatoQuery){
         $listaCards="";
         if($risultatoQuery){
             //ordino le card in base alla valutazione
             $i=1;
             foreach($risultatoQuery as $valore){
-                $cardAttuale=new CardBase($valore);
+                $cardAttuale=new CardPersonale($valore);
                 $stringaCard=$cardAttuale->aggiungiBase();
                 if($i==6){
                     $stringaCard=str_replace('%nascosto%',"nascosto",$stringaCard);
