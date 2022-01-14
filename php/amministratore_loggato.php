@@ -2,6 +2,7 @@
 
     //inclusione dei file 
     require_once ('connessione.php');
+    require_once ('info_utente.php');
     
     $pagina=file_get_contents("../html/amministratore_loggato.html");
     $connessione=new Connessione();
@@ -12,19 +13,18 @@
 
     $query_utente="SELECT ID,username, email,stato From utente";
     $risultato=$connessione->interrogaDB($query_utente);
+    
    
-
-    //echo $risultato[2]['email'];
-
-
    $righe = ''; // creo righe della tabella utenti
    foreach($risultato as $value) { //per ogni riga della query 
         $rigaUtente = file_get_contents("../componenti/utente_tab.html"); //prendo la struttura della riga nel file 
+        $segnalazioni=trovaSegnalazioni($value['ID'],$connessione);
         //mappo i dati della riga con i relativi campi
         $rigaUtente=str_replace("%idUtente%",$value['ID'],$rigaUtente);
         $rigaUtente=str_replace("%username%",$value['username'],$rigaUtente);
         $rigaUtente=str_replace("%stato%",$value['stato'],$rigaUtente);
         $rigaUtente=str_replace("%email%",$value['email'],$rigaUtente);
+        $rigaUtente=str_replace("%nSegnalazioni%",$segnalazioni,$rigaUtente);
 
         //aggiungo la righa alle righe della tabella
         $righe .= $rigaUtente;

@@ -141,15 +141,6 @@
                     $cardAttuale=new CardClassificata($valore,$posizione);
                     $listaCards=$listaCards.$cardAttuale->aggiungiBaseClassificata();
                     $posizione++;
-                    
-                    if($i==6){
-                        $stringaCard=str_replace('%nascosto%',"nascosto",$stringaCard);
-                    }
-                    if($i==7){
-                        $stringaCard=str_replace('%nascosto%',"nascosto2",$stringaCard);
-                    }
-                    $i++;
-                    $listaCards=$listaCards.$stringaCard;
                 }
             }
             return $listaCards;

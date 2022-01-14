@@ -7,10 +7,6 @@
     require_once ('card.php');
     require_once ('info_film.php');
     
-    $limite=20;
-    if(isset($_GET['limite'])){
-        $limite=$_GET['limite']+20;
-    }
     $pagina=file_get_contents("../html/raccolta_personale.html");
     $struttura=new Struttura();
     $struttura->aggiungiHeader($pagina);
@@ -22,7 +18,7 @@
     if($_SESSION['loggato']==true){
         $raccoltaCardNoleggi="";
         $raccoltaCardAcquisti="";
-    recuperaRaccoltaPersonale($limite,$raccoltaCardNoleggi,$raccoltaCardAcquisti);
+    recuperaRaccoltaPersonale($raccoltaCardNoleggi,$raccoltaCardAcquisti);
     if($raccoltaCardNoleggi || $raccoltaCardAcquisti)
         $pagina=str_replace('%raccolta%',$raccoltaCardNoleggi.$raccoltaCardAcquisti,$pagina);
     else

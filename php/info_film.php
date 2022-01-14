@@ -52,12 +52,13 @@
         if(!$listaCard)
             return false;
         else{
+            $pulsanteVediAltro=file_get_contents('../componenti/vediAltro.html');
             $categoriaCard=file_get_contents('../componenti/categoria_index.html');
             $categoriaCard=str_replace('%listaCard%',$listaCard,$categoriaCard);
             $categoriaCard=str_replace('%spazio%',"",$categoriaCard);
             $categoriaCard=str_replace('%categoria%',"Nuove uscite",$categoriaCard);
             $categoriaCard=str_replace('%nomeSubmit%',"vediNuoveUscite",$categoriaCard);
-            $categoriaCard=str_replace('%limite%',$limite,$categoriaCard);
+            $categoriaCard=str_replace('%vediAltro%',$pulsanteVediAltro,$categoriaCard);
             $categoriaCard=str_replace('%collegamento%',"search_result.php",$categoriaCard);
             return $categoriaCard;
         }
@@ -87,12 +88,13 @@
         if(!$listaCard)
             return false;
         else{
+            $pulsanteVediAltro=file_get_contents('../componenti/vediAltro.html');
             $categoriaCard=file_get_contents('../componenti/categoria_index.html');
             $categoriaCard=str_replace('%listaCard%',$listaCard,$categoriaCard);
             $categoriaCard=str_replace('%spazio%',"<hr>",$categoriaCard);
             $categoriaCard=str_replace('%categoria%',"Scelti per te",$categoriaCard);
             $categoriaCard=str_replace('%nomeSubmit%',"vediSceltiPerTe",$categoriaCard);
-            $categoriaCard=str_replace('%limite%',$limite,$categoriaCard);
+            $categoriaCard=str_replace('%vediAltro%',$pulsanteVediAltro,$categoriaCard);
             $categoriaCard=str_replace('%collegamento%',"search_result.php",$categoriaCard);
             return $categoriaCard;
         }
@@ -111,17 +113,18 @@
         if(!$listaCard)
             return false;
         else{
+            $pulsanteVediAltro=file_get_contents('../componenti/vediAltro.html');
             $categoriaCard=file_get_contents('../componenti/categoria_index.html');
             $categoriaCard=str_replace('%listaCard%',$listaCard,$categoriaCard);
             $categoriaCard=str_replace('%spazio%',"<hr>",$categoriaCard);
             $categoriaCard=str_replace('%categoria%',"Azione",$categoriaCard);
             $categoriaCard=str_replace('%nomeSubmit%',"vediAzione",$categoriaCard);
-            $categoriaCard=str_replace('%limite%',$limite,$categoriaCard);
+            $categoriaCard=str_replace('%vediAltro%',$pulsanteVediAltro,$categoriaCard);
             $categoriaCard=str_replace('%collegamento%',"search_result.php",$categoriaCard);
             return $categoriaCard;
         }
     }
-    function recuperaRaccoltaPersonale($limite,&$raccoltaCardNoleggi,&$raccoltaCardAcquisti){
+    function recuperaRaccoltaPersonale(&$raccoltaCardNoleggi,&$raccoltaCardAcquisti){
         //acquisti dell'utente
         $queryCardAcquisti="SELECT film.ID as id,titolo,nome_genere as genere,copertina,TIME_TO_SEC(durata) as durata,
         path as copertina,descrizione FROM film JOIN appartenenza 
@@ -145,8 +148,7 @@
             $raccoltaCardNoleggi=str_replace('%nomeSubmit%',"",$raccoltaCardNoleggi);
             $raccoltaCardNoleggi=str_replace('%prezzo%',"",$raccoltaCardNoleggi);
             $raccoltaCardNoleggi=str_replace('%valutazione%',"",$raccoltaCardNoleggi);
-            $raccoltaCardNoleggi=str_replace('%limite%',$limite,$raccoltaCardNoleggi);
-            $raccoltaCardNoleggi=str_replace('%collegamento%',"raccolta_personale.php",$raccoltaCardNoleggi);
+            $raccoltaCardNoleggi=str_replace('%vediAltro%',"",$raccoltaCardNoleggi);
         }
         if($listaAcquisti){
             $raccoltaCardAcquisti=file_get_contents('../componenti/categoria_index.html');
@@ -156,10 +158,35 @@
             $raccoltaCardAcquisti=str_replace('%nomeSubmit%',"",$raccoltaCardAcquisti);
             $raccoltaCardAcquisti=str_replace('%prezzo%',"",$raccoltaCardAcquisti);
             $raccoltaCardAcquisti=str_replace('%valutazione%',"",$raccoltaCardAcquisti);
-            $raccoltaCardAcquisti=str_replace('%limite%',$limite,$raccoltaCardAcquisti);
-            $raccoltaCardAcquisti=str_replace('%collegamento%',"raccolta_personale.php",$raccoltaCardAcquisti);
+            $raccoltaCardAcquisti=str_replace('%vediAltro%',"",$raccoltaCardAcquisti);
         }
             
+        }
+        //restituisce i nuovi film con le valutazioni piú alte (non é esattamente un top 5 settimana)
+        //per essere un TOP5sett devono venire inseriti almeno 5 film ogni settimana
+        function recuperaTop5Sett(){
+            $queryCard="SELECT film.ID as id,titolo,nome_genere as genere,copertina,trama,TIME_TO_SEC(durata) as durata,data_uscita as annoUscita,prezzo_acquisto as prezzoA,prezzo_noleggio as prezzoN,
+        path as copertina,descrizione,AVG(valutazione) as valutazione FROM film JOIN appartenenza 
+        ON(film.ID=appartenenza.ID_film) JOIN genere ON (appartenenza.ID_genere=genere.ID) JOIN foto_film ON(film.copertina=foto_film.ID) LEFT JOIN recensione ON (film.ID=recensione.ID_film) GROUP BY film.ID ORDER BY valutazione DESC,annoUscita DESC LIMIT 5";
+        $connessione=new Connessione();
+        $connessione->apriConnessione();
+        $ris=$connessione->interrogaDB($queryCard);
+        $connessione->chiudiConnessione();
+
+        $listaCard=creaListaCardClassificata($ris);
+        if(!$listaCard)
+            return false;
+        else{
+            
+            $categoriaCard=file_get_contents('../componenti/categoria_index.html');
+            $categoriaCard=str_replace('%listaCard%',$listaCard,$categoriaCard);
+            $categoriaCard=str_replace('%spazio%',"",$categoriaCard);
+            $categoriaCard=str_replace('%categoria%',"Top 5 della settimana",$categoriaCard);
+            
+            $categoriaCard=str_replace('%vediAltro%',"",$categoriaCard);
+            
+            return $categoriaCard;
+        }
         }
 ?>
 

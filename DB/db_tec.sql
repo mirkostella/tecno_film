@@ -79,7 +79,11 @@ FOREIGN KEY (`ID_utente`) REFERENCES `utente`(`ID`) ON DELETE CASCADE ON UPDATE 
 FOREIGN KEY (`ID_segnalante`) REFERENCES `utente`(`ID`) ON DELETE CASCADE ON UPDATE CASCADE 
 )ENGINE = InnoDB;
 
-INSERT INTO `segnalazione_foto_utente`(`ID_utente`,`ID_segnalante`) VALUES (1,2);
+INSERT INTO `segnalazione_foto_utente`(`ID_utente`,`ID_segnalante`)VALUES 
+(1,2),
+(1,3),
+(1,4)
+;
 
 CREATE TABLE `utente` (
 `ID` INT(10) PRIMARY KEY AUTO_INCREMENT,
@@ -90,6 +94,7 @@ CREATE TABLE `utente` (
 `cognome` varchar(32) NOT NULL,
 `data_nascita` date NOT NULL,
 `sesso` enum('M','F') NOT NULL,
+`stato` enum('Attivo','Avvisato','Bloccato') NOT NULL,
 `ID_foto` INT(10) NOT NULL,
 FOREIGN KEY (`ID_foto`) REFERENCES `foto_utente`(`ID`) ON DELETE CASCADE ON UPDATE CASCADE
 )ENGINE = InnoDB;
@@ -195,8 +200,6 @@ CREATE TABLE `recensione`(
 `testo` text NOT NULL,
 `data` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
 `valutazione` enum('1','2','3','4','5') NOT NULL,
-`segnalazioni` INT(3) DEFAULT 0,
-`like` INT(3) DEFAULT 0,
 FOREIGN KEY (`ID_film`) REFERENCES `film`(`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
 FOREIGN KEY (`ID_utente`) REFERENCES `utente`(`ID`) ON DELETE CASCADE ON UPDATE CASCADE
 )ENGINE = InnoDB;
