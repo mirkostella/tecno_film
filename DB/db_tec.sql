@@ -1,12 +1,11 @@
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
-START TRANSACTION;
 SET @@session.time_zone = "+01:00";
+START TRANSACTION;
 
 SET FOREIGN_KEY_CHECKS=0;
+DROP VIEW IF EXISTS filmvalutazionegenere;
 DROP TABLE IF EXISTS admin;
-DROP TABLE IF EXISTS recitazione;
-DROP TABLE IF EXISTS regia;
 DROP TABLE IF EXISTS acquisto;
 DROP TABLE IF EXISTS noleggio;
 DROP TABLE IF EXISTS appartenenza;
@@ -14,7 +13,6 @@ DROP TABLE IF EXISTS recensione;
 DROP TABLE IF EXISTS genere;
 DROP TABLE IF EXISTS film;
 DROP TABLE IF EXISTS utente;
-DROP TABLE IF EXISTS cast;
 DROP TABLE IF EXISTS segnalazione;
 DROP TABLE IF EXISTS utile;
 DROP TABLE IF EXISTS foto_film;
@@ -107,37 +105,6 @@ INSERT INTO `utente` (`username`,`password`,`email`,`nome`,`cognome`,`data_nasci
 ('mirkos','mgm','shfk@jdkj','mirko','stella','2013-11-03','M',1),
 ('mirkos','mgm','shfk@jdkj','mirko','stella','2013-11-03','M',1),
 ('mirkos','mgm','shfk@jdkj','mirko','stella','2013-11-03','M',1);
-
-CREATE TABLE `cast` (
-`ID` int(10) PRIMARY KEY AUTO_INCREMENT,
-`nome` varchar(32) NOT NULL,
-`cognome` varchar(32) NOT NULL
-)ENGINE = InnoDB;
-
-INSERT INTO `cast` (`nome`,`cognome`) VALUES 
-('Brad','Pitt');
-
-CREATE TABLE `recitazione`(
-`ID_film` int(10),
-`ID_cast` int(10),
-PRIMARY KEY (`ID_film`,`ID_cast`),
-FOREIGN KEY (`ID_film`) REFERENCES `film`(`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
-FOREIGN KEY (`ID_cast`) REFERENCES `cast`(`ID`) ON DELETE CASCADE ON UPDATE CASCADE
-)ENGINE = InnoDB;
-
-INSERT INTO `recitazione` (`ID_film`,`ID_cast`) VALUES 
-(1,1);
-
-CREATE TABLE `regia`(
-`ID_film` int(10),
-`ID_cast` int(10),
-PRIMARY KEY (`ID_film`,`ID_cast`),
-FOREIGN KEY (`ID_film`) REFERENCES `film`(`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
-FOREIGN KEY (`ID_cast`) REFERENCES `cast`(`ID`) ON DELETE CASCADE ON UPDATE CASCADE
-)ENGINE = InnoDB;
-
-INSERT INTO `regia`(`ID_film`,`ID_cast`) VALUES 
-(1,1);
 
 CREATE TABLE `acquisto`(
 `ID_film` int(10),
@@ -244,6 +211,10 @@ PRIMARY KEY (`ID_utente`,`ID_recensione`),
 FOREIGN KEY (`ID_utente`) REFERENCES `utente`(`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
 FOREIGN KEY (`ID_recensione`) REFERENCES `recensione`(`ID`) ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+CREATE VIEW `filmvalutazionegenere`  AS 
+SELECT `film`.`ID` AS `idFilm`, `genere`.`nome_genere` AS `nome_genere`, avg(`recensione`.`valutazione`) AS `voto`, `film`.`data_uscita` AS `data_uscita` FROM (((`film` join `appartenenza` on(`appartenenza`.`ID_film` = `film`.`ID`)) join `genere` on(`appartenenza`.`ID_genere` = `genere`.`ID`)) left join `recensione` on(`film`.`ID` = `recensione`.`ID_film`)) GROUP BY `film`.`ID` ORDER BY `film`.`data_uscita` DESC ;
+
 
 SET FOREIGN_KEY_CHECKS=1;
 COMMIT;

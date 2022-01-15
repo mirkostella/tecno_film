@@ -35,7 +35,8 @@
     
     ////////I 10 FILM PIU VOTATI//////////
 
-
+    $listaCards=recuperaMiglioriPerGenere();
+    $pagina=str_replace('%listaCardMiglioriGenere%',$listaCards,$pagina);
     
     
     
