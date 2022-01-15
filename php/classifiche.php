@@ -20,9 +20,7 @@
     $struttura->aggiungiMenu($pagina,$inAttivo,$attivo);
 
     $connessione=new Connessione();
-    if(!$connessione->apriConnessione()){
-        echo "errore di connessione al db";
-    }
+    $connessione->apriConnessione();
 
     ////////TOP 5 DELLA SETTIMANA//////////
     
@@ -31,16 +29,18 @@
 
     ////////I 10 FILM PIU VISTI (con il maggior numero di acquisti e noleggi)//////////
 
-    
+    $listaCards=recuperaPiuVisti();
+    $pagina=str_replace('%listaCardVisti%',$listaCards,$pagina);
 
+    
     ////////I 10 FILM PIU VOTATI//////////
+
 
     
     
     
     
     $connessione->chiudiConnessione();
-
     echo $pagina;
 
 

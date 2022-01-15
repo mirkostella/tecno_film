@@ -113,17 +113,11 @@
         $listaCards="";
         if($risultatoQuery){
             //ordino le card in base alla valutazione
-            $i=1;
+            
             foreach($risultatoQuery as $valore){
                 $cardAttuale=new Card($valore);
                 $stringaCard=$cardAttuale->aggiungiBase();
-                if($i==6){
-                    $stringaCard=str_replace('%nascosto%',"nascosto",$stringaCard);
-                }
-                if($i==7){
-                    $stringaCard=str_replace('%nascosto%',"nascosto2",$stringaCard);
-                }
-                $i++;
+                
                 $listaCards=$listaCards.$stringaCard;
             }
         }

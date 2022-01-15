@@ -16,17 +16,49 @@
     $attivo="<li id=\"attivo\">I miei film</li>";
     $struttura->aggiungiMenu($pagina,$inAttivo,$attivo);
     if($_SESSION['loggato']==true){
+        
         $raccoltaCardNoleggi="";
         $raccoltaCardAcquisti="";
-    recuperaRaccoltaPersonale($raccoltaCardNoleggi,$raccoltaCardAcquisti);
-    if($raccoltaCardNoleggi || $raccoltaCardAcquisti)
-        $pagina=str_replace('%raccolta%',$raccoltaCardNoleggi.$raccoltaCardAcquisti,$pagina);
-    else
-        $pagina=str_replace('%raccolta%',"<h1>Non sono ancora presenti film nella tua raccolta</h1>",$pagina);
+        recuperaRaccoltaPersonale($raccoltaCardNoleggi,$raccoltaCardAcquisti);
+        if(!$raccoltaCardAcquisti && !$raccoltaCardNoleggi){
+            $pagina=str_replace('%titoloNoleggi%',"",$pagina);
+            $pagina=str_replace('%titoloAcquisti%',"",$pagina);
+            $pagina=str_replace('%raccoltaNoleggi%',"",$pagina);
+            $pagina=str_replace('%linkNoleggi%',"",$pagina);
+            $pagina=str_replace('%linkAcquisti%',"",$pagina);
+            $pagina=str_replace('%raccoltaAcquisti%',"<h1>La tua raccolta personale é vuota</h1>",$pagina);
+        }
+        if($raccoltaCardNoleggi){
+            $pagina=str_replace('%linkNoleggi%',"<li><a href=\"#tuoiNoleggi\">Noleggi</a></li>",$pagina);
+            $pagina=str_replace('%raccoltaNoleggi%',$raccoltaCardNoleggi,$pagina);
+            $pagina=str_replace('%titoloNoleggi%',"<h1 id=\"tuoiNoleggi\">I tuoi noleggi</h1>",$pagina);
+            
+        }
+    else{
+        $pagina=str_replace('%linkNoleggi%',"",$pagina);
+        $pagina=str_replace('%titoloNoleggi%',"<h1>Non sono presenti noleggi</h1>",$pagina);
+        $pagina=str_replace('%raccoltaNoleggi%',"",$pagina);
 
     }
-    else
-        $pagina=str_replace('%raccolta%',"<h1>Effettua l'accesso per vedere la tua raccolta personale</h1>",$pagina);
+    if($raccoltaCardAcquisti){
+        $pagina=str_replace('%linkAcquisti%',"<li><a href=\"#tuoiAcquisti\">Acquisti</a></li>",$pagina);
+        $pagina=str_replace('%titoloAcquisti%',"<h1 id=\"tuoiAcquisti\">I tuoi acquisti</h1>",$pagina);
+        $pagina=str_replace('%raccoltaAcquisti%',$raccoltaCardAcquisti,$pagina);
+    }
+    else{
+        $pagina=str_replace('%linkAcquisti%',"",$pagina);
+        $pagina=str_replace('%titoloAcquisti%',"<h1>Non sono presenti acquisti</h1>",$pagina);
+        $pagina=str_replace('%raccoltaAcquisti%',"",$pagina);
+    }
+    }
+   else{
+        $pagina=str_replace('%titoloAcquisti%',"",$pagina);
+        $pagina=str_replace('%titoloNoleggi%',"",$pagina);
+       $pagina=str_replace('%raccoltaNoleggi%',"<h1>Effettua l'accesso per vedere la tua raccolta personale</h1>",$pagina);
+       $pagina=str_replace('%raccoltaAcquisti%',"",$pagina);
+       $pagina=str_replace('%linkNoleggi%',"",$pagina);
+       $pagina=str_replace('%linkAcquisti%',"",$pagina);
+   }
     
     
     

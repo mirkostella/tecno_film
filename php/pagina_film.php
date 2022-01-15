@@ -16,9 +16,6 @@
     else
         $idFilm=$_GET['idFilm'];
     
-    date_default_timezone_set("Europe/Rome");
-    $data=date("d/m/Y H:m:s");
-    
     echo "pagina_film";
     echo "</br>";
     echo '$_SESSION:   ';
@@ -31,6 +28,7 @@
     print_r($_POST);
     echo "</br>";
     
+    
     $pagina=file_get_contents('../html/pagina_film.html');
     $struttura=new Struttura();
     $struttura->aggiungiAcquistoNoleggio($pagina);
@@ -38,12 +36,6 @@
     $provaInserisci=false;
     $erroreTesto="";
     $erroreValutazione="";
-
-    //acquisto
-    if(isset($_GET['acquisto'])){}
-
-    //noleggio
-    if(isset($_GET['noleggio'])){}
 
     //se sono arrivato alla pagina eliminando una recensione
     if(isset($_GET['eliminaRecensione'])){
@@ -190,13 +182,14 @@
             $struttura->aggiungiFiltro($pagina,$selezionato,$inSelezionato,$focus);
             //lista con tutte le recensioni relative al film 
             foreach($recensioniUtenti as $key=>$valore){
+                $data=date_create($valore['data']);
                 $datiRecensione=array(
                     'id'=>$valore['idRecensione'],
                     'idFilm'=>$valore['ID_film'],
                     'idUtente'=>$valore['ID_utente'],
                     'profilo'=>$valore['path'],
                 'username'=>$valore['username'],
-                'data'=>$valore['data'],
+                'data'=>date_format($data, 'd-m-Y H:i:s'),
                 'testo'=>$valore['testo'],
                 'valutazione'=>$valore['valutazione']
             );

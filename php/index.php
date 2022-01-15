@@ -16,20 +16,31 @@
     $attivo="<li xml:lang=\"en\" lang=\"en\" id=\"attivo\">Home</li>";
     $struttura->aggiungiMenu($pagina,$inAttivo,$attivo);
     
-    $risultatoCard=recuperaNuoveUscite(6);
+    $risultatoCard=recuperaNuoveUscite(5);
     if($risultatoCard)
         $pagina=str_replace('%nuoveUscite%',$risultatoCard,$pagina);
     else
         $pagina=str_replace('%nuoveUscite%',"",$pagina);
     
-    $risultatoCard=recuperaSceltiPerTe(6);
-    if($risultatoCard)
-        $pagina=str_replace('%sceltiPerTe%',$risultatoCard,$pagina);
-    else
+    if(isset($_SESSION['loggato']) && $_SESSION['loggato']==true){
+        $risultatoCard=recuperaSceltiPerTe(5);
+        if($risultatoCard){
+            $pagina=str_replace('%linkSceltiPerTe%',"<li><a href=\"#scelti\">Scelti per te</a></li>",$pagina);
+            $pagina=str_replace('%sceltiPerTe%',$risultatoCard,$pagina);
+        }
+        else{
+            $pagina=str_replace('%sceltiPerTe%',"",$pagina);
+            $pagina=str_replace('%linkSceltiPerTe%',"",$pagina);
+        }
+
+    }
+    else{
         $pagina=str_replace('%sceltiPerTe%',"",$pagina);
+        $pagina=str_replace('%linkSceltiPerTe%',"",$pagina);
+    }
     
     
-    $risultatoCard=recuperaAzione(6);
+    $risultatoCard=recuperaAzione(5);
     if($risultatoCard)
         $pagina=str_replace('%azione%',$risultatoCard,$pagina);
     else

@@ -807,6 +807,6 @@ summary{display: none;}
     }
     .nascosto2{display: none;}
     .centrale{width: 40%;}
-    #menuProposte li{display: block;}
+    #menuProposte li{display: block;margin-bottom: 1em;}
     .valutaCommento{text-align:center;}
 }

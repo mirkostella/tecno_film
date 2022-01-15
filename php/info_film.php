@@ -79,7 +79,7 @@
         (SELECT data_noleggio as data_transizione,ID_genere,film.ID as film FROM utente JOIN noleggio ON (noleggio.ID_utente=utente.ID) JOIN film ON(film.ID=noleggio.ID_film) JOIN
         appartenenza ON(appartenenza.ID_film=film.ID) WHERE utente.ID=".$_SESSION['id']." UNION SELECT data_acquisto as data_transizione,ID_genere,film.ID as film FROM utente JOIN 
         acquisto ON (acquisto.ID_utente=utente.ID) JOIN film ON(film.ID=acquisto.ID_film) JOIN appartenenza ON(appartenenza.ID_film=film.ID) WHERE utente.ID=".$_SESSION['id'].")ultime_transizioni)) 
-        GROUP BY film.ID ORDER BY valutazione,annoUscita DESC LIMIT 6";
+        GROUP BY film.ID ORDER BY valutazione,annoUscita DESC LIMIT $limite";
         $connessione=new Connessione();
         $connessione->apriConnessione();
         $ris=$connessione->interrogaDB($queryCard);
@@ -181,12 +181,39 @@
             $categoriaCard=file_get_contents('../componenti/categoria_index.html');
             $categoriaCard=str_replace('%listaCard%',$listaCard,$categoriaCard);
             $categoriaCard=str_replace('%spazio%',"",$categoriaCard);
-            $categoriaCard=str_replace('%categoria%',"Top 5 della settimana",$categoriaCard);
+            $categoriaCard=str_replace('%categoria%',"<h2 id=\"top\">Top 5 della settimana</h2>",$categoriaCard);
             
             $categoriaCard=str_replace('%vediAltro%',"",$categoriaCard);
             
             return $categoriaCard;
         }
+        }
+        function recuperaPiuVisti(){
+            $queryCard="SELECT idfilm,data_uscita,SUM(somma) as risultato from (SELECT acquisto.ID_film as idfilm,count(*) as somma from acquisto GROUP BY idfilm UNION ALL SELECT noleggio.ID_film as idfilm,count(*) as somma from noleggio GROUP BY idfilm) as tot JOIN film ON (tot.idfilm=film.ID) GROUP BY idfilm ORDER BY data_uscita DESC,risultato DESC LIMIT 10";
+            $connessione=new Connessione();
+            $connessione->apriConnessione();
+            $ris=$connessione->interrogaDB($queryCard);
+            $connessione->chiudiConnessione();
+            //creo l'array con le info dei film in base agli id dei 10 restituiti dalla query precedente
+            $filmPiuVisti=array();
+            foreach($ris as $valore){
+            array_push($filmPiuVisti,recuperaInfo($valore['idfilm']));
+            }
+    
+            $listaCard=creaListaCardClassificata($filmPiuVisti);
+            if(!$listaCard)
+                return false;
+            else{
+                $categoriaCard=file_get_contents('../componenti/categoria_index.html');
+            $categoriaCard=str_replace('%listaCard%',$listaCard,$categoriaCard);
+            $categoriaCard=str_replace('%spazio%',"",$categoriaCard);
+            $categoriaCard=str_replace('%categoria%',"<h2 id=\"visti\">Top 10 piú visti</h2>",$categoriaCard);
+            
+            $categoriaCard=str_replace('%vediAltro%',"",$categoriaCard);
+            
+            return $categoriaCard;
+            }
+    
         }
 ?>
 
