@@ -56,7 +56,7 @@
             $categoriaCard=file_get_contents('../componenti/categoria_index.html');
             $categoriaCard=str_replace('%listaCard%',$listaCard,$categoriaCard);
             $categoriaCard=str_replace('%spazio%',"",$categoriaCard);
-            $categoriaCard=str_replace('%categoria%',"Nuove uscite",$categoriaCard);
+            $categoriaCard=str_replace('%categoria%',"<h2 id=\"nuove\">Nuove uscite</h2>",$categoriaCard);
             $categoriaCard=str_replace('%nomeSubmit%',"vediNuoveUscite",$categoriaCard);
             $categoriaCard=str_replace('%vediAltro%',$pulsanteVediAltro,$categoriaCard);
             $categoriaCard=str_replace('%collegamento%',"search_result.php",$categoriaCard);
@@ -92,7 +92,7 @@
             $categoriaCard=file_get_contents('../componenti/categoria_index.html');
             $categoriaCard=str_replace('%listaCard%',$listaCard,$categoriaCard);
             $categoriaCard=str_replace('%spazio%',"<hr>",$categoriaCard);
-            $categoriaCard=str_replace('%categoria%',"Scelti per te",$categoriaCard);
+            $categoriaCard=str_replace('%categoria%',"<h2 id=\"scelti\">Scelti per te</h2>",$categoriaCard);
             $categoriaCard=str_replace('%nomeSubmit%',"vediSceltiPerTe",$categoriaCard);
             $categoriaCard=str_replace('%vediAltro%',$pulsanteVediAltro,$categoriaCard);
             $categoriaCard=str_replace('%collegamento%',"search_result.php",$categoriaCard);
@@ -117,7 +117,7 @@
             $categoriaCard=file_get_contents('../componenti/categoria_index.html');
             $categoriaCard=str_replace('%listaCard%',$listaCard,$categoriaCard);
             $categoriaCard=str_replace('%spazio%',"<hr>",$categoriaCard);
-            $categoriaCard=str_replace('%categoria%',"Azione",$categoriaCard);
+            $categoriaCard=str_replace('%categoria%',"<h2 id=\"azione\">Azione</h2>",$categoriaCard);
             $categoriaCard=str_replace('%nomeSubmit%',"vediAzione",$categoriaCard);
             $categoriaCard=str_replace('%vediAltro%',$pulsanteVediAltro,$categoriaCard);
             $categoriaCard=str_replace('%collegamento%',"search_result.php",$categoriaCard);
@@ -222,19 +222,15 @@
             $connessione=new Connessione();
             $connessione->apriConnessione();
             $arrayGeneri=$connessione->interrogaDB($queryGeneri);
-            
             $generiScelti=array();
             if($arrayGeneri){
                 shuffle($arrayGeneri);
-                
                 for($i=count($arrayGeneri);$i>0;$i--){
                     $genere=array_pop($arrayGeneri);
-                    
                     //seleziona i film piú recenti con il voto piú alto per genere
-                    $querySingoloGenere="SELECT idFilm FROM filmvalutazionegenere WHERE nome_genere='".$genere['nome_genere']."' AND voto>=ALL(SELECT voto FROM filmvalutazionegenere WHERE nome_genere='".$genere['nome_genere']."') ORDER BY data_uscita";
+                    $querySingoloGenere="SELECT idFilm FROM filmvalutazionegenere WHERE nome_genere='".$genere['nome_genere']."' AND voto IS NOT NULL AND voto>=ALL(SELECT voto FROM filmvalutazionegenere WHERE nome_genere='".$genere['nome_genere']." AND voto IS NOT NULL') ORDER BY data_uscita DESC";
                     $film=$connessione->interrogaDB($querySingoloGenere);
                     if($film){
-                        print_r($film);
                         array_push($generiScelti,$film[0]['idFilm']);
                     }
                 }
@@ -247,9 +243,7 @@
             while($filmTrovati){
                 array_push($listaCardGeneri,recuperaInfo(array_pop($generiScelti)[0]));
                 $filmTrovati--;
-
             }
-            
             $listaCard=creaListaCardClassificata($listaCardGeneri);
             if(!$listaCard)
                 return false;
