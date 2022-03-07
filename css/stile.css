@@ -89,6 +89,9 @@ ul li{
     display: inline-block;
 }
 fieldset{text-align: center;}
+.esitoPositivo{
+    color: green;
+}
 /* intestazione */
 header{
     width: 100%;
@@ -218,6 +221,17 @@ header{
     padding: 1em 0;
 }
 /* ------------------------- contenuto ------------------------- */
+#contenutoFull{
+    width: 100%;
+    background-color: white;
+    border: 2px solid var(--colore-bordo-header); 
+}
+#imgEsito{
+    width: 50%;
+    display: block;
+    border-radius: 100%;
+    margin:auto;
+}
 #contenuto{
     width: 80%;
     background-color: white;
@@ -225,6 +239,7 @@ header{
     border: 2px solid var(--colore-bordo-header);  
     position:relative;
 }
+
 /* ------------------------- cards categoria ------------------------- */
 .tipoProposta{
     display: flex;
@@ -726,7 +741,6 @@ summary{display: none;}
         width: 60%;
         padding-right:1em;
     }
-    .prezzo{display: none;}
     .genere{
         font-size: 1.1em;
         margin-bottom:0.5em;
@@ -744,6 +758,13 @@ summary{display: none;}
         margin-right: 0.3em;
     }
     .nascosto{display: none;}
+    .valutazionePrezzo{
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .prezzo{
+        margin-top:1em;
+    }
 }
 /* proprietá che riguardano solo la pagina film */
 @media screen and (max-width: 35em) {
@@ -786,6 +807,6 @@ summary{display: none;}
     }
     .nascosto2{display: none;}
     .centrale{width: 40%;}
-    #menuProposte li{display: block;}
+    #menuProposte li{display: block;margin-bottom: 1em;}
     .valutaCommento{text-align:center;}
 }

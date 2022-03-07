@@ -1,0 +1,11 @@
+<form action="pagina_film.php" id="filtroRecensioni" method="get">
+    <input type="hidden" name="idFilm" value="%idFilm%">
+    <label for="ordine">Ordina per:</label>
+    <select name="ordine" id="ordine" %focus%>
+        <option value="recenti">Piú recenti</option>
+        <option value="piaciuti">Piú piaciuti</option>
+        <option value="mRecenti">Meno recenti</option>
+        <option value="mPiaciuti">Meno piaciuti</option>
+    </select> 
+    <input type="submit" value="Applica" class="btn btnAzione" name="applica">
+</form>
