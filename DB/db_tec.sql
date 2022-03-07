@@ -19,40 +19,15 @@ DROP TABLE IF EXISTS foto_film;
 DROP TABLE IF EXISTS foto_utente;
 DROP TABLE IF EXISTS segnalazione_foto_utente;
 
-CREATE TABLE `foto_film` (
-`ID` int(10) PRIMARY KEY AUTO_INCREMENT,
-`path` text NOT NULL,
-`descrizione` text
-)ENGINE = InnoDB;
+CREATE TABLE `admin`(
+  `ID` int(11) NOT NULL,
+  `email` varchar(64) NOT NULL,
+  `password` varchar(32) NOT NULL,
+  PRIMARY KEY(`ID`)
+);
 
-INSERT INTO `foto_film` (`path`,`descrizione`) VALUES 
-('../img/img_film/venom.jpg','Venom é un film molto bello'),
-('../img/img_film/shang_chi.jpg','Venom é un film molto bello'),
-('../img/img_film/raging_fire.jpg','Venom é un film molto bello'),
-('../img/img_film/boss_baby.jpg','Venom é un film molto bello'),
-('../img/img_film/no_time_to_die.jpg','Venom é un film molto bello'),
-('../img/img_film/ciao.jpg','Venom é un film molto bello')
-;
-
-CREATE TABLE `film` (
-`ID` INT(10) PRIMARY KEY AUTO_INCREMENT,
-`titolo` varchar(64) NOT NULL,
-`copertina` int(10) NOT NULL,
-`trama` text NOT NULL,
-`durata` time NOT NULL,
-`data_uscita` date NOT NULL,
-`prezzo_acquisto` decimal(5,2) NOT NULL,
-`prezzo_noleggio` decimal(5,2) NOT NULL,
-FOREIGN KEY (`copertina`) REFERENCES `foto_film`(`ID`) ON DELETE CASCADE ON UPDATE CASCADE
-)ENGINE = InnoDB;
-
-INSERT INTO `film` (`titolo`,`copertina`,`trama`,`durata`,`data_uscita`,`prezzo_acquisto`,`prezzo_noleggio`) VALUES 
-('Venom',1,'sono la trama','00:10:00','2018-12-13',12.99,3.99),
-('shang_chi',2,'sono la trama','00:10:00','2018-12-18',12.99,3.99),
-('raging fire',3,'sono la trama','00:10:00','2018-12-20',12.99,3.99),
-('baby boss',4,'sono la trama','00:10:00','2018-12-13',12.99,3.99),
-('no time to die',5,'sono la trama','00:10:00','2018-12-17',12.99,3.99),
-('guerre stellari',6,'sono la trama','00:10:00','2018-12-11',12.99,3.99);
+INSERT INTO `admin` (`ID`, `email`, `password`) VALUES
+(1, 'admin@tecnofilm.com', '1AdminOnly');
 
 CREATE TABLE `foto_utente`(
 `ID` INT(10) PRIMARY KEY AUTO_INCREMENT,
@@ -68,20 +43,6 @@ INSERT INTO `foto_utente`(`path`,`descrizione`) VALUES ('../img/img_componenti/p
 ('../img/img_componenti/profilo.jpg','immagine dell utente'),
 ('../img/img_componenti/profilo.jpg','immagine dell utente'),
 ('../img/img_componenti/profilo.jpg','immagine dell utente');
-
-CREATE TABLE `segnalazione_foto_utente`(
-`ID_utente` INT(10),
-`ID_segnalante` INT(10),
-PRIMARY KEY (`ID_utente`,`ID_segnalante`),
-FOREIGN KEY (`ID_utente`) REFERENCES `utente`(`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
-FOREIGN KEY (`ID_segnalante`) REFERENCES `utente`(`ID`) ON DELETE CASCADE ON UPDATE CASCADE 
-)ENGINE = InnoDB;
-
-INSERT INTO `segnalazione_foto_utente`(`ID_utente`,`ID_segnalante`)VALUES 
-(1,2),
-(1,3),
-(1,4)
-;
 
 CREATE TABLE `utente` (
 `ID` INT(10) PRIMARY KEY AUTO_INCREMENT,
@@ -106,6 +67,53 @@ INSERT INTO `utente` (`username`,`password`,`email`,`nome`,`cognome`,`data_nasci
 ('mirkos','mgm','shfk@jdkj','mirko','stella','2013-11-03','M',1),
 ('mirkos','mgm','shfk@jdkj','mirko','stella','2013-11-03','M',1);
 
+CREATE TABLE `foto_film` (
+`ID` int(10) PRIMARY KEY AUTO_INCREMENT,
+`path` text NOT NULL,
+`descrizione` text
+)ENGINE = InnoDB;
+
+INSERT INTO `foto_film` (`path`,`descrizione`) VALUES 
+('../img/img_film/venom.jpg','Venom é un film molto bello'),
+('../img/img_film/shang_chi.jpg','Venom é un film molto bello'),
+('../img/img_film/raging_fire.jpg','Venom é un film molto bello'),
+('../img/img_film/boss_baby.jpg','Venom é un film molto bello'),
+('../img/img_film/no_time_to_die.jpg','Venom é un film molto bello'),
+('../img/img_film/ciao.jpg','Venom é un film molto bello');
+
+CREATE TABLE `film` (
+`ID` INT(10) PRIMARY KEY AUTO_INCREMENT,
+`titolo` varchar(64) NOT NULL,
+`copertina` int(10) NOT NULL,
+`trama` text NOT NULL,
+`durata` time NOT NULL,
+`data_uscita` date NOT NULL,
+`prezzo_acquisto` decimal(5,2) NOT NULL,
+`prezzo_noleggio` decimal(5,2) NOT NULL,
+FOREIGN KEY (`copertina`) REFERENCES `foto_film`(`ID`) ON DELETE CASCADE ON UPDATE CASCADE
+)ENGINE = InnoDB;
+
+INSERT INTO `film` (`titolo`,`copertina`,`trama`,`durata`,`data_uscita`,`prezzo_acquisto`,`prezzo_noleggio`) VALUES 
+('Venom',1,'sono la trama','00:10:00','2018-12-13',12.99,3.99),
+('shang_chi',2,'sono la trama','00:10:00','2018-12-18',12.99,3.99),
+('raging fire',3,'sono la trama','00:10:00','2018-12-20',12.99,3.99),
+('baby boss',4,'sono la trama','00:10:00','2018-12-13',12.99,3.99),
+('no time to die',5,'sono la trama','00:10:00','2018-12-17',12.99,3.99),
+('guerre stellari',6,'sono la trama','00:10:00','2018-12-11',12.99,3.99);
+
+CREATE TABLE `segnalazione_foto_utente`(
+`ID_utente` INT(10),
+`ID_segnalante` INT(10),
+PRIMARY KEY (`ID_utente`,`ID_segnalante`),
+FOREIGN KEY (`ID_utente`) REFERENCES `utente`(`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+FOREIGN KEY (`ID_segnalante`) REFERENCES `utente`(`ID`) ON DELETE CASCADE ON UPDATE CASCADE 
+)ENGINE = InnoDB;
+
+INSERT INTO `segnalazione_foto_utente`(`ID_utente`,`ID_segnalante`)VALUES 
+(1,2),
+(1,3),
+(1,4);
+
 CREATE TABLE `acquisto`(
 `ID_film` int(10),
 `ID_utente` INT(10),
@@ -117,7 +125,6 @@ FOREIGN KEY (`ID_utente`) REFERENCES `utente`(`ID`) ON DELETE CASCADE ON UPDATE 
 
 INSERT INTO `acquisto` (`ID_film`,`ID_utente`) VALUES 
 (1,1);
-
 
 CREATE TABLE `noleggio`(
 `ID_film` int(10),
@@ -141,8 +148,7 @@ INSERT INTO `genere` (`nome_genere`) VALUES
 ('horror'),
 ('azione'),
 ('romantico'),
-('comico')
-;
+('comico');
 
 CREATE TABLE `appartenenza`(
 `ID_film` INT(10),
@@ -186,16 +192,6 @@ INSERT INTO `recensione` (`ID_film`,`ID_utente`,`testo`,`valutazione`) VALUES
 (6,1,'fafafaw',2)
 ;
 
-CREATE TABLE `admin`(
-  `ID` int(11) NOT NULL,
-  `email` varchar(64) NOT NULL,
-  `password` varchar(32) NOT NULL,
-  PRIMARY KEY(`ID`)
-);
-
-INSERT INTO `admin` (`ID`, `email`, `password`) VALUES
-(1, 'admin@tecnofilm.com', '1AdminOnly');
-
 CREATE TABLE `segnalazione`(
 `ID_utente` INT(10),
 `ID_recensione` INT(10),
@@ -214,7 +210,6 @@ FOREIGN KEY (`ID_recensione`) REFERENCES `recensione`(`ID`) ON DELETE CASCADE ON
 
 CREATE VIEW `filmvalutazionegenere`  AS 
 SELECT `film`.`ID` AS `idFilm`, `genere`.`nome_genere` AS `nome_genere`, avg(`recensione`.`valutazione`) AS `voto`, `film`.`data_uscita` AS `data_uscita` FROM (((`film` join `appartenenza` on(`appartenenza`.`ID_film` = `film`.`ID`)) join `genere` on(`appartenenza`.`ID_genere` = `genere`.`ID`)) left join `recensione` on(`film`.`ID` = `recensione`.`ID_film`)) GROUP BY `film`.`ID` ORDER BY `film`.`data_uscita` DESC ;
-
 
 SET FOREIGN_KEY_CHECKS=1;
 COMMIT;

@@ -45,7 +45,7 @@
             $menu=file_get_contents("../componenti/menu.html");
 
             if($_SESSION['loggato']==false || $_SESSION['admin']==true){
-                $menu=str_replace('<li><a href="../php/raccolta.php">I miei film</a></li>', '', $menu);
+                $menu=str_replace('<li><a href="../php/raccolta_personale.php">I miei film</a></li>', '', $menu);
             }
             
             $menu=str_replace($InAttivo,$attivo,$menu); 
