@@ -12,45 +12,19 @@
 </head>
 <body id="inizioPagina">
     <header>
-        <a href="#contenuto" aria-label="salta al contenuto"></a>
-        <h1 id="logo">Tecno Film</h1>
-        <form action="#" id="ricerca">
-            <input  type="search" list="suggerimenti" id="cercaTitolo" name="cercaTitolo" placeholder="Cerca Film" aria-label="cerca il film per titolo"/>
-            <datalist id="suggerimenti">
-                <option value="fast and furious">
-                <option value="Jack Reacher:punto di non ritorno">
-                <option value="Shang Chi la leggenda dei dieci anelli">
-                <option value="Shooter">
-            </datalist>
-            <input type="submit" name="invioTitolo" value="cerca" id="invioTitolo"/> 
-        </form> 
-        <div id="account">
-            <a href="registrazione.html">Registrati</a>
-            <a href="login.html">Login</a>
-            <a href="#menuPrincipale" id="menuHam">Menu</a>
-        </div>
+        %header%
     </header>
     <nav id="breadcrumb">
-        Ti trovi in: <span xml:lang="en" lang="en" class="grassetto">Home</span>
+        Ti trovi in: <a href = "../php/index.php" xml:lang = "en" lang="en">Home </a> &gt; <span class="grassetto">Regolamento</span>
     </nav>
     <div id="impaginazione">
         <div id="menu-news">
             <nav id="menuPrincipale">
-                <ul>
-                    <li><a xml:lang="en" lang="en" href="index.html">Home</a></li>
-                    <li><a href="">I miei film</a></li>
-                    <li><a href="">Nuove uscite</a></li>
-                    <li><a href="">Generi</a></li>
-                    <li><a href="">Classifiche</a></li>
-                    <li><a href="regolamento.html" id="attivo">Regolamento</a></li>
-                    <li><a href="chi_siamo.html">Chi siamo</a></li>
-                </ul>
+                %menu%
             </nav>
             <aside id="news">
                 <h2 xml:lang="en" lang="en">News</h2>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi ullam temporibus voluptatem! Illo laborum ea incidunt aliquid saepe expedita id maiores eligendi nisi necessitatibus, at dicta ut minus. Dolore, odit?
-                Aperiam numquam esse accusamus corrupti incpti distinctio tempora enim, tempore, tenetur dicta. Fugit totam dolor odit.
-                </p>
+               %novita%
             </aside>
         </div>
         <div id="contenuto">

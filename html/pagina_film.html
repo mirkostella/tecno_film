@@ -89,15 +89,7 @@
                         </li>
                     </ul>
                     <h3>Recensioni degli altri utenti</h3>
-                    <form action="pagina_film.php" id="filtroRecensioni">
-                        <label for="ordine">Ordina per:</label>
-                        <select name="ordine" id="ordine">
-                            <option value="recenti">Piú recenti</option>
-                            <option value="piaciuti">Piú piaciuti</option>
-                        </select> 
-                        <input type="submit" value="Inverti ordine" class="btn btnAzione">
-                        <input type="submit" value="Applica" class="btn btnAzione">
-                    </form>
+                    %filtro%
                     <dl>
                         %listaRecensioni%
                     </dl>

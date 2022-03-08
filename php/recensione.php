@@ -108,6 +108,8 @@ class RecensioneUtente extends Recensione{
         return $rec;
     }
     //non controlla gli errori ma fa solo l'inserimento
+    
+    
     public function aggiungiDB(){
         $connessione=new Connessione();
         $connessione->apriConnessione(); 

@@ -4,7 +4,7 @@
     require_once ('card.php');
     require_once ('sessione.php');
     require_once ('info_film.php');
-
+    
     $pagina=file_get_contents('../html/acquisto_noleggio.html');
     $struttura=new Struttura();
     $connessione=new Connessione();
@@ -31,8 +31,5 @@
     $pagina=str_replace('%valutazione%',creaStelle($film->valutazione),$pagina);
     $pagina=str_replace('%idFilm%',$_GET['idFilm'],$pagina);
     
-    
-
-
     echo $pagina;
 ?>

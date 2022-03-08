@@ -24,7 +24,7 @@
             $lista="";
             foreach($suggerimenti as $i=>$valore){
                 $titolo=$suggerimenti[$i]["titolo"];
-                $lista=$lista."<option value=\"$titolo\" />";
+                $lista=$lista."<option value=\"$titolo\">";
             }
             $componente=str_replace("%suggerimenti%",$lista,$componente);
             $pagina=str_replace("%header%",$componente,$pagina);
@@ -45,7 +45,7 @@
             $menu=file_get_contents("../componenti/menu.html");
 
             if($_SESSION['loggato']==false || $_SESSION['admin']==true){
-                $menu=str_replace('<li><a href="../php/raccolta.php">I miei film</a></li>', '', $menu);
+                $menu=str_replace('<li><a href="../php/raccolta_personale.php">I miei film</a></li>', '', $menu);
             }
             
             $menu=str_replace($InAttivo,$attivo,$menu); 
@@ -69,7 +69,7 @@
             $idFilm=$_GET['idFilm'];
         $connessione=new Connessione();
         $connessione->apriConnessione();
-        $queryPresenzaRecensione="SELECT * FROM recensione WHERE recensione.ID_utente=".$_SESSION['id']." and recensione.ID_film=".$idFilm; 
+        $queryPresenzaRecensione="SELECT * FROM recensione WHERE recensione.ID_utente='".$_SESSION['id']."' and recensione.ID_film=".$idFilm; 
         $presenzaRecensione=$connessione->interrogaDB($queryPresenzaRecensione);
         if($_SESSION['loggato']==true && !$presenzaRecensione){
             $form=file_get_contents('../componenti/ins_recensione.html');
@@ -109,13 +109,13 @@
                 $pulsanti=str_replace('%pulsanteAcquisto%',
                 '<form action="ins_acquisto_noleggio.php" method="get">
                 <input type="hidden" name="idFilm" value="%idFilm%">
-                <input id="acquisto" type="submit" value="Conferma Acquisto a %prezzoA%&euro;" name="acquisto" class="btn">
+                <input id="acquisto" type="submit" value="Conferma Acquisto a %prezzoA%&euro;" name="confermaAcquisto" class="btn">
                 </form>'  
                 ,$pulsanti);
                 $pulsanti=str_replace('%pulsanteNoleggio%',
                 '<form action="ins_acquisto_noleggio.php" method="get">
                 <input type="hidden" name="idFilm" value="%idFilm%">
-                <input id="noleggio" type="submit" value="Conferma Noleggio a %prezzoN%&euro;" name="noleggio" class="btn">
+                <input id="noleggio" type="submit" value="Conferma Noleggio a %prezzoN%&euro;" name="confermaNoleggio" class="btn">
                 </form>'  
                 ,$pulsanti);
                 $pagina=str_replace('%pulsantiAcquistoNoleggio%',$pulsanti,$pagina);
@@ -181,7 +181,17 @@
                 ,$pulsanti);
                 $pagina=str_replace('%pulsantiAcquistoNoleggio%',$pulsanti,$pagina);
         }
-    }    
+    } 
+    public function aggiungiFiltro(&$pagina,$selezionato,$inSelezionato,$focus){
+        $filtro=file_get_contents('../componenti/filtro.html');
+        if($focus)
+            $filtro=str_replace("%focus%","autofocus",$filtro);
+        else
+            $filtro=str_replace("%focus%","",$filtro);
+
+        $filtro=str_replace($selezionato,$inSelezionato,$filtro);
+        $pagina=str_replace('%filtro%',$filtro,$pagina);
+    }   
 }
 
 ?>
