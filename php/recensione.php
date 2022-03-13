@@ -16,7 +16,9 @@ abstract class Recensione{
     public $data;
     public $testo;
     public $valutazione;
-    
+    public $messaggioErrori;
+    public $nErrori;
+ 
 //costruisce una recensione passando un array associativo
     public function __construct(&$array){
         if(isset($array['id']))
@@ -30,6 +32,61 @@ abstract class Recensione{
         $this->valutazione=$array['valutazione'];
         $this->data=$array['data'];
         $this->testo=$array['testo'];
+        $err=array(
+            'errTesto' => "",
+            'errValutazione' => ""
+        );
+        if($array['testo']=="")
+            $err['errTesto']="Campo testo obbligatorio";
+        else{
+            if(strlen($array['testo'])<50 || strlen($array['testo'])>500){
+                $err['errTesto']="Il testo deve essere lungo tra i 50 e i 100 caratteri";
+            }
+        }
+        if($array['valutazione']==""){
+            $err['errValutazione']="Campo valutazione obbligatorio";
+        }
+        $this->messaggioErrori=$err;
+        $num=0;
+        foreach($err as $key=>$valore){
+            if($valore!="")
+                $num++;
+        }
+        $this->nErrori=$num;
+        
+    }
+    public function getTesto(){
+        return $this->testo;
+    }
+    public function getValutazione(){
+        return $this->valutazione;
+    }
+    public function getMessaggioErrori(){
+        return $this->messaggioErrori;
+    }
+    public function getNumErrori(){
+        return $this->nErrori;
+    }
+    public function getData(){
+        return $this->data;
+    }
+    public function getID(){
+        return $this->id;
+    }
+    public function setID($nuovoID){
+        $this->id=$nuovoID;
+    }
+    public function getIDFilm(){
+        return $this->idFilm;
+    }
+    public function getIDUtente(){
+        return $this->idUtente;
+    }
+    public function getProfilo(){
+        return $this->profilo;
+    }
+    public function getUsername(){
+        return $this->username;
     }
     public function getUtile(){
         $queryLike="SELECT count(*) as nLike FROM utile JOIN recensione ON (utile.ID_recensione=recensione.ID) WHERE recensione.ID=$this->id";
@@ -37,7 +94,9 @@ abstract class Recensione{
         $connessione->apriConnessione();
         $ris=$connessione->interrogaDB($queryLike);
         $connessione->chiudiConnessione();
-        $nLike=array_pop($ris)['nLike'];
+        $nLike=0;
+        if($ris)
+            $nLike=array_pop($ris)['nLike'];
         return $nLike;
     }
     public function getSegnalazioni(){
@@ -107,17 +166,20 @@ class RecensioneUtente extends Recensione{
             }
         return $rec;
     }
-    //non controlla gli errori ma fa solo l'inserimento
     
     
+    //inserisce senza controllare errori
+    //ritorna l'id della recensione appena inserita altrimenti false
     public function aggiungiDB(){
         $connessione=new Connessione();
         $connessione->apriConnessione(); 
         $ins="INSERT INTO recensione (ID_film,ID_utente,testo,data,valutazione) VALUES 
         ($this->idFilm,$this->idUtente,\"$this->testo\",\"$this->data\",$this->valutazione)";
         if($connessione->eseguiQuery($ins)){
+            $queryIdNuovaRecensione="SELECT ID FROM recensione WHERE ID_film=".$this->idFilm." AND ID_utente=".$this->idUtente;
+            $idNuovaRecensione=$connessione->interrogaDB($queryIdNuovaRecensione);
             $connessione->chiudiConnessione();
-            return true;
+            return $idNuovaRecensione[0];
         }
         else{
             return  false;
@@ -150,33 +212,7 @@ class RecensioneUtente extends Recensione{
         return $utile->rimuovi();
     }
 
-    //controlla che il testo e la valutazione siano stati inseriti correttamente e restituisce un array con i messaggi di errore
-    public function controlloErr(){
-        $err=array(
-            'errTesto' => "",
-            'errValutazione' => ""
-        );
-        if($this->testo=="")
-            $err['errTesto']="campo testo obbligatorio";
-        else{
-            if(strlen($this->testo)<50 || strlen($this->testo)>500){
-                $err['errTesto']="il testo deve essere lungo tra i 50 e i 100 caratteri";
-            }
-        }
-        if($this->valutazione==""){
-            $err['errValutazione']="campo valutazione obbligatorio";
-        }
-        return $err;
-    }
-    //conta il numero di errori di una recensione
-    public function numErr($arrayErr){
-        $num=0;
-        foreach($arrayErr as $key=>$valore){
-            if($valore!="")
-                $num++;
-        }
-        return $num;
-    }
+    
 }
 class RecensioneAdmin extends Recensione{
 
