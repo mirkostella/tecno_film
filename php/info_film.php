@@ -124,6 +124,7 @@
             return $categoriaCard;
         }
     }
+
     function recuperaRaccoltaPersonale(&$raccoltaCardNoleggi,&$raccoltaCardAcquisti){
         //acquisti dell'utente
         $queryCardAcquisti="SELECT film.ID as id,titolo,nome_genere as genere,copertina,TIME_TO_SEC(durata) as durata,
@@ -160,14 +161,11 @@
             $raccoltaCardAcquisti=str_replace('%valutazione%',"",$raccoltaCardAcquisti);
             $raccoltaCardAcquisti=str_replace('%vediAltro%',"",$raccoltaCardAcquisti);
         }
-            
-        }
+    }
         //restituisce i nuovi film con le valutazioni piú alte (non é esattamente un top 5 settimana)
         //per essere un TOP5sett devono venire inseriti almeno 5 film ogni settimana
-        function recuperaTop5Sett(){
-            $queryCard="SELECT film.ID as id,titolo,nome_genere as genere,copertina,trama,TIME_TO_SEC(durata) as durata,data_uscita as annoUscita,prezzo_acquisto as prezzoA,prezzo_noleggio as prezzoN,
-        path as copertina,descrizione,AVG(valutazione) as valutazione FROM film JOIN appartenenza 
-        ON(film.ID=appartenenza.ID_film) JOIN genere ON (appartenenza.ID_genere=genere.ID) JOIN foto_film ON(film.copertina=foto_film.ID) LEFT JOIN recensione ON (film.ID=recensione.ID_film) GROUP BY film.ID ORDER BY valutazione DESC,annoUscita DESC LIMIT 5";
+    function recuperaTop5Sett(){
+        $queryCard="SELECT film.ID as id,titolo,nome_genere as genere,copertina,trama,TIME_TO_SEC(durata) as durata,data_uscita as annoUscita,prezzo_acquisto as prezzoA,prezzo_noleggio as prezzoN, path as copertina,descrizione,AVG(valutazione) as valutazione FROM film JOIN appartenenza ON(film.ID=appartenenza.ID_film) JOIN genere ON (appartenenza.ID_genere=genere.ID) JOIN foto_film ON(film.copertina=foto_film.ID) LEFT JOIN recensione ON (film.ID=recensione.ID_film) GROUP BY film.ID ORDER BY valutazione DESC,annoUscita DESC LIMIT 5";
         $connessione=new Connessione();
         $connessione->apriConnessione();
         $ris=$connessione->interrogaDB($queryCard);
@@ -187,75 +185,75 @@
             
             return $categoriaCard;
         }
+    }
+    function recuperaPiuVisti(){
+        $queryCard="SELECT idfilm,data_uscita,SUM(somma) as risultato from (SELECT acquisto.ID_film as idfilm,count(*) as somma from acquisto GROUP BY idfilm UNION ALL SELECT noleggio.ID_film as idfilm,count(*) as somma from noleggio GROUP BY idfilm) as tot JOIN film ON (tot.idfilm=film.ID) GROUP BY idfilm ORDER BY data_uscita DESC,risultato DESC LIMIT 10";
+        $connessione=new Connessione();
+        $connessione->apriConnessione();
+        $ris=$connessione->interrogaDB($queryCard);
+        $connessione->chiudiConnessione();
+        //creo l'array con le info dei film in base agli id dei 10 restituiti dalla query precedente
+        $filmPiuVisti=array();
+        foreach($ris as $valore){
+        array_push($filmPiuVisti,recuperaInfo($valore['idfilm']));
         }
-        function recuperaPiuVisti(){
-            $queryCard="SELECT idfilm,data_uscita,SUM(somma) as risultato from (SELECT acquisto.ID_film as idfilm,count(*) as somma from acquisto GROUP BY idfilm UNION ALL SELECT noleggio.ID_film as idfilm,count(*) as somma from noleggio GROUP BY idfilm) as tot JOIN film ON (tot.idfilm=film.ID) GROUP BY idfilm ORDER BY data_uscita DESC,risultato DESC LIMIT 10";
-            $connessione=new Connessione();
-            $connessione->apriConnessione();
-            $ris=$connessione->interrogaDB($queryCard);
-            $connessione->chiudiConnessione();
-            //creo l'array con le info dei film in base agli id dei 10 restituiti dalla query precedente
-            $filmPiuVisti=array();
-            foreach($ris as $valore){
-            array_push($filmPiuVisti,recuperaInfo($valore['idfilm']));
-            }
-    
-            $listaCard=creaListaCardClassificata($filmPiuVisti);
-            if(!$listaCard)
-                return false;
-            else{
-                $categoriaCard=file_get_contents('../componenti/categoria_index.html');
-            $categoriaCard=str_replace('%listaCard%',$listaCard,$categoriaCard);
-            $categoriaCard=str_replace('%spazio%',"",$categoriaCard);
-            $categoriaCard=str_replace('%categoria%',"<h2 id=\"visti\">Top 10 piú visti</h2>",$categoriaCard);
-            
-            $categoriaCard=str_replace('%vediAltro%',"",$categoriaCard);
-            
-            return $categoriaCard;
-            }
-    
+
+        $listaCard=creaListaCardClassificata($filmPiuVisti);
+        if(!$listaCard)
+            return false;
+        else{
+            $categoriaCard=file_get_contents('../componenti/categoria_index.html');
+        $categoriaCard=str_replace('%listaCard%',$listaCard,$categoriaCard);
+        $categoriaCard=str_replace('%spazio%',"",$categoriaCard);
+        $categoriaCard=str_replace('%categoria%',"<h2 id=\"visti\">Top 10 piú visti</h2>",$categoriaCard);
+        
+        $categoriaCard=str_replace('%vediAltro%',"",$categoriaCard);
+        
+        return $categoriaCard;
         }
-        //tra gli ultimi aggiunti restituisce la lista dei film che sono tra i migliori per ogni genere (generi scelti casualmente tra tutti)
-        function recuperaMiglioriPerGenere(){
-            //recupero tutti i generi
-            $queryGeneri="SELECT nome_genere FROM genere";  
-            $connessione=new Connessione();
-            $connessione->apriConnessione();
-            $arrayGeneri=$connessione->interrogaDB($queryGeneri);
-            $generiScelti=array();
-            if($arrayGeneri){
-                shuffle($arrayGeneri);
-                for($i=count($arrayGeneri);$i>0;$i--){
-                    $genere=array_pop($arrayGeneri);
-                    //seleziona i film piú recenti con il voto piú alto per genere
-                    $querySingoloGenere="SELECT idFilm FROM filmvalutazionegenere WHERE nome_genere='".$genere['nome_genere']."' AND voto IS NOT NULL AND voto>=ALL(SELECT voto FROM filmvalutazionegenere WHERE nome_genere='".$genere['nome_genere']." AND voto IS NOT NULL') ORDER BY data_uscita DESC";
-                    $film=$connessione->interrogaDB($querySingoloGenere);
-                    if($film){
-                        array_push($generiScelti,$film[0]['idFilm']);
-                    }
+    }
+
+    //tra gli ultimi aggiunti restituisce la lista dei film che sono tra i migliori per ogni genere (generi scelti casualmente tra tutti)
+    function recuperaMiglioriPerGenere(){
+        //recupero tutti i generi
+        $queryGeneri="SELECT nome_genere FROM genere";  
+        $connessione=new Connessione();
+        $connessione->apriConnessione();
+        $arrayGeneri=$connessione->interrogaDB($queryGeneri);
+        $generiScelti=array();
+        if($arrayGeneri){
+            shuffle($arrayGeneri);
+            for($i=count($arrayGeneri);$i>0;$i--){
+                $genere=array_pop($arrayGeneri);
+                //seleziona i film piú recenti con il voto piú alto per genere
+                $querySingoloGenere="SELECT idFilm FROM filmvalutazionegenere WHERE nome_genere='".$genere['nome_genere']."' AND voto IS NOT NULL AND voto>=ALL(SELECT voto FROM filmvalutazionegenere WHERE nome_genere='".$genere['nome_genere']." AND voto IS NOT NULL') ORDER BY data_uscita DESC";
+                $film=$connessione->interrogaDB($querySingoloGenere);
+                if($film){
+                    array_push($generiScelti,$film[0]['idFilm']);
                 }
             }
-            //$generi scelti a questo punto contiene gli id dei film da inserire nella lista
-            $listaCardGeneri=array();
-            $filmTrovati=count($generiScelti);
-            if($filmTrovati>5)
-                $filmTrovati=5;
-            while($filmTrovati){
-                array_push($listaCardGeneri,recuperaInfo(array_pop($generiScelti)[0]));
-                $filmTrovati--;
-            }
-            $listaCard=creaListaCardClassificata($listaCardGeneri);
-            if(!$listaCard)
-                return false;
-            else{
-                $categoriaCard=file_get_contents('../componenti/categoria_index.html');
-                $categoriaCard=str_replace('%listaCard%',$listaCard,$categoriaCard);
-                $categoriaCard=str_replace('%spazio%',"",$categoriaCard);
-                $categoriaCard=str_replace('%categoria%',"<h2 id=\"topGenere\">Top 5 per genere</h2>",$categoriaCard);
-            
-                $categoriaCard=str_replace('%vediAltro%',"",$categoriaCard);
-            
-                return $categoriaCard;
-            }
         }
+        //$generi scelti a questo punto contiene gli id dei film da inserire nella lista
+        $listaCardGeneri=array();
+        $filmTrovati=count($generiScelti);
+        if($filmTrovati>5)
+            $filmTrovati=5;
+        while($filmTrovati){
+            array_push($listaCardGeneri,recuperaInfo(array_pop($generiScelti)[0]));
+            $filmTrovati--;
+        }
+        $listaCard=creaListaCardClassificata($listaCardGeneri);
+        if(!$listaCard)
+            return false;
+        else{
+            $categoriaCard=file_get_contents('../componenti/categoria_index.html');
+            $categoriaCard=str_replace('%listaCard%',$listaCard,$categoriaCard);
+            $categoriaCard=str_replace('%spazio%',"",$categoriaCard);
+            $categoriaCard=str_replace('%categoria%',"<h2 id=\"topGenere\">Top 5 per genere</h2>",$categoriaCard);
+        
+            $categoriaCard=str_replace('%vediAltro%',"",$categoriaCard);
+        
+            return $categoriaCard;
+        }
+    }
 ?>
