@@ -110,7 +110,7 @@
         return $listaCards;
     }
     function creaListaCard($risultatoQuery){
-        $listaCards=NULL;
+        $listaCards="";
         if($risultatoQuery){
             //ordino le card in base alla valutazione
             
