@@ -25,20 +25,18 @@
     if(isset($_SESSION['loggato']) && $_SESSION['loggato']==true){
         $risultatoCard=recuperaSceltiPerTe(5);
         if($risultatoCard){
-            $pagina=str_replace('%linkSceltiPerTe%',"<li><a href=\"#scelti\">Scelti per te</a></li>",$pagina);
             $pagina=str_replace('%sceltiPerTe%',$risultatoCard,$pagina);
         }
         else{
-            $pagina=str_replace('%sceltiPerTe%',"",$pagina);
+            $pagina=str_replace('<li><a href=#scelti></a>Scelti per te</li>',"", $pagina);
             $pagina=str_replace('%linkSceltiPerTe%',"",$pagina);
         }
 
     }
     else{
         $pagina=str_replace('%sceltiPerTe%',"",$pagina);
-        $pagina=str_replace('%linkSceltiPerTe%',"",$pagina);
+        $pagina=str_replace('<li><a href=#scelti>Scelti per te</a></li>',"",$pagina);
     }
-    
     
     $risultatoCard=recuperaAzione(5);
     if($risultatoCard)
