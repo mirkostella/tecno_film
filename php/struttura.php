@@ -136,11 +136,13 @@
         else{
                 $pulsanti=str_replace('%pulsanteAcquisto%',
                 '<form action="login.php" method="get">
+                <input type="hidden" name="idFilm" value='.$_GET['idFilm'].'>
                 <input id="acquisto" type="submit" value="Acquista a %prezzoA%&euro;" name="acquisto" class="btn">
                 </form>'  
                 ,$pulsanti);
                 $pulsanti=str_replace('%pulsanteNoleggio%',
                 '<form action="login.php" method="get">
+                <input type="hidden" name="idFilm" value='.$_GET['idFilm'].'>
                 <input id="noleggio" type="submit" value="Noleggia a %prezzoN%&euro;" name="noleggio" class="btn">
                 </form>'  
                 ,$pulsanti);

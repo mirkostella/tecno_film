@@ -7,7 +7,6 @@
     
     $pagina=file_get_contents('../html/acquisto_noleggio.html');
     $struttura=new Struttura();
-    $connessione=new Connessione();
     $struttura->aggiungiHeader($pagina);
     $struttura->aggiungiAccount($pagina);
     $struttura->aggiungiMenu($pagina,"","");

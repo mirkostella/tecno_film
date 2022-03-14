@@ -6,7 +6,6 @@
     require_once ('struttura.php');
     require_once ('card.php');
     require_once ('info_film.php');
-    
 
     $pagina=file_get_contents("../html/index.html");
     $struttura=new Struttura();
