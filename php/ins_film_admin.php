@@ -3,34 +3,35 @@ require_once("sessione.php");
 require_once("connessione.php");
 require_once("gestore_film.php");
 
+print_r($_POST);
 $pagina=file_get_contents("../html/ins_film_admin.html");
 //se sono arrivato alla pagina cercando di inserire un film
 if(isset($_POST['inserisciFilm'])){
     $datiNuovoFilm=array(     
-        'titolo'=>$_POST['titoloFilm'];
-        'trama'=>$_POST['tramaFilm'];
-        'durata'=>$_POST['durataFilm'];
-        'dataUscita'=>$_POST['dataUscitaFilm'];
-        'prezzoA'=>$_POST['prezzoAcquistoFilm'];
-        'prezzoN'=>$_POST['prezzoNoleggioFilm'];
-        'copertina'=>$_POST['copertinaFilm'];
-        'descrizione'=>$_POST['descrizione'];
-        'genere'=>$_POST['listaGeneri'];
+        'titolo'=>$_POST['titoloFilm'],
+        'trama'=>$_POST['tramaFilm'],
+        'durata'=>$_POST['durataFilm'],
+        'dataUscita'=>$_POST['dataUscitaFilm'],
+        'prezzoA'=>$_POST['prezzoAcquistoFilm'],
+        'prezzoN'=>$_POST['prezzoNoleggioFilm'],
+        'copertina'=>$_POST['copertinaFilm'],
+        'descrizione'=>$_POST['descrizione'],
+        'genere'=>$_POST['listaGeneri']
     );
     $gestore=new GestoreFilm($datiNuovoFilm);
     //NON inserisco e ricarico la pagina con i messaggi d'errore
     //mantenendo i campi delle form
-    if($gestore->getErrori()){
+    // if($gestore->getErrori()){
 
-    }
-    else{
-        //inserisco il film
-        if(!$gestore->inserisciFilm()){
-            //se l'inserimento non va a buon fine
-        }
-    }
-
-
+    // }
+    // else{
+        
+    //     if(!$gestore->inserisciFilm()){
+            
+    //     }
+    // }
+    $successo=$gestore->inserisciFilm();
+    
 }
 else{
     $pagina=str_replace("%errTitolo%","",$pagina);
@@ -44,5 +45,5 @@ else{
     $pagina=str_replace("%errPrezzoN%","",$pagina);
 
 }
-echo $pagina;
+    echo $pagina;
 ?>

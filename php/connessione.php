@@ -42,5 +42,20 @@ class Connessione{
         else
             return false;
     }
+    public function inizioTransazione(){
+        $this->conn->autocommit(false);
+    }
+    public function fineTransazione($statoTransazione){
+        if($statoTransazione)
+            $this->conn->commit();
+        else
+            $this->conn->rollback();
+
+        $this->conn->autocommit(true);
+    }
+    //fine della classe Connessione
 }
 ?>
+
+
+        
