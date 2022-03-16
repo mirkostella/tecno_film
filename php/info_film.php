@@ -104,7 +104,7 @@
         $queryCard="SELECT film.ID as id,titolo,nome_genere as genere,copertina,trama,TIME_TO_SEC(durata) as durata,data_uscita as annoUscita,prezzo_acquisto as prezzoA,prezzo_noleggio as prezzoN,
         path as copertina,descrizione,AVG(valutazione) as valutazione FROM film JOIN appartenenza 
         ON(film.ID=appartenenza.ID_film) JOIN genere ON (appartenenza.ID_genere=genere.ID) JOIN foto_film ON(film.copertina=foto_film.ID) LEFT JOIN recensione ON (film.ID=recensione.ID_film) 
-        WHERE nome_genere='azione' ORDER BY valutazione,annoUscita LIMIT $limite";
+        WHERE nome_genere='azione' GROUP BY id ORDER BY valutazione,annoUscita LIMIT $limite";
         $connessione=new Connessione();
         $connessione->apriConnessione();
         $ris=$connessione->interrogaDB($queryCard);
