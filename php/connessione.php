@@ -21,8 +21,11 @@ class Connessione{
         $rows=$this->conn->affected_rows;
         if($rows>0)
             return true;
-        else
+        else{
+            echo $this->conn->error;
             return false;
+        }
+            
     }     
     public function chiudiConnessione(){
         if($this->conn)

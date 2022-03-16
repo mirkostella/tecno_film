@@ -16,7 +16,7 @@ if(isset($_POST['inserisciFilm'])){
         'prezzoN'=>$_POST['prezzoNoleggioFilm'],
         'copertina'=>$_POST['copertinaFilm'],
         'descrizione'=>$_POST['descrizione'],
-        'genere'=>$_POST['listaGeneri']
+        'generi'=>$_POST['generi']
     );
     $gestore=new GestoreFilm($datiNuovoFilm);
     //NON inserisco e ricarico la pagina con i messaggi d'errore
@@ -34,6 +34,23 @@ if(isset($_POST['inserisciFilm'])){
     
 }
 else{
+    $queryNomiGeneri="SELECT DISTINCT nome_genere FROM genere";
+    $connessione=new Connessione();
+    $connessione->apriConnessione();
+    $generi=$connessione->interrogaDB($queryNomiGeneri);
+    $listaGeneri="";
+    echo "generi";
+    print_r($generi);
+    foreach($generi as $valore){
+        echo "</br> valore";
+        print_r($valore['nome_genere']);
+        $nuovaVoce='<label for="'.$valore['nome_genere'].'">'.$valore['nome_genere'].'</label>
+        <input type="checkbox" id="'.$valore['nome_genere'].'" name="generi[]" value="'.$valore['nome_genere'].'" class="checkmark">';
+        
+        $listaGeneri=$listaGeneri.$nuovaVoce;
+    }
+    
+    $pagina=str_replace('%listaGeneri%',$listaGeneri,$pagina);
     $pagina=str_replace("%errTitolo%","",$pagina);
     $pagina=str_replace("%errCopertina%","",$pagina);
     $pagina=str_replace("%errAlt%","",$pagina);

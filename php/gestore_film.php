@@ -22,8 +22,7 @@ class GestoreFilm{
         $this->prezzoN=$array['prezzoN'];
         $this->copertina=$array['copertina'];
         $this->descrizione=$array['descrizione'];
-        $this->genere=array();
-        array_push($this->genere,$array['genere']);
+        $this->genere=$array['generi'];
     
     }
 
@@ -62,23 +61,45 @@ class GestoreFilm{
 
 
     }
+    public function recuperaIDGeneri(){
+        $ris=array();
+        $connessione=new Connessione();
+        $connessione->apriConnessione();
+        foreach($this->genere as $valore){
+            $queryIDGenere="SELECT ID FROM genere WHERE nome_genere='".$valore."'";
+            $IDGenere=$connessione->interrogaDB($queryIDGenere);
+            array_push($ris,$IDGenere[0]['ID']);
+        }
+        $connessione->chiudiConnessione();
+        return $ris;
+    }
+
     public function inserisciFilm(){
-        // $queryFotoCopertina="INSERT INTO foto_film (path,descrizione) VALUES 
-        // ('../img/img_film/shang_chi.jpg','sono la descrizione')";
+        $queryFotoCopertina="INSERT INTO foto_film (path,descrizione) VALUES 
+        ('../img/img_film/shang_chi.jpg','sono la descrizione')";
 
         $connessione=new Connessione();
         $connessione->apriConnessione();
         $connessione->inizioTransazione();
 
-        // $esitoFoto=$connessione->eseguiQuery($queryFotoCopertina);
-        // if(!$esitoFoto)
-        //     echo 'esito foto fallito';
+        $esitoFoto=$connessione->eseguiQuery($queryFotoCopertina);
+        if(!$esitoFoto)
+            echo 'esito foto fallito';
 
-        //$queryIDFoto="SELECT id FROM foto_film ORDER BY id DESC LIMIT 1";
-        //$IDFoto=$connessione->interrogaDB($queryIDFoto);
-        //print_r($IDFoto[0]['id']);
-
-        $queryFilm="INSERT INTO film (titolo,copertina,trama,durata,data_uscita,prezzo_acquisto,prezzo_noleggio) VALUES ('sono il titolo',15,'sono la trama',10,12,12,13)";
+        $queryIDFoto="SELECT id FROM foto_film ORDER BY id DESC LIMIT 1";
+        $IDFoto=$connessione->interrogaDB($queryIDFoto);
+        
+        print_r($this->titolo);
+        print_r($IDFoto[0]['id']);
+        print_r($this->trama);
+        print_r($this->durata);
+        print_r($this->dataUscita);
+        print_r($this->prezzoA);
+        print_r($this->prezzoN);
+        $time = strtotime($this->dataUscita);
+        $newformat = date('d-m-Y',$time); 
+        echo $newformat;
+        $queryFilm="INSERT INTO film (titolo,copertina,trama,durata,data_uscita,prezzo_acquisto,prezzo_noleggio) VALUES ('".$this->titolo."',".$IDFoto[0]['id'].",'".$this->trama."',".$this->durata.",".$newformat.",".$this->prezzoA.",".$this->prezzoN.")";
         
         $ok=true;
         $esitoFilm=$connessione->eseguiQuery($queryFilm);
@@ -86,24 +107,22 @@ class GestoreFilm{
             $ok=false;
             echo 'primo';
         }
-            
+             
         if($esitoFilm){
             //recupero l'id del film
-            $queryIDFilm="SELECT id FROM film ORDER BY id DESC LIMIT 1";
-            $this->id=$connessione->interrogaDB($queryIDFilm);
-            
-            foreach($this->genere as $key=>$valore){
-                echo 'aaaaaaaaaaaaaaaaaaaaaaaaa' ;
-                print_r($this->genere);
-                print_r($key);
-                print_r($valore);
+            $queryIDFilm="SELECT ID FROM film ORDER BY id DESC LIMIT 1";
+            $queryIDGenere="SELECT ID FROM genere WHERE nome_genere='azione'";
+            $genere=$connessione->interrogaDB($queryIDGenere)[0]['ID'];
+            $this->id=$connessione->interrogaDB($queryIDFilm)[0]['ID'];
+            $x=$this->recuperaIDGeneri();
+            foreach($x as $valore){
                 $queryAppartenenza="INSERT INTO appartenenza (ID_film,ID_genere) VALUES 
-                ($this->id,$valore)";
+                ($this->id,".$valore.")";
                 $esitoAppartenenza=$connessione->eseguiQuery($queryAppartenenza);
                 if(!$esitoAppartenenza)
                     $ok=false;
-            }
-        }
+           }
+        
         $connessione->fineTransazione($ok);      
         $connessione->chiudiConnessione();
         if(!$ok){
@@ -114,6 +133,8 @@ class GestoreFilm{
             echo 'inserito con successo';
             
         return $ok;
+    
+        }
     }
 //fine classe GestoreFilm
 }

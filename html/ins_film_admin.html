@@ -43,20 +43,22 @@
             <label for="nuovoGenere">Crea nuovo Genere</label>
             %errNuovoGenere%
             <input type="text" name="nuovoGenereFilm" id="nuovoGenere">
-            <label for="generi">Scegli Genere</label>
-            <select name="listaGeneri" id="generi">
-                %opzioniGenere%
-                <option value="gen">gener</option>
-            </select>
+            <fieldset id="generi">
+                <legend>Seleziona uno o più generi:</legend>
+                %listaGeneri%
+                
+                    
+                    
+                </fieldset>
             <label for="dataUscita">Data di Uscita</label>
             %errData%
             <input type="date" name="dataUscitaFilm" id="dataUscita">
             <label for="prezzoAcquisto">Prezzo di Acquisto</label>
               
-            <input type="number" name="prezzoAcquistoFilm" id="prezzoAcquisto">
+            <input type="number" step="0.01" name="prezzoAcquistoFilm" id="prezzoAcquisto">
             <label for="prezzoNoleggio">Prezzo di Noleggio</label>
             %errPrezzoN%
-            <input type="number" name="prezzoNoleggioFilm" id="prezzoNoleggio">
+            <input type="number" step="0.01" name="prezzoNoleggioFilm" id="prezzoNoleggio">
             <input type="submit" name="inserisciFilm" value="Inserisci">
 
            </form>
