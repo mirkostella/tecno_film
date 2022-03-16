@@ -7,7 +7,7 @@
     function recuperaInfo($id){
         $queryMediaValutazioni="SELECT AVG(valutazione) as media FROM recensione WHERE ID_film=$id GROUP BY ID_film";
         $queryInfo="SELECT titolo,trama,TIME_TO_SEC(durata) as durata,data_uscita,prezzo_acquisto,prezzo_noleggio,path,descrizione,nome_genere
-         FROM film JOIN foto_film ON (film.ID=foto_film.ID) JOIN appartenenza ON (film.ID=appartenenza.ID_film) JOIN genere ON(appartenenza.ID_genere=genere.ID) WHERE ID_film=$id";
+         FROM film JOIN foto_film ON (film.copertina=foto_film.ID) JOIN appartenenza ON (film.ID=appartenenza.ID_film) JOIN genere ON(appartenenza.ID_genere=genere.ID) WHERE ID_film=$id";
         $connessione=new Connessione();
         $connessione->apriConnessione();
         $media=$connessione->interrogaDB($queryMediaValutazioni);
