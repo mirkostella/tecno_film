@@ -20,8 +20,9 @@
         $queryAcquisto="INSERT INTO acquisto (ID_film,ID_utente,data_acquisto) VALUES (".$_GET['idFilm'].",".$_SESSION['id'].",'".$data."')";
         if($connessione->eseguiQuery($queryAcquisto)){
             $pagina=str_replace('%esito%',"<h1 class=\"esitoPositivo\">Transazione avvenuta con successo!</h1>",$pagina);
-            $pagina=str_replace('%infoAggiuntive%',"Puoi trovare il film nella tua raccolta personale",$pagina);
+            $pagina=str_replace('%infoAggiuntive%',"Verrai reindirizzato alla home. Puoi trovare il film nella tua <a href=\"../php/raccolta_personale.php\">raccolta personale</a>",$pagina);
             $pagina=str_replace('%immagineEsito%',"<img src=\"../img/img_sfondi/successo.jpeg\"> id=\"imgEsito\"",$pagina);
+            header("refresh: 5; url= index.php");
         }
         else{
             $pagina=str_replace('%esito%',"<h1>Ti preghiamo di riprovare piú tardi..</h1>",$pagina);
@@ -41,8 +42,9 @@
         $queryNoleggio="INSERT INTO noleggio (ID_film,ID_utente,data_noleggio,scadenza_noleggio) VALUES (".$_GET['idFilm'].",".$_SESSION['id'].",'".$data."','".$scadenzaNoleggio."')";
         if($connessione->eseguiQuery($queryNoleggio)){
             $pagina=str_replace('%esito%',"<h1 class=\"esitoPositivo\">Transazione avvenuta con successo!",$pagina);
-            $pagina=str_replace('%infoAggiuntive%',"Puoi trovare il film nella tua raccolta personale fino al termine del periodo di noleggio",$pagina);
+            $pagina=str_replace('%infoAggiuntive%',"Verrai reindirizzato alla home. Puoi trovare il film nella tua <a href=\"../php/raccolta_personale.php\">raccolta personale</a> fino al termine del periodo di noleggio",$pagina);
             $pagina=str_replace('%immagineEsito%',"<img src=\"../img/img_sfondi/successo.jpeg\" id=\"imgEsito\">",$pagina);
+            header("refresh: 5; url= index.php");
         }
         else{
             $pagina=str_replace('%esito%',"<h1>Ti preghiamo di riprovare piú tardi..</h1>",$pagina);

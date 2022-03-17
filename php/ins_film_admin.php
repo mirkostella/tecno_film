@@ -2,6 +2,7 @@
 require_once("sessione.php");
 require_once("connessione.php");
 require_once("gestore_film.php");
+require_once("upload_img.php");
 
 print_r($_POST);
 $pagina=file_get_contents("../html/ins_film_admin.html");
@@ -14,7 +15,7 @@ if(isset($_POST['inserisciFilm'])){
         'dataUscita'=>$_POST['dataUscitaFilm'],
         'prezzoA'=>$_POST['prezzoAcquistoFilm'],
         'prezzoN'=>$_POST['prezzoNoleggioFilm'],
-        'copertina'=>$_POST['copertinaFilm'],
+        'copertina'=>"",
         'descrizione'=>$_POST['descrizione'],
         'generi'=>$_POST['generi']
     );
@@ -39,14 +40,9 @@ else{
     $connessione->apriConnessione();
     $generi=$connessione->interrogaDB($queryNomiGeneri);
     $listaGeneri="";
-    echo "generi";
-    print_r($generi);
     foreach($generi as $valore){
-        echo "</br> valore";
-        print_r($valore['nome_genere']);
         $nuovaVoce='<label for="'.$valore['nome_genere'].'">'.$valore['nome_genere'].'</label>
         <input type="checkbox" id="'.$valore['nome_genere'].'" name="generi[]" value="'.$valore['nome_genere'].'" class="checkmark">';
-        
         $listaGeneri=$listaGeneri.$nuovaVoce;
     }
     

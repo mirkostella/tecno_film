@@ -15,7 +15,8 @@ class Connessione{
             return true;
         else
             return false;
-    }   
+    }
+
     public function eseguiQuery($query){
         $this->conn->query($query);
         $rows=$this->conn->affected_rows;
@@ -25,8 +26,9 @@ class Connessione{
             echo $this->conn->error;
             return false;
         }
-            
+
     }     
+
     public function chiudiConnessione(){
         if($this->conn)
          return mysqli_close($this->conn);
@@ -45,6 +47,7 @@ class Connessione{
         else
             return false;
     }
+
     public function inizioTransazione(){
         $this->conn->autocommit(false);
     }

@@ -7,7 +7,7 @@
     <meta name="author" content="Mirko Elton Sonia Ruth"/>
     <meta name="description" content=""/>
     <meta name="keywords" content=""/>
-    <title>Classifiche-Tecno film</title>
+    <title>I miei film-Tecno film</title>
     <link rel="stylesheet" type="text/css" href="../css/stile.css"/>
 </head>
 <body id="inizioPagina">
@@ -15,35 +15,22 @@
         %header%
     </header>
     <nav id="breadcrumb">
-		Ti trovi in: <a href = "..php/index.php" xml:lang = "en" lang="en">Home </a> &gt; <span class="grassetto">Classifiche</span>
+        Ti trovi in: <a href = "../php/index.php" xml:lang = "en" lang="en">Home </a> &gt; <span class="grassetto">Risultati di ricerca</span>
     </nav>
-
     <div id="impaginazione">
         <div id="menu-news">
             <nav id="menuPrincipale">
                 %menu%
             </nav>
-			<aside id="news">
-    
-				<h2 xml:lang="en" lang="en">News</h2>
-				%novita%
-			</aside>
         </div>
-		
-        <div id ="contenuto">
-				<h1>Le classifiche</h1>
-				<ul id="menuProposte">
-					<li><a href="#top">Top 5 della settimana</a></li>
-					<li><a href="#visti">Top 10 piú visti</a></li>
-					<li><a href="#topGenere">Top 5 per genere</a></li>
-				</ul>
-				
-				%listaCardSett%
-
-				%listaCardVisti%
-
-				%listaCardMiglioriGenere%
-		</div>
+        <div id="contenuto">
+            <h2>Risultati per "%input_ricerca%"</h2>
+            <div class="listaCards">
+            %risultatiRicerca%
+            </div>
+            <!-- fine contenuto -->
+        </div> 
+        <!-- fine impaginazione -->
     </div>   
 </body>
 </html>

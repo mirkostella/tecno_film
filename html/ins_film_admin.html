@@ -15,7 +15,7 @@
         %headerAdmin%
     </header>
     <nav id="breadcrumb">
-        Ti trovi in: <a href="ins_film_admin.php">Pagina Amministratore</a> &#62; <span class="grassetto">Inserisci Film</span>
+        Ti trovi in: <a href="../php/index_admin.php">Pagina Amministratore</a> &#62; <span class="grassetto">Inserisci Film</span>
     </nav>
     <div id="impaginazione">
         <div id="menu-news">
@@ -24,13 +24,13 @@
             </nav>
         </div>
         <div id="contenuto">
-           <form action="ins_film_admin.php" method="post">
+           <form action="ins_film_admin.php" method="post" enctype="multipart/form-data">
             <label for="titolo">Titolo</label>
             %errTitolo%
             <input type="text" name="titoloFilm" id="titolo">
-            <label for="copertina">Immagine di Copertina</label>
+            <label for="copertinaFilm">Immagine di Copertina</label>
             %errCopertina%
-            <input type="file" name="copertinaFilm" id="copertina">
+            <input type="file" name="copertinaFilm" id="copertinaFilm">
             <label for="altImg">Alt immagine copertina</label>
             %errAlt%
             <input type="text" name="descrizione" id="altImg">

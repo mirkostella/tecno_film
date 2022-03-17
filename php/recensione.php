@@ -102,9 +102,9 @@ abstract class Recensione{
     public function getSegnalazioni(){
         $querySegnalazioni="SELECT count(*) as nSegnalazioni FROM segnalazione JOIN recensione ON (segnalazione.ID_recensione=recensione.ID) WHERE recensione.ID=$this->id";
         $connessione=new Connessione();
-        $connessione->apriConn();
-        $ris=$connessione->queryToArray($querySegnalazioni);
-        $connessione->chiudiConn();
+        $connessione->apriConnessione();
+        $ris=$connessione->interrogaDB($querySegnalazioni);
+        $connessione->chiudiConnessione();
         $nSegnalazioni=array_pop($ris)['nSegnalazioni'];
         return $nSegnalazioni;
     }

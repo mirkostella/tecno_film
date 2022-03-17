@@ -57,10 +57,25 @@ class GestoreFilm{
         //film giá presente
         //prezzo noleggio maggiore o uguale del prezzo di acquisto
         //campo dati assente
-        
-
-
     }
+
+    public function recuperaFilePath(){
+        $file_path='';
+        $connessione=new Connessione();
+        $connessione->apriConnessione();
+        $gestisci_img = new gestione_img();
+        if(isset($_FILES['copertinaFilm']) && is_uploaded_file($_FILES['copertinaFilm']['tmp_name'])){
+            $upload_result=$gestisci_img->uploadImg("img_film/", "copertinaFilm");
+            print_r($upload_result['path']);
+            if($upload_result['error']==''){
+                $file_path=$upload_result['path'];
+                return $file_path;
+            }
+            else
+                return false;
+        }
+    }
+
     public function recuperaIDGeneri(){
         $ris=array();
         $connessione=new Connessione();
@@ -75,8 +90,10 @@ class GestoreFilm{
     }
 
     public function inserisciFilm(){
-        $queryFotoCopertina="INSERT INTO foto_film (path,descrizione) VALUES 
-        ('../img/img_film/shang_chi.jpg','sono la descrizione')";
+
+        $path=$this->recuperaFilePath();
+        $queryFotoCopertina="INSERT INTO foto_film (path, descrizione) VALUES 
+        (\"$path\", '".$_POST['descrizione']."')";
 
         $connessione=new Connessione();
         $connessione->apriConnessione();
