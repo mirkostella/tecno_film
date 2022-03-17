@@ -8,7 +8,6 @@ print_r($_POST);
 $pagina=file_get_contents("../html/ins_film_admin.html");
 //se sono arrivato alla pagina cercando di inserire un film
 if(isset($_POST['inserisciFilm'])){
-
     $datiNuovoFilm=array(     
         'titolo'=>$_POST['titoloFilm'],
         'trama'=>$_POST['tramaFilm'],
@@ -20,7 +19,6 @@ if(isset($_POST['inserisciFilm'])){
         'descrizione'=>$_POST['descrizione'],
         'generi'=>$_POST['generi']
     );
-
     $gestore=new GestoreFilm($datiNuovoFilm);
     //NON inserisco e ricarico la pagina con i messaggi d'errore
     //mantenendo i campi delle form
@@ -45,7 +43,6 @@ else{
     foreach($generi as $valore){
         $nuovaVoce='<label for="'.$valore['nome_genere'].'">'.$valore['nome_genere'].'</label>
         <input type="checkbox" id="'.$valore['nome_genere'].'" name="generi[]" value="'.$valore['nome_genere'].'" class="checkmark">';
-        
         $listaGeneri=$listaGeneri.$nuovaVoce;
     }
     

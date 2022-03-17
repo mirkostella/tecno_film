@@ -25,7 +25,8 @@ class Connessione{
         else{
             echo $this->conn->error;
             return false;
-        } 
+        }
+
     }     
 
     public function chiudiConnessione(){
@@ -46,7 +47,7 @@ class Connessione{
         else
             return false;
     }
-    
+
     public function inizioTransazione(){
         $this->conn->autocommit(false);
     }
@@ -61,3 +62,6 @@ class Connessione{
     //fine della classe Connessione
 }
 ?>
+
+
+        

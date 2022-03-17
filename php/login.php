@@ -11,12 +11,17 @@
     }
 
     //se la sessione è già aperta come utente normale, mi porta direttamente alla home
-    if($_SESSION['loggato'] == true && $_SESSION['admin'] == false){
-        header('location: index.php');
-        exit();
-    }
+  //  if($_SESSION['loggato'] == true && $_SESSION['admin'] == false){
+  //      header('location: index.php');
+  //      exit();
+   // }
+   print_r($_GET['idFilm']);
+   $idFilm="";
+    if(isset($_REQUEST['idFilm']))
+        $idFilm=$_REQUEST['idFilm'];
 
     $pagina = file_get_contents('../html/login.html');
+    $pagina = str_replace('%idFilm%',$idFilm,$pagina);
     $struttura = new Struttura();
     $struttura->aggiungiHeader($pagina);
     $struttura->aggiungiAccount($pagina);
@@ -44,8 +49,14 @@
                 $_SESSION['id']= $login_array[0]['ID'];
                 $_SESSION['admin']=false;
                 $connessione->chiudiConnessione();
-                header('location: index.php');
-                exit();
+                if($idFilm){
+                    header('location: pagina_film.php?idFilm='.$idFilm);
+                    exit();
+                }
+                else{
+                    header('location: index.php');
+                    exit();
+                }      
             }
             $connessione->chiudiConnessione();
 

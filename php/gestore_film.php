@@ -90,6 +90,7 @@ class GestoreFilm{
     }
 
     public function inserisciFilm(){
+
         $path=$this->recuperaFilePath();
         $queryFotoCopertina="INSERT INTO foto_film (path, descrizione) VALUES 
         (\"$path\", '".$_POST['descrizione']."')";

@@ -38,8 +38,12 @@
         }
         public function aggiungiBase(){
             $cardB=CardBase::aggiungiBase();
-            if($this->dataScadenza)
-                $cardB=str_replace("%infoCard%","Scadenza:".$this->dataScadenza,$cardB);
+            if($this->dataScadenza){
+                $dataTemp=strtotime($this->dataScadenza);
+                $data=date('d-m-Y',$dataTemp);
+                $cardB=str_replace("%infoCard%","Scadenza:"."$data",$cardB);
+            }
+                
             else
                 $cardB=str_replace("%infoCard%","",$cardB);
             return $cardB;  
