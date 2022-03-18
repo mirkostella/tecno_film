@@ -15,7 +15,6 @@
   //      header('location: index.php');
   //      exit();
    // }
-   print_r($_GET['idFilm']);
    $idFilm="";
     if(isset($_REQUEST['idFilm']))
         $idFilm=$_REQUEST['idFilm'];
