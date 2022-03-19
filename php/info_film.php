@@ -6,22 +6,15 @@
     //recupera le informazioni per costruire una card di un film in base all'id
     function recuperaInfo($id){
         $queryMediaValutazioni="SELECT AVG(valutazione) as media FROM recensione WHERE ID_film=$id GROUP BY ID_film";
-        $queryInfo="SELECT titolo,trama,TIME_TO_SEC(durata) as durata,data_uscita,prezzo_acquisto,prezzo_noleggio,path,descrizione
+        $queryInfo="SELECT titolo,trama,TIME_TO_SEC(durata) as durata,data_uscita,prezzo_acquisto,prezzo_noleggio,path,descrizione,nome_genere
          FROM film JOIN foto_film ON (film.copertina=foto_film.ID) JOIN appartenenza ON (film.ID=appartenenza.ID_film) JOIN genere ON(appartenenza.ID_genere=genere.ID) WHERE ID_film=$id";
         $connessione=new Connessione();
         $connessione->apriConnessione();
         $media=$connessione->interrogaDB($queryMediaValutazioni);
-        if(!$media){
-            $media=array();
-            $mediaFilm=array(
-                'media'=> 0
-            );
-            array_push($media,$mediaFilm);
-        }
         $info=$connessione->interrogaDB($queryInfo);
-        echo 'info del film <br>';
-        print_r($info);
-        
+        $durata=$info[0]['durata']/60;
+        $dataUscita=strtotime($info[0]['data_uscita']);
+        $cambioFormato=date('d/m/Y', $dataUscita);
         $infoFilm=array(
             'id'=>$id,
             'copertina'=>$info[0]['path'],
@@ -31,9 +24,9 @@
             'valutazione'=>$media[0]['media'],
             'prezzoN'=>$info[0]['prezzo_noleggio'],
             'prezzoA'=>$info[0]['prezzo_acquisto'],
-            'annoUscita'=>$info[0]['data_uscita'],
+            'annoUscita'=>$cambioFormato,
             'trama'=>$info[0]['trama'],
-            'durata'=>$info[0]['durata']
+            'durata'=>$durata
         );
         return $infoFilm;
     }
@@ -47,7 +40,43 @@
         return $generi;
     }
 
-    
+    //tra gli ultimi aggiunti restituisce la lista dei film che sono tra i migliori per ogni genere (generi scelti casualmente tra tutti)
+    function recuperaMiglioriPerGenere(){
+        //recupero i generi associati ad almeno un film
+        $queryGeneri="SELECT nome_genere FROM genere WHERE nome_genere IN (SELECT nome_genere FROM genere JOIN appartenenza ON(appartenenza.ID_genere=genere.ID))";  
+        $connessione=new Connessione();
+        $connessione->apriConnessione();
+        $arrayGeneri=$connessione->interrogaDB($queryGeneri);
+        shuffle($arrayGeneri);
+        $generiScelti=array();
+        
+        for($i=count($arrayGeneri);$i>0;$i--){
+            $genere=array_pop($arrayGeneri);
+            //seleziona i film piú recenti con il voto piú alto per genere
+            $querySingoloGenere="SELECT idFilm FROM filmvalutazionegenere WHERE nome_genere='".$genere['nome_genere']."' AND voto IS NOT NULL AND voto>=ALL(SELECT voto FROM filmvalutazionegenere WHERE nome_genere='".$genere['nome_genere']." AND voto IS NOT NULL') ORDER BY data_uscita DESC";
+            $film=$connessione->interrogaDB($querySingoloGenere);
+            array_push($generiScelti,$film[0]['idFilm']);        
+        }
+        
+        //$generi scelti a questo punto contiene gli id dei film da inserire nella lista
+        $listaCardGeneri=array();
+        $filmTrovati=count($generiScelti);
+        if($filmTrovati>5)
+            $filmTrovati=5;
+        while($filmTrovati){
+            array_push($listaCardGeneri,recuperaInfo(array_pop($generiScelti)[0]));
+            $filmTrovati--;
+        }
+       
+        $listaCard=creaListaCardClassificata($listaCardGeneri);
+        $categoriaCard=file_get_contents('../componenti/categoria_index.html');
+        $categoriaCard=str_replace('%listaCard%',$listaCard,$categoriaCard);
+        $categoriaCard=str_replace('%spazio%',"",$categoriaCard);
+        $categoriaCard=str_replace('%categoria%',"<h2 id=\"topGenere\">Top 5 per genere</h2>",$categoriaCard);
+        $categoriaCard=str_replace('%vediAltro%',"",$categoriaCard);
+
+        return $categoriaCard;
+    }
     
     //recupera le informazioni per creare le card nuove uscite
     function recuperaNuoveUscite($limite){
@@ -233,44 +262,4 @@
         }
     }
 
-    //tra gli ultimi aggiunti restituisce la lista dei film che sono tra i migliori per ogni genere (generi scelti casualmente tra tutti)
-    function recuperaMiglioriPerGenere(){
-        //recupero i generi associati ad almeno un film
-        $queryGeneri="SELECT DISTINCT nome_genere FROM genere JOIN appartenenza ON(genere.ID=appartenenza.ID_genere)";  
-        $connessione=new Connessione();
-        $connessione->apriConnessione();
-        $arrayGeneri=$connessione->interrogaDB($queryGeneri);
-        $generiScelti=array();
-        if($arrayGeneri){
-
-            shuffle($arrayGeneri);
-            for($i=count($arrayGeneri);$i>0;$i--){
-                $genere=array_pop($arrayGeneri);
-                //seleziona i film piú recenti con il voto piú alto per genere
-                $querySingoloGenere="SELECT idFilm FROM filmvalutazionegenere WHERE nome_genere='".$genere['nome_genere']."' AND voto IS NOT NULL AND voto>=ALL(SELECT voto FROM filmvalutazionegenere WHERE nome_genere='".$genere['nome_genere']." AND voto IS NOT NULL') ORDER BY data_uscita DESC";
-                $film=$connessione->interrogaDB($querySingoloGenere);
-                if($film){
-                    array_push($generiScelti,$film[0]['idFilm']);
-                }
-            }
-        }
-        //$generi scelti a questo punto contiene gli id dei film da inserire nella lista
-        $listaCardGeneri=array();
-        $filmTrovati=count($generiScelti);
-        if($filmTrovati>5)
-            $filmTrovati=5;
-        while($filmTrovati){
-            array_push($listaCardGeneri,recuperaInfo(array_pop($generiScelti)[0]));
-            $filmTrovati--;
-        }
-       
-        $listaCard=creaListaCardClassificata($listaCardGeneri);
-        $categoriaCard=file_get_contents('../componenti/categoria_index.html');
-        $categoriaCard=str_replace('%listaCard%',$listaCard,$categoriaCard);
-        $categoriaCard=str_replace('%spazio%',"",$categoriaCard);
-        $categoriaCard=str_replace('%categoria%',"<h2 id=\"topGenere\">Top 5 per genere</h2>",$categoriaCard);
-        $categoriaCard=str_replace('%vediAltro%',"",$categoriaCard);
-
-        return $categoriaCard;
-    }
 ?>

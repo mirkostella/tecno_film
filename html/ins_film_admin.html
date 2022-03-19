@@ -27,19 +27,19 @@
            <form action="ins_film_admin.php" method="post" enctype="multipart/form-data" id="formFilm" class="formFilm">
             <label for="titolo">Titolo</label>
             %errTitolo%
-            <input type="text" name="titoloFilm" id="titolo" require="required">
+            <input type="text" name="titoloFilm" id="titolo" require>
             <label for="copertinaFilm">Immagine di Copertina</label>
             %errCopertina%
-            <input type="file" name="copertinaFilm" id="copertinaFilm" require="required">
+            <input type="file" name="copertinaFilm" id="copertinaFilm" require>
             <label for="altImg">Alt immagine copertina</label>
             %errAlt%
-            <input type="text" name="descrizione" id="altImg" require="required">
+            <input type="text" name="descrizione" id="altImg" require>
             <label for="trama">Trama</label>
             %errTrama%
-            <textarea name="tramaFilm" id="trama" cols="30" rows="10" require="required"></textarea>
+            <textarea name="tramaFilm" id="trama" cols="30" rows="10" required></textarea>
             <label for="durata">Durata</label>
             %errDurata%
-            <input type="number" name="durataFilm" id="durata" require="required">
+            <input type="time" name="durataFilm" id="durata" value="00:00">
             <fieldset id="generi">
                 <legend>Seleziona uno o più generi:</legend>
                 %listaGeneri%

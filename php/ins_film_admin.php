@@ -23,6 +23,7 @@ foreach($generi as $valore){
 $pagina=str_replace('%listaGeneri%',$listaGeneri,$pagina);
 //se sono arrivato alla pagina cercando di inserire un film
 if(isset($_POST['inserisciFilm'])){
+    
     $datiNuovoFilm=array(     
         'titolo'=>$_POST['titoloFilm'],
         'trama'=>$_POST['tramaFilm'],

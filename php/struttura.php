@@ -11,9 +11,11 @@
             $connessione->chiudiConnessione();
             $componente=file_get_contents("../componenti/header.html");
             $lista="";
-            foreach($suggerimenti as $i=>$valore){
-                $titolo=$suggerimenti[$i]["titolo"];
-                $lista=$lista."<option value=10>ciao</option>";
+            if($suggerimenti){
+                foreach($suggerimenti as $i=>$valore){
+                    $titolo=$suggerimenti[$i]["titolo"];
+                    $lista=$lista."<option value=10>ciao</option>";
+                }
             }
             $componente=str_replace("%suggerimenti%",$lista,$componente);
             $pagina=str_replace("%header%",$componente,$pagina);

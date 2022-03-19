@@ -35,8 +35,7 @@ class GestoreFilm{
             'errFormatoImmagine'=>'',
             'errCaricamentoImmagine'=>'',
             'errDescrizione'=>''
-        );
-    
+        );    
     }
 
     public function controlloPresenzaFilm(){
@@ -103,7 +102,7 @@ return true;
 
 
     }
-   
+    
     public function inserisciFilm(&$pagina){
         
         $gestisci_img = new gestione_img();    
@@ -111,8 +110,6 @@ return true;
         $path='';
         if(isset($_FILES['copertinaFilm']) && is_uploaded_file($_FILES['copertinaFilm']['tmp_name']))
             $path=$gestisci_img->caricaImmagine("img_film/", "copertinaFilm");
-            print_r($path);
-            print_r($_POST['descrizione']);
         if($path)
             $queryFotoCopertina="INSERT INTO foto_film (path, descrizione) VALUES ('".$path."', '".$_POST['descrizione']."')";
         else{
@@ -142,9 +139,9 @@ return true;
             }
             $newformat=null;
             if($ok){
-                $time = strtotime($this->dataUscita);
-                $newformat = date('d-m-Y',$time); 
-                $queryFilm="INSERT INTO film (titolo,copertina,trama,durata,data_uscita,prezzo_acquisto,prezzo_noleggio) VALUES ('".$this->titolo."',".$IDFoto[0]['id'].",'".$this->trama."',".$this->durata.",".$newformat.",".$this->prezzoA.",".$this->prezzoN.")";
+                echo 'sono la data di uscita';
+                print_r($this->dataUscita);     
+                $queryFilm="INSERT INTO film (titolo,copertina,trama,durata,data_uscita,prezzo_acquisto,prezzo_noleggio) VALUES ('".$this->titolo."',".$IDFoto[0]['id'].",'".$this->trama."','".$this->durata."','".$this->dataUscita."',".$this->prezzoA.",".$this->prezzoN.")";
                 $esitoFilm=$connessione->eseguiQuery($queryFilm);
                 if(!$esitoFilm)
                     $ok=false;          

@@ -49,7 +49,7 @@
             $cardB=CardBase::aggiungiBase();
             if($this->dataScadenza){
                 $dataTemp=strtotime($this->dataScadenza);
-                $data=date('d-m-Y',$dataTemp);
+                $data=date('d/m/Y',$dataTemp);
                 $cardB=str_replace("%infoCard%","Scadenza:"."$data",$cardB);
             }
                 
@@ -77,7 +77,7 @@
             $this->prezzoA=$array['prezzoA'];
             $this->annoUscita=$array['annoUscita'];
             $this->trama=$array['trama'];
-            $this->durata=$array['durata']/60;
+            $this->durata=$array['durata'];
         }
         public function aggiungiBase(){
             $cardB=CardBase::aggiungiBase();
