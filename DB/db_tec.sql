@@ -211,5 +211,9 @@ FOREIGN KEY (`ID_recensione`) REFERENCES `recensione`(`ID`) ON DELETE CASCADE ON
 CREATE VIEW `filmvalutazionegenere`  AS 
 SELECT `film`.`ID` AS `idFilm`, `genere`.`nome_genere` AS `nome_genere`, avg(`recensione`.`valutazione`) AS `voto`, `film`.`data_uscita` AS `data_uscita` FROM (((`film` join `appartenenza` on(`appartenenza`.`ID_film` = `film`.`ID`)) join `genere` on(`appartenenza`.`ID_genere` = `genere`.`ID`)) left join `recensione` on(`film`.`ID` = `recensione`.`ID_film`)) GROUP BY `film`.`ID` ORDER BY `film`.`data_uscita` DESC ;
 
+CREATE VIEW `appartenenzaNoDoppioni`  
+AS  
+SELECT* FROM `appartenenza` GROUP BY ID_film;
+
 SET FOREIGN_KEY_CHECKS=1;
 COMMIT;

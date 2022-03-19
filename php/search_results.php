@@ -5,6 +5,7 @@
     require_once('card.php');
     require_once('info_film.php');
 
+    print_r($_GET);
     $pagina=file_get_contents("../html/search_results.html");
     $struttura = new Struttura();
     $struttura->aggiungiHeader($pagina);

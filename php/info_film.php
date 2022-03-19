@@ -35,7 +35,15 @@
         return $infoFilm;
     }
     
-    //restitituisce la stringa di card o la stringa vuota se non sono presenti
+    function recuperaGeneri($idFilm){
+        $queryGeneri='SELECT nome_genere as generiFilm FROM film JOIN appartenenza ON(film.ID=appartenenza.ID_film) JOIN genere ON(appartenenza.ID_genere=genere.ID) WHERE ID_film='.$idFilm;
+        $connessione=new Connessione();
+        $connessione->apriConnessione();
+        $generi=$connessione->interrogaDB($queryGeneri);
+        $connessione->chiudiConnessione();
+        return $generi;
+    }
+
     
     
     //recupera le informazioni per creare le card nuove uscite
@@ -59,7 +67,7 @@
             $categoriaCard=str_replace('%categoria%',"<h2 id=\"nuove\">Nuove uscite</h2>",$categoriaCard);
             $categoriaCard=str_replace('%nomeSubmit%',"vediNuoveUscite",$categoriaCard);
             $categoriaCard=str_replace('%vediAltro%',$pulsanteVediAltro,$categoriaCard);
-            $categoriaCard=str_replace('%collegamento%',"search_result.php",$categoriaCard);
+            $categoriaCard=str_replace('%collegamento%',"film_categoria.php",$categoriaCard);
             return $categoriaCard;
         }
 
@@ -93,7 +101,7 @@
             $categoriaCard=str_replace('%listaCard%',$listaCard,$categoriaCard);
             $categoriaCard=str_replace('%spazio%',"<hr>",$categoriaCard);
             $categoriaCard=str_replace('%categoria%',"<h2 id=\"scelti\">Scelti per te</h2>",$categoriaCard);
-            $categoriaCard=str_replace('%nomeSubmit%',"vediSceltiPerTe",$categoriaCard);
+            $categoriaCard=str_replace('%nomeSubmit%',"sceltiPerTe",$categoriaCard);
             $categoriaCard=str_replace('%vediAltro%',$pulsanteVediAltro,$categoriaCard);
             $categoriaCard=str_replace('%collegamento%',"search_result.php",$categoriaCard);
             return $categoriaCard;
@@ -118,7 +126,7 @@
             $categoriaCard=str_replace('%listaCard%',$listaCard,$categoriaCard);
             $categoriaCard=str_replace('%spazio%',"<hr>",$categoriaCard);
             $categoriaCard=str_replace('%categoria%',"<h2 id=\"azione\">Azione</h2>",$categoriaCard);
-            $categoriaCard=str_replace('%nomeSubmit%',"vediAzione",$categoriaCard);
+            $categoriaCard=str_replace('%nomeSubmit%',"azione",$categoriaCard);
             $categoriaCard=str_replace('%vediAltro%',$pulsanteVediAltro,$categoriaCard);
             $categoriaCard=str_replace('%collegamento%',"search_result.php",$categoriaCard);
             return $categoriaCard;
@@ -127,12 +135,12 @@
 
     function recuperaRaccoltaPersonale(&$raccoltaCardNoleggi,&$raccoltaCardAcquisti){
         //acquisti dell'utente
-        $queryCardAcquisti="SELECT film.ID as id,titolo,nome_genere as genere,copertina,TIME_TO_SEC(durata) as durata,
-        path as copertina,descrizione FROM film JOIN appartenenza 
-        ON(film.ID=appartenenza.ID_film) JOIN genere ON (appartenenza.ID_genere=genere.ID) JOIN foto_film ON(film.copertina=foto_film.ID) JOIN acquisto ON (film.ID=acquisto.ID_film) WHERE acquisto.ID_utente=".$_SESSION['id'];
-        $queryCardNoleggi="SELECT film.ID as id,titolo,nome_genere as genere,copertina,TIME_TO_SEC(durata) as durata,
-        path as copertina,descrizione,scadenza_noleggio FROM film JOIN appartenenza 
-        ON(film.ID=appartenenza.ID_film) JOIN genere ON (appartenenza.ID_genere=genere.ID) JOIN foto_film ON(film.copertina=foto_film.ID) JOIN noleggio ON (film.ID=noleggio.ID_film) WHERE noleggio.ID_utente=".$_SESSION['id'];
+        $queryCardAcquisti="SELECT film.ID as id,titolo,copertina,TIME_TO_SEC(durata) as durata,
+        path as copertina,descrizione FROM film JOIN appartenenzaNoDoppioni
+    ON(film.ID=appartenenzaNoDoppioni.ID_film) JOIN genere ON (appartenenzaNoDoppioni.ID_genere=genere.ID) JOIN foto_film ON(film.copertina=foto_film.ID) JOIN acquisto ON (film.ID=acquisto.ID_film) WHERE acquisto.ID_utente=".$_SESSION['id'];
+        $queryCardNoleggi="SELECT film.ID as id,titolo,copertina,TIME_TO_SEC(durata) as durata,
+        path as copertina,descrizione,scadenza_noleggio FROM film JOIN appartenenzaNoDoppioni 
+        ON(film.ID=appartenenzaNoDoppioni.ID_film) JOIN genere ON (appartenenzaNoDoppioni.ID_genere=genere.ID) JOIN foto_film ON(film.copertina=foto_film.ID) JOIN noleggio ON (film.ID=noleggio.ID_film) WHERE noleggio.ID_utente=".$_SESSION['id'] ;
         $connessione=new Connessione();
         $connessione->apriConnessione();
         $risAcquisti=$connessione->interrogaDB($queryCardAcquisti);
@@ -146,7 +154,7 @@
             $raccoltaCardNoleggi=str_replace('%listaCard%',$listaNoleggi,$raccoltaCardNoleggi);
             $raccoltaCardNoleggi=str_replace('%spazio%',"",$raccoltaCardNoleggi);
             $raccoltaCardNoleggi=str_replace('%categoria%',"",$raccoltaCardNoleggi);
-            $raccoltaCardNoleggi=str_replace('%nomeSubmit%',"",$raccoltaCardNoleggi);
+            $raccoltaCardNoleggi=str_replace('%nomeSubmit%',"raccoltaPersonale",$raccoltaCardNoleggi);
             $raccoltaCardNoleggi=str_replace('%prezzo%',"",$raccoltaCardNoleggi);
             $raccoltaCardNoleggi=str_replace('%valutazione%',"",$raccoltaCardNoleggi);
             $raccoltaCardNoleggi=str_replace('%vediAltro%',"",$raccoltaCardNoleggi);
@@ -156,7 +164,7 @@
             $raccoltaCardAcquisti=str_replace('%listaCard%',$listaAcquisti,$raccoltaCardAcquisti);
             $raccoltaCardAcquisti=str_replace('%spazio%',"",$raccoltaCardAcquisti);
             $raccoltaCardAcquisti=str_replace('%categoria%',"",$raccoltaCardAcquisti);
-            $raccoltaCardAcquisti=str_replace('%nomeSubmit%',"",$raccoltaCardAcquisti);
+            $raccoltaCardAcquisti=str_replace('%nomeSubmit%',"raccoltaPersonale",$raccoltaCardAcquisti);
             $raccoltaCardAcquisti=str_replace('%prezzo%',"",$raccoltaCardAcquisti);
             $raccoltaCardAcquisti=str_replace('%valutazione%',"",$raccoltaCardAcquisti);
             $raccoltaCardAcquisti=str_replace('%vediAltro%',"",$raccoltaCardAcquisti);

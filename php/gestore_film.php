@@ -94,11 +94,11 @@ class GestoreFilm{
 
     public function controlloErroriForm(){
         //controlli sul titolo
-        if(strlen($this->titolo)>50)
-            $this->erroriFilm['errTitolo']=$this->erroriFilm['errTitolo'].'<div class="error_box">Il titolo non puó superare i 50 caratteri (spazi inclusi)</dir>';
-        if($this->presenzaTitolo())
-            $this->erroriFilm['errTitolo']=$this->erroriFilm['errTitolo'].'<div class="error_box">'.$this->titolo.' é giá presente nel database</dir>';
-
+        // if(strlen($this->titolo)>50)
+        //     $this->erroriFilm['errTitolo']=$this->erroriFilm['errTitolo'].'<div class="error_box">Il titolo non puó superare i 50 caratteri (spazi inclusi)</dir>';
+        // if($this->presenzaTitolo())
+        //     $this->erroriFilm['errTitolo']=$this->erroriFilm['errTitolo'].'<div class="error_box">'.$this->titolo.' é giá presente nel database</dir>';
+return true;
         
 
 

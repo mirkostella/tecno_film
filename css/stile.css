@@ -620,7 +620,10 @@ summary{display: none;}
 }
 
 /* form inserimento film amministratore */
-
+.formFilm input{
+    border-color: red !important;
+    
+}
 
 
 /* ------------------------- pagina regolamento ------------------------- */    
