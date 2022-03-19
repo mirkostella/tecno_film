@@ -150,19 +150,15 @@
         $posizione=1;
         $connessione=new Connessione();
         $connessione->apriConnessione();
-        if($risultatoQuery){
-            //ordino le card in base alla valutazione
-            
-            $i=1;
-                foreach($risultatoQuery as $valore){
-                    $generi=recuperaGeneri($valore['id']);
-                    $cardAttuale=new CardClassificata($valore,$posizione,$generi);
-                    $listaCards=$listaCards.$cardAttuale->aggiungiBaseClassificata();
-                    $posizione++;
-                }
-                $connessione->chiudiConnessione();
-            }
-            return $listaCards;
+        //ordino le card in base alla valutazione
+        foreach($risultatoQuery as $valore){
+            $generi=recuperaGeneri($valore['id']);
+            $cardAttuale=new CardClassificata($valore,$posizione,$generi);
+            $listaCards=$listaCards.$cardAttuale->aggiungiBaseClassificata();
+            $posizione++;
+        }
+        $connessione->chiudiConnessione();
+        return $listaCards;
 
     }
 

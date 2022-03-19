@@ -6,7 +6,7 @@
     //recupera le informazioni per costruire una card di un film in base all'id
     function recuperaInfo($id){
         $queryMediaValutazioni="SELECT AVG(valutazione) as media FROM recensione WHERE ID_film=$id GROUP BY ID_film";
-        $queryInfo="SELECT titolo,trama,TIME_TO_SEC(durata) as durata,data_uscita,prezzo_acquisto,prezzo_noleggio,path,descrizione,nome_genere
+        $queryInfo="SELECT titolo,trama,TIME_TO_SEC(durata) as durata,data_uscita,prezzo_acquisto,prezzo_noleggio,path,descrizione
          FROM film JOIN foto_film ON (film.copertina=foto_film.ID) JOIN appartenenza ON (film.ID=appartenenza.ID_film) JOIN genere ON(appartenenza.ID_genere=genere.ID) WHERE ID_film=$id";
         $connessione=new Connessione();
         $connessione->apriConnessione();
@@ -19,6 +19,9 @@
             array_push($media,$mediaFilm);
         }
         $info=$connessione->interrogaDB($queryInfo);
+        echo 'info del film <br>';
+        print_r($info);
+        
         $infoFilm=array(
             'id'=>$id,
             'copertina'=>$info[0]['path'],
@@ -64,8 +67,11 @@
             $categoriaCard=file_get_contents('../componenti/categoria_index.html');
             $categoriaCard=str_replace('%listaCard%',$listaCard,$categoriaCard);
             $categoriaCard=str_replace('%spazio%',"",$categoriaCard);
-            $categoriaCard=str_replace('%categoria%',"<h2 id=\"nuove\">Nuove uscite</h2>",$categoriaCard);
-            $categoriaCard=str_replace('%nomeSubmit%',"vediNuoveUscite",$categoriaCard);
+            if(isset($_GET['nomeCategoria']))
+                $categoriaCard=str_replace('%categoria%',"",$categoriaCard);
+            else
+                $categoriaCard=str_replace('%categoria%',"<h2 id=\"nuove\">Nuove uscite</h2>",$categoriaCard);
+            $pulsanteVediAltro=str_replace('%nomeCategoria%',"Nuove Uscite",$pulsanteVediAltro);
             $categoriaCard=str_replace('%vediAltro%',$pulsanteVediAltro,$categoriaCard);
             $categoriaCard=str_replace('%collegamento%',"film_categoria.php",$categoriaCard);
             return $categoriaCard;
@@ -100,10 +106,13 @@
             $categoriaCard=file_get_contents('../componenti/categoria_index.html');
             $categoriaCard=str_replace('%listaCard%',$listaCard,$categoriaCard);
             $categoriaCard=str_replace('%spazio%',"<hr>",$categoriaCard);
-            $categoriaCard=str_replace('%categoria%',"<h2 id=\"scelti\">Scelti per te</h2>",$categoriaCard);
-            $categoriaCard=str_replace('%nomeSubmit%',"sceltiPerTe",$categoriaCard);
+            if(isset($_GET['nomeCategoria']))
+                $categoriaCard=str_replace('%categoria%',"",$categoriaCard);
+            else
+                $categoriaCard=str_replace('%categoria%',"<h2 id=\"nuove\">Scelti per te</h2>",$categoriaCard);
+            $pulsanteVediAltro=str_replace('%nomeCategoria%',"Scelti per te",$pulsanteVediAltro);
             $categoriaCard=str_replace('%vediAltro%',$pulsanteVediAltro,$categoriaCard);
-            $categoriaCard=str_replace('%collegamento%',"search_result.php",$categoriaCard);
+            $categoriaCard=str_replace('%collegamento%',"film_categoria.php",$categoriaCard);
             return $categoriaCard;
         }
     }
@@ -124,11 +133,14 @@
             $pulsanteVediAltro=file_get_contents('../componenti/vediAltro.html');
             $categoriaCard=file_get_contents('../componenti/categoria_index.html');
             $categoriaCard=str_replace('%listaCard%',$listaCard,$categoriaCard);
-            $categoriaCard=str_replace('%spazio%',"<hr>",$categoriaCard);
-            $categoriaCard=str_replace('%categoria%',"<h2 id=\"azione\">Azione</h2>",$categoriaCard);
-            $categoriaCard=str_replace('%nomeSubmit%',"azione",$categoriaCard);
+            $categoriaCard=str_replace('%spazio%',"",$categoriaCard);
+            if(isset($_GET['nomeCategoria']))
+                $categoriaCard=str_replace('%categoria%',"",$categoriaCard);
+            else
+                $categoriaCard=str_replace('%categoria%',"<h2 id=\"nuove\">Azione</h2>",$categoriaCard);
+            $pulsanteVediAltro=str_replace('%nomeCategoria%',"Azione",$pulsanteVediAltro);
             $categoriaCard=str_replace('%vediAltro%',$pulsanteVediAltro,$categoriaCard);
-            $categoriaCard=str_replace('%collegamento%',"search_result.php",$categoriaCard);
+            $categoriaCard=str_replace('%collegamento%',"film_categoria.php",$categoriaCard);
             return $categoriaCard;
         }
     }
@@ -223,13 +235,14 @@
 
     //tra gli ultimi aggiunti restituisce la lista dei film che sono tra i migliori per ogni genere (generi scelti casualmente tra tutti)
     function recuperaMiglioriPerGenere(){
-        //recupero tutti i generi
-        $queryGeneri="SELECT nome_genere FROM genere";  
+        //recupero i generi associati ad almeno un film
+        $queryGeneri="SELECT DISTINCT nome_genere FROM genere JOIN appartenenza ON(genere.ID=appartenenza.ID_genere)";  
         $connessione=new Connessione();
         $connessione->apriConnessione();
         $arrayGeneri=$connessione->interrogaDB($queryGeneri);
         $generiScelti=array();
         if($arrayGeneri){
+
             shuffle($arrayGeneri);
             for($i=count($arrayGeneri);$i>0;$i--){
                 $genere=array_pop($arrayGeneri);
@@ -250,18 +263,14 @@
             array_push($listaCardGeneri,recuperaInfo(array_pop($generiScelti)[0]));
             $filmTrovati--;
         }
+       
         $listaCard=creaListaCardClassificata($listaCardGeneri);
-        if(!$listaCard)
-            return false;
-        else{
-            $categoriaCard=file_get_contents('../componenti/categoria_index.html');
-            $categoriaCard=str_replace('%listaCard%',$listaCard,$categoriaCard);
-            $categoriaCard=str_replace('%spazio%',"",$categoriaCard);
-            $categoriaCard=str_replace('%categoria%',"<h2 id=\"topGenere\">Top 5 per genere</h2>",$categoriaCard);
-        
-            $categoriaCard=str_replace('%vediAltro%',"",$categoriaCard);
-        
-            return $categoriaCard;
-        }
+        $categoriaCard=file_get_contents('../componenti/categoria_index.html');
+        $categoriaCard=str_replace('%listaCard%',$listaCard,$categoriaCard);
+        $categoriaCard=str_replace('%spazio%',"",$categoriaCard);
+        $categoriaCard=str_replace('%categoria%',"<h2 id=\"topGenere\">Top 5 per genere</h2>",$categoriaCard);
+        $categoriaCard=str_replace('%vediAltro%',"",$categoriaCard);
+
+        return $categoriaCard;
     }
 ?>

@@ -11,7 +11,8 @@
     $struttura->aggiungiAccount($pagina);
     $struttura->aggiungiMenu($pagina,"","");
     $infoFilm=recuperaInfo($_GET['idFilm']);
-    $film=new Card($infoFilm);
+    $generiFilm=recuperaGeneri($_GET['idFilm']);
+    $film=new Card($infoFilm,$generiFilm);
     if(isset($_GET['noleggio']))
         $pagina=str_replace('%tipoConferma%',"noleggio",$pagina);
     else
@@ -22,7 +23,15 @@
     $pagina=str_replace('%path%',$film->copertina,$pagina);
     $pagina=str_replace('%annoUscita%',$film->annoUscita,$pagina);
     $pagina=str_replace('%durata%',$film->durata,$pagina);
-    $pagina=str_replace('%genere%',$film->genere,$pagina);
+    $stringaGeneri='';
+    $copiaGeneriFilm=$film->genere;
+    $primoGenere=array_pop($copiaGeneriFilm)['generiFilm'];
+    $stringaGeneri=$stringaGeneri.$primoGenere;
+    foreach($copiaGeneriFilm as &$valore){
+        $prossimoGenere=$valore['generiFilm'];
+        $stringaGeneri=$stringaGeneri.' , '.$prossimoGenere;
+    }
+    $pagina=str_replace('%genere%',$stringaGeneri,$pagina);
     $struttura->aggiungiConfermaAcquistoNoleggio($pagina);
     $pagina=str_replace('%prezzoN%',$film->prezzoN,$pagina);
     $pagina=str_replace('%prezzoA%',$film->prezzoA,$pagina);
