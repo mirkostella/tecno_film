@@ -10,7 +10,7 @@ $header=file_get_contents('../componenti/header_admin_log.html');
 $menu=file_get_contents('../componenti/menu_admin_log.html');
 $pagina=str_replace('%headerAdmin%',$header,$pagina);
 $pagina=str_replace('%menuAdmin%',$menu,$pagina);
-$queryNomiGeneri="SELECT DISTINCT nome_genere FROM genere";
+$queryNomiGeneri="SELECT nome_genere FROM genere ORDER BY nome_genere ASC";
 $connessione=new Connessione();
 $connessione->apriConnessione();
 $generi=$connessione->interrogaDB($queryNomiGeneri);

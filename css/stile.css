@@ -620,9 +620,43 @@ summary{display: none;}
 }
 
 /* form inserimento film amministratore */
-.formFilm input{
-    border-color: red !important;
+#formFilm{
+    width: 70%;
+    border:1px solid red;
+    display:flex;
+    flex-direction: column;
+    margin:auto;
+}
+#formFilm label,form[id="formFilm"] input:not(input[type="checkbox"]){
+    width: 50%;
+    margin:auto;
     
+}
+form[id="formFilm"] input[type="checkbox"]{
+    display: inline;
+}
+#formFilm div[class="ordinamento"] label{
+    display: inline-block;
+}
+
+#formFilm label{
+    margin-top:1em;
+    margin-bottom:0.5em;
+}
+
+.ordinamento{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+textarea[id="trama"],fieldset[id="generi"]{
+    width: 50%;
+    margin:auto;
+}
+form[id="formFilm"] input[class="btn"]{
+    margin-top:2em;
+    width: 30%;
 }
 
 

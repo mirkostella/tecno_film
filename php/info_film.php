@@ -11,7 +11,21 @@
         $connessione=new Connessione();
         $connessione->apriConnessione();
         $media=$connessione->interrogaDB($queryMediaValutazioni);
+        $copiaMedia=null;
+        if(!$media || is_null($media[0]['media'])){
+            $copiaMedia=array(
+                'media'=> 0
+            );
+        }
+        else
+            $copiaMedia=array(
+                'media'=>$media[0]['media']
+            );
+
         $info=$connessione->interrogaDB($queryInfo);
+        echo 'info........... <br>';
+        print_r($info);
+        echo '<br><br><br>';
         $durata=$info[0]['durata']/60;
         $dataUscita=strtotime($info[0]['data_uscita']);
         $cambioFormato=date('d/m/Y', $dataUscita);
@@ -21,7 +35,7 @@
             'descrizione'=>$info[0]['descrizione'],
             'titolo'=>$info[0]['titolo'],
             'genere'=>$info[0]['nome_genere'],
-            'valutazione'=>$media[0]['media'],
+            'valutazione'=>$copiaMedia['media'],
             'prezzoN'=>$info[0]['prezzo_noleggio'],
             'prezzoA'=>$info[0]['prezzo_acquisto'],
             'annoUscita'=>$cambioFormato,
@@ -48,26 +62,32 @@
         $connessione->apriConnessione();
         $arrayGeneri=$connessione->interrogaDB($queryGeneri);
         shuffle($arrayGeneri);
-        $generiScelti=array();
-        
-        for($i=count($arrayGeneri);$i>0;$i--){
+        $filmScelti=array();
+        echo "array generi <br>";
+        print_r($arrayGeneri);
+        foreach($arrayGeneri as $valore){
             $genere=array_pop($arrayGeneri);
+            $queryLorenzo='SELECT idMigliore,MAX(voto) as massimo FROM (
+                SELECT film.ID as idMigliore,AVG(valutazione) as voto FROM film JOIN recensione ON(recensione.ID_film=film.ID) JOIN appartenenza ON(appartenenza.ID_film=film.ID) JOIN genere ON(genere.ID=appartenenza.ID_genere) WHERE nome_genere=\''.$valore['nome_genere'].'\' GROUP BY idMigliore ORDER BY film.data_uscita DESC) as filmConMedieVoti LIMIT 1';
             //seleziona i film piú recenti con il voto piú alto per genere
-            $querySingoloGenere="SELECT idFilm FROM filmvalutazionegenere WHERE nome_genere='".$genere['nome_genere']."' AND voto IS NOT NULL AND voto>=ALL(SELECT voto FROM filmvalutazionegenere WHERE nome_genere='".$genere['nome_genere']." AND voto IS NOT NULL') ORDER BY data_uscita DESC";
-            $film=$connessione->interrogaDB($querySingoloGenere);
-            array_push($generiScelti,$film[0]['idFilm']);        
+            $film=$connessione->interrogaDB($queryLorenzo);
+            if(count($film)>0 && !is_null($film[0]['idMigliore']))
+                array_push($filmScelti,$film[0]['idMigliore']);        
         }
-        
+        echo "array filmscelti <br>";
+        print_r($filmScelti);
+        $connessione->chiudiConnessione();
         //$generi scelti a questo punto contiene gli id dei film da inserire nella lista
         $listaCardGeneri=array();
-        $filmTrovati=count($generiScelti);
+        $filmTrovati=count($filmScelti);
         if($filmTrovati>5)
             $filmTrovati=5;
-        while($filmTrovati){
-            array_push($listaCardGeneri,recuperaInfo(array_pop($generiScelti)[0]));
-            $filmTrovati--;
+        for($i=0;$i<$filmTrovati;$i++){
+            $idFilmCorrente=$filmScelti[$i];
+            array_push($listaCardGeneri,recuperaInfo($idFilmCorrente));
         }
-       
+        echo "array lista card generi <br>";
+        print_r($listaCardGeneri);
         $listaCard=creaListaCardClassificata($listaCardGeneri);
         $categoriaCard=file_get_contents('../componenti/categoria_index.html');
         $categoriaCard=str_replace('%listaCard%',$listaCard,$categoriaCard);
@@ -95,7 +115,6 @@
             $pulsanteVediAltro=file_get_contents('../componenti/vediAltro.html');
             $categoriaCard=file_get_contents('../componenti/categoria_index.html');
             $categoriaCard=str_replace('%listaCard%',$listaCard,$categoriaCard);
-            $categoriaCard=str_replace('%spazio%',"",$categoriaCard);
             if(isset($_GET['nomeCategoria']))
                 $categoriaCard=str_replace('%categoria%',"",$categoriaCard);
             else
@@ -134,7 +153,6 @@
             $pulsanteVediAltro=file_get_contents('../componenti/vediAltro.html');
             $categoriaCard=file_get_contents('../componenti/categoria_index.html');
             $categoriaCard=str_replace('%listaCard%',$listaCard,$categoriaCard);
-            $categoriaCard=str_replace('%spazio%',"<hr>",$categoriaCard);
             if(isset($_GET['nomeCategoria']))
                 $categoriaCard=str_replace('%categoria%',"",$categoriaCard);
             else
@@ -162,11 +180,10 @@
             $pulsanteVediAltro=file_get_contents('../componenti/vediAltro.html');
             $categoriaCard=file_get_contents('../componenti/categoria_index.html');
             $categoriaCard=str_replace('%listaCard%',$listaCard,$categoriaCard);
-            $categoriaCard=str_replace('%spazio%',"",$categoriaCard);
             if(isset($_GET['nomeCategoria']))
                 $categoriaCard=str_replace('%categoria%',"",$categoriaCard);
             else
-                $categoriaCard=str_replace('%categoria%',"<h2 id=\"nuove\">Azione</h2>",$categoriaCard);
+                $categoriaCard=str_replace('%categoria%',"<h2 id=\"azione\">Azione</h2>",$categoriaCard);
             $pulsanteVediAltro=str_replace('%nomeCategoria%',"Azione",$pulsanteVediAltro);
             $categoriaCard=str_replace('%vediAltro%',$pulsanteVediAltro,$categoriaCard);
             $categoriaCard=str_replace('%collegamento%',"film_categoria.php",$categoriaCard);

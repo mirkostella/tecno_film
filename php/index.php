@@ -25,11 +25,14 @@
     
     if(isset($_SESSION['loggato']) && $_SESSION['loggato']==true){
         $risultatoCard=recuperaSceltiPerTe(5);
-        if($risultatoCard)
+        if($risultatoCard){
             $pagina=str_replace('%sceltiPerTe%',$risultatoCard,$pagina);
+            $pagina=str_replace('%hrSceltiPerTe%',"<hr>",$pagina);
+        }
         else{
             $pagina=str_replace('<li><a href=#scelti>Scelti per te</a></li>',"",$pagina);
             $pagina=str_replace('%sceltiPerTe%',"",$pagina);
+            $pagina=str_replace('%hrSceltiPerTe%',"",$pagina);
         }
 
     }

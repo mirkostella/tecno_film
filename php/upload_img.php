@@ -2,6 +2,7 @@
     class gestione_img{
         public $erroriImg;
         public $file_path=null;
+        public $dimensioneFile;
         
 
         public function __construct(){
@@ -28,10 +29,10 @@
             $dir_upload = "../img/".$directory;
             $uploaded_file = $dir_upload . basename($_FILES[$input_name]["name"]);
             $imgFileType = strtolower(pathinfo($uploaded_file, PATHINFO_EXTENSION));
-
+            $this->dimensioneFile=round($_FILES[$input_name]["size"]/(pow(2,20)),2);
             //check file size
             if($_FILES[$input_name]["size"] > 4000000)
-                $this->erroriImg['errDim']="<div class=\"msg_box error_box\">Il file è troppo grande, carica un file di dimensione minore di 4MB.</div>";
+                $this->erroriImg['errDim']="<div class=\"msg_box error_box\">Il file è troppo grande, carica un file di dimensione minore di 4MB. (dimensione del file: '".$this->dimensioneFile."'MB)</div>";
             
             //check formato file
             if($imgFileType != "jpg"  && $imgFileType != "png" && $imgFileType!= "jpeg")
