@@ -95,7 +95,7 @@
         $categoriaCard=str_replace('%categoria%',"<h2 id=\"topGenere\">Top 5 per genere</h2>",$categoriaCard);
         $categoriaCard=str_replace('%vediAltro%',"",$categoriaCard);
 
-        return $categoriaCard;
+        return $categoriaCard;   
     }
     
     //recupera le informazioni per creare le card nuove uscite
