@@ -26,14 +26,23 @@
     $struttura->aggiungiAcquistoNoleggio($pagina);
 
     $infoFilm=recuperaInfo($idFilm);
+    $infoGeneriFilm=recuperaGeneri($idFilm);
 
-    $film=new Card($infoFilm);
+    $film=new Card($infoFilm,$infoGeneriFilm);
     $pagina=str_replace('%idFilm%',$film->id,$pagina);
     $pagina=str_replace('%titolo%',$film->titolo,$pagina);
     $pagina=str_replace('%path%',$film->copertina,$pagina);
     $pagina=str_replace('%annoUscita%',$film->annoUscita,$pagina);
     $pagina=str_replace('%durata%',$film->durata,$pagina);
-    $pagina=str_replace('%genere%',$film->genere,$pagina);
+    $stringaGeneri='';
+    $copiaGeneriFilm=$film->genere;
+    $primoGenere=array_pop($copiaGeneriFilm)['generiFilm'];
+    $stringaGeneri=$stringaGeneri.$primoGenere;
+    foreach($copiaGeneriFilm as &$valore){
+        $prossimoGenere=$valore['generiFilm'];
+        $stringaGeneri=$stringaGeneri.' , '.$prossimoGenere;
+    }
+    $pagina=str_replace('%genere%',$stringaGeneri,$pagina);
     $pagina=str_replace('%prezzoN%',$film->prezzoN,$pagina);
     $pagina=str_replace('%prezzoA%',$film->prezzoA,$pagina);
     $pagina=str_replace('%trama%',$film->trama,$pagina);

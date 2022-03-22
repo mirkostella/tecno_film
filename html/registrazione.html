@@ -39,8 +39,8 @@
                         <label for="cognome">Cognome:</label>
                         <input type="text" name="cognome" id="cognome" placeholder="Inserisci cognome" required="required" class="soloBordoBottom">
                         %error_data%
-                        <label for="nome">Data di nascita:</label>
-                        <input type="date" name="data" id="data" placeholder="Inserisci data di nascita" required="required" class="soloBordoBottom">
+                        <label for="data">Data di nascita:</label>
+                        <input type="date" name="data" id="data"  required="required" class="soloBordoBottom">
                         <label for="sesso">Sesso:</label>
                         <select name="sesso" id="sesso">
                             <option value="nonSelezionato">Seleziona</option>
@@ -55,10 +55,10 @@
                         <legend>Dati account</legend>
                         %error_email%
                         %error_email_usata%
-                        <label for="nome">Email:</label>
+                        <label for="email">Email:</label>
                         <input type="text" name="email" id="email" placeholder="Inserisci email" required="required" class="soloBordoBottom">
                         %error_username%
-                        <label for="nome">Username:</label>
+                        <label for="username">Username:</label>
                         <input type="text" name="username" id="username" placeholder="Inserisci username" required="required" class="soloBordoBottom">
                         %error_pwd%
                         <label for="password">Password:</label>
@@ -69,7 +69,7 @@
                         %error_foto%
                         <label for="immagineProfilo">Immagine profilo:</label>
                         <img src="../img/img_componenti/profilo.jpg" alt="anteprima immagine profilo">
-                        <input type="file" name="immagineProfilo">
+                        <input type="file" id="immagineProfilo" name="immagineProfilo">
                     </fieldset>
                     <input type="submit" name="invia" id="invia" value="Registrati" class="btn btnAzione">
                     %error_reg%

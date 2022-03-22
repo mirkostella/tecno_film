@@ -41,11 +41,13 @@ class GestoreRecensioni{
         $this->listaRecensioni=array();
         if($recensioni){
             foreach($recensioni as $valore){
+                $dataRecensione=strtotime($valore['data']);
+                $cambioFormato=date('d/m/Y H:i:s',$dataRecensione);
                 $datiRecensione=array(
                     'id'=>$valore['idRecensione'],
                     'idFilm'=>$valore['ID_film'],
                     'idUtente'=>$valore['ID_utente'],
-                    'data'=>$valore['data'],
+                    'data'=>$cambioFormato,
                     'testo'=>$valore['testo'],
                     'valutazione'=>$valore['valutazione']
             );
