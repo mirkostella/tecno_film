@@ -60,22 +60,21 @@
         $queryGeneri="SELECT nome_genere FROM genere WHERE nome_genere IN (SELECT nome_genere FROM genere JOIN appartenenza ON(appartenenza.ID_genere=genere.ID))";  
         $connessione=new Connessione();
         $connessione->apriConnessione();
-        $arrayGeneri=$connessione->interrogaDB($queryGeneri);
-        shuffle($arrayGeneri);
         $filmScelti=array();
-        echo "array generi <br>";
-        print_r($arrayGeneri);
-        foreach($arrayGeneri as $valore){
-            $genere=array_pop($arrayGeneri);
-            $queryLorenzo='SELECT idMigliore,MAX(voto) as massimo FROM (
-                SELECT film.ID as idMigliore,AVG(valutazione) as voto FROM film JOIN recensione ON(recensione.ID_film=film.ID) JOIN appartenenza ON(appartenenza.ID_film=film.ID) JOIN genere ON(genere.ID=appartenenza.ID_genere) WHERE nome_genere=\''.$valore['nome_genere'].'\' GROUP BY idMigliore ORDER BY film.data_uscita DESC) as filmConMedieVoti LIMIT 1';
-            //seleziona i film piú recenti con il voto piú alto per genere
-            $film=$connessione->interrogaDB($queryLorenzo);
-            if(count($film)>0 && !is_null($film[0]['idMigliore']))
-                array_push($filmScelti,$film[0]['idMigliore']);        
+        $arrayGeneri=$connessione->interrogaDB($queryGeneri);
+        if($arrayGeneri){
+            shuffle($arrayGeneri);
+            foreach($arrayGeneri as $valore){
+                $genere=array_pop($arrayGeneri);
+                $queryLorenzo='SELECT idMigliore,MAX(voto) as massimo FROM (
+                    SELECT film.ID as idMigliore,AVG(valutazione) as voto FROM film JOIN recensione ON(recensione.ID_film=film.ID) JOIN appartenenza ON(appartenenza.ID_film=film.ID) JOIN genere ON(genere.ID=appartenenza.ID_genere) WHERE nome_genere=\''.$valore['nome_genere'].'\' GROUP BY idMigliore ORDER BY film.data_uscita DESC) as filmConMedieVoti LIMIT 1';
+                //seleziona i film piú recenti con il voto piú alto per genere
+                $film=$connessione->interrogaDB($queryLorenzo);
+                if(count($film)>0 && !is_null($film[0]['idMigliore']))
+                    array_push($filmScelti,$film[0]['idMigliore']);        
+            }
         }
-        echo "array filmscelti <br>";
-        print_r($filmScelti);
+        
         $connessione->chiudiConnessione();
         //$generi scelti a questo punto contiene gli id dei film da inserire nella lista
         $listaCardGeneri=array();
@@ -260,10 +259,12 @@
         $connessione->chiudiConnessione();
         //creo l'array con le info dei film in base agli id dei 10 restituiti dalla query precedente
         $filmPiuVisti=array();
-        foreach($ris as $valore){
-        array_push($filmPiuVisti,recuperaInfo($valore['idfilm']));
+        if($ris){
+            foreach($ris as $valore){
+                array_push($filmPiuVisti,recuperaInfo($valore['idfilm']));
+                }
         }
-
+        
         $listaCard=creaListaCardClassificata($filmPiuVisti);
         if(!$listaCard)
             return false;

@@ -146,6 +146,8 @@
     }
     
     function creaListaCardClassificata($risultatoQuery){
+        if(!$risultatoQuery)
+            return "";
         $listaCards="";
         $posizione=1;
         $connessione=new Connessione();
