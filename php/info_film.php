@@ -97,6 +97,14 @@
         return $categoriaCard;   
     }
     
+    function pulsanteVediAltro($nomeCategoria,$collegamento, $limite){
+        $pulsanteVediAltro=file_get_contents('../componenti/vediAltro.html');
+        $pulsanteVediAltro=str_replace('%nomeCategoria%',$nomeCategoria,$pulsanteVediAltro);
+        $pulsanteVediAltro=str_replace('%collegamento%',$collegamento,$pulsanteVediAltro);
+        $pulsanteVediAltro=str_replace('%limite%', $limite ,$pulsanteVediAltro);
+        return $pulsanteVediAltro;
+    }
+
     //recupera le informazioni per creare le card nuove uscite
     function recuperaNuoveUscite($limite){
         $queryCard="SELECT film.ID as id,titolo,nome_genere as genere,copertina,trama,TIME_TO_SEC(durata) as durata,data_uscita as annoUscita,prezzo_acquisto as prezzoA,prezzo_noleggio as prezzoN,
@@ -111,21 +119,20 @@
         if(!$listaCard)
             return false;
         else{
-            $pulsanteVediAltro=file_get_contents('../componenti/vediAltro.html');
+            //$pulsanteVediAltro=file_get_contents('../componenti/vediAltro.html');
             $categoriaCard=file_get_contents('../componenti/categoria_index.html');
             $categoriaCard=str_replace('%listaCard%',$listaCard,$categoriaCard);
             if(isset($_GET['nomeCategoria']))
                 $categoriaCard=str_replace('%categoria%',"",$categoriaCard);
             else
                 $categoriaCard=str_replace('%categoria%',"<h2 id=\"nuove\">Nuove uscite</h2>",$categoriaCard);
-            $pulsanteVediAltro=str_replace('%nomeCategoria%',"Nuove Uscite",$pulsanteVediAltro);
-            $categoriaCard=str_replace('%vediAltro%',$pulsanteVediAltro,$categoriaCard);
-            $categoriaCard=str_replace('%collegamento%',"film_categoria.php",$categoriaCard);
+            //$pulsanteVediAltro=str_replace('%nomeCategoria%',"Nuove Uscite",$pulsanteVediAltro);
+            //$categoriaCard=str_replace('%vediAltro%',$pulsanteVediAltro,$categoriaCard);
+            //$categoriaCard=str_replace('%collegamento%',"film_categoria.php",$categoriaCard);
             return $categoriaCard;
         }
-
     }
-    
+
     //restituisce i film che non sono stati acquistati o noleggiati dello stesso genere dell'ultimo film acquistato o noleggiato.
     //i film vengono ordinati prima per data e poi per valutazione (maggiore uguale a 3 stelle)
     function recuperaSceltiPerTe($limite){

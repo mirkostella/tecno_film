@@ -14,17 +14,23 @@
     $inAttivo="<li><a href=\"../php/index.php\" xml:lang=\"en\" lang=\"en\">Home</a></li>";
     $attivo="<li xml:lang=\"en\" lang=\"en\" id=\"attivo\">Home</li>";
     $struttura->aggiungiMenu($pagina,$inAttivo,$attivo);
+    $ncard=5;
     
-    $risultatoCard=recuperaNuoveUscite(5);
-    if($risultatoCard)
+    $risultatoCard=recuperaNuoveUscite($ncard);
+    if($risultatoCard){
         $pagina=str_replace('%nuoveUscite%',$risultatoCard,$pagina);
+        $pulsanteVedialtro=pulsanteVediAltro('Nuove Uscite','film_categoria.php', $ncard+5);
+        $pagina=str_replace('%vediAltroNuoveUscite%',$pulsanteVedialtro ,$pagina);
+    }
     else{
         $pagina=str_replace('%nuoveUscite%',"",$pagina);
         $pagina=str_replace('<li><a href="#nuove">Nuove uscite</a></li>',"",$pagina);
+        $pagina=str_replace('%vediAltroNuoveUscite%',"",$pagina);
     }
+
     
     if(isset($_SESSION['loggato']) && $_SESSION['loggato']==true){
-        $risultatoCard=recuperaSceltiPerTe(5);
+        $risultatoCard=recuperaSceltiPerTe($ncard);
         if($risultatoCard){
             $pagina=str_replace('%sceltiPerTe%',$risultatoCard,$pagina);
             $pagina=str_replace('%hrSceltiPerTe%',"<hr>",$pagina);
@@ -34,22 +40,25 @@
             $pagina=str_replace('%sceltiPerTe%',"",$pagina);
             $pagina=str_replace('%hrSceltiPerTe%',"",$pagina);
         }
-
     }
     else{
         $pagina=str_replace('%sceltiPerTe%',"",$pagina);
         $pagina=str_replace('<li><a href=#scelti>Scelti per te</a></li>',"",$pagina);
+        $pagina=str_replace('%hrSceltiPerTe%',"",$pagina);
     }
     
-    $risultatoCard=recuperaAzione(5);
+    $risultatoCard=recuperaAzione($ncard);
     if($risultatoCard){
         $pagina=str_replace('%azione%',$risultatoCard,$pagina);
         $pagina=str_replace('%hrAzione%',"<hr>",$pagina);
+        $pulsanteVedialtro=pulsanteVediAltro('Azione','film_categoria.php', $ncard+5);
+        $pagina=str_replace('%vediAltroAzione%',$pulsanteVedialtro ,$pagina);
     }
     else{
         $pagina=str_replace('%azione%',"",$pagina);
         $pagina=str_replace('%hrAzione%',"",$pagina);
         $pagina=str_replace('<li><a href="#azione">Azione</a></li>',"",$pagina);
+        $pagina=str_replace('%vediAltroAzione%',"",$pagina);
     }
         
 

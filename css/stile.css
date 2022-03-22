@@ -113,7 +113,7 @@ header{
     margin-right:3em;
     margin-left:5em;
 }
-#cercaTitolo{
+#input_ricerca{
     width: 100%;
     line-height: 2em;
     height: 1.7em;
@@ -121,7 +121,7 @@ header{
     background-color: var(--colore-cerca-titolo) ;
     max-width: 21em;
 }
-#invioTitolo{
+#submit_ricerca{
     padding: 0 0.6em;
     height: 1.9em;
     font-size: 1.1em;

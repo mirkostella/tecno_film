@@ -145,5 +145,7 @@ FOREIGN KEY (`ID_utente`) REFERENCES `utente`(`ID`) ON DELETE CASCADE ON UPDATE 
 FOREIGN KEY (`ID_recensione`) REFERENCES `recensione`(`ID`) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+CREATE VIEW `appartenenzaNoDoppioni` AS SELECT `ID_film`, `ID_genere` FROM `appartenenza` JOIN `genere` ON (appartenenza.ID_genere=genere.ID) GROUP BY `ID_film`; 
+
 COMMIT;
 SET FOREIGN_KEY_CHECKS=1;
