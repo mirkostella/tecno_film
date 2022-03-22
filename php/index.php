@@ -28,7 +28,7 @@
         }
         else{
             $pagina=str_replace('<li><a href=#scelti></a>Scelti per te</li>',"", $pagina);
-            $pagina=str_replace('%linkSceltiPerTe%',"",$pagina);
+            $pagina=str_replace('%sceltiPerTe%',"",$pagina);
         }
 
     }
