@@ -4,13 +4,6 @@
     require_once ('info_film.php');
     require_once ('connessione.php');
 
-    date_default_timezone_set("Europe/Rome");
-    $data=date("d/m/Y H:m:s");
-    print_r($data);
-    echo "</br>";
-    $unaSettimanaIndietro=date("d/m/Y H:m:s",strtotime('-1 week'));
-    print_r($unaSettimanaIndietro);
-
     $pagina=file_get_contents("../html/classifiche.html");
     $struttura=new Struttura();
     $struttura->aggiungiHeader($pagina);
@@ -18,9 +11,6 @@
     $inAttivo="<li><a href=\"../php/classifiche.php\">Classifiche</a></li>";
     $attivo="<li id=\"attivo\">Classifiche</li>";
     $struttura->aggiungiMenu($pagina,$inAttivo,$attivo);
-
-    $connessione=new Connessione();
-    $connessione->apriConnessione();
 
     ////////TOP 5 DELLA SETTIMANA//////////
     
@@ -33,18 +23,12 @@
     $pagina=str_replace('%listaCardVisti%',$listaCards,$pagina);
 
     
-    ////////I 10 FILM PIU VOTATI//////////
+    ////////I 10 FILM PIU VOTATI PER GENERE//////////
 
     $listaCards=recuperaMiglioriPerGenere();
     $pagina=str_replace('%listaCardMiglioriGenere%',$listaCards,$pagina);
     
     
-    
-    
-    $connessione->chiudiConnessione();
     echo $pagina;
-
-
-
 
 ?>

@@ -113,7 +113,7 @@ header{
     margin-right:3em;
     margin-left:5em;
 }
-#input_ricerca{
+#cercaTitolo{
     width: 100%;
     line-height: 2em;
     height: 1.7em;
@@ -121,7 +121,7 @@ header{
     background-color: var(--colore-cerca-titolo) ;
     max-width: 21em;
 }
-#submit_ricerca{
+#invioTitolo{
     padding: 0 0.6em;
     height: 1.9em;
     font-size: 1.1em;
@@ -618,6 +618,47 @@ summary{display: none;}
     cursor: pointer;
     font-size: 1.1em;
 }
+
+/* form inserimento film amministratore */
+#formFilm{
+    width: 70%;
+    border:1px solid red;
+    display:flex;
+    flex-direction: column;
+    margin:auto;
+}
+#formFilm label,form[id="formFilm"] input:not(input[type="checkbox"]){
+    width: 50%;
+    margin:auto;
+    
+}
+form[id="formFilm"] input[type="checkbox"]{
+    display: inline;
+}
+#formFilm div[class="ordinamento"] label{
+    display: inline-block;
+}
+
+#formFilm label{
+    margin-top:1em;
+    margin-bottom:0.5em;
+}
+
+.ordinamento{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+textarea[id="trama"],fieldset[id="generi"]{
+    width: 50%;
+    margin:auto;
+}
+form[id="formFilm"] input[class="btn"]{
+    margin-top:2em;
+    width: 30%;
+}
+
 
 /* ------------------------- pagina regolamento ------------------------- */    
 #regole dt{

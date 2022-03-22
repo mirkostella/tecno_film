@@ -11,6 +11,7 @@ class GestoreFilm{
     public $copertina;
     public $descrizione;
     public $genere;
+    public $erroriFilm;
     
     public function __construct($array){
         
@@ -23,7 +24,18 @@ class GestoreFilm{
         $this->copertina=$array['copertina'];
         $this->descrizione=$array['descrizione'];
         $this->genere=$array['generi'];
-    
+        $this->erroriFilm=array(
+            'errTitolo'=>'',
+            'errTrama'=>'',
+            'errDurata'=>'',
+            'errDataUscita'=>'',
+            'errPrezzoA'=>'',
+            'errPrezzoN'=>'',
+            'errDimensioneImmagine'=>'',
+            'errFormatoImmagine'=>'',
+            'errCaricamentoImmagine'=>'',
+            'errDescrizione'=>''
+        );    
     }
 
     public function controlloPresenzaFilm(){
@@ -41,39 +53,17 @@ class GestoreFilm{
         return $presenza;
     }
 
-    public function getErrori(){
-        $errori=array(
-            'errTitolo'=>"",
-            'errCopertina'=>"",
-            'errAlt'=>"",
-            'errTrama'=>"",
-            'errDurata'=>"",
-            'errNuovoGenere'=>"",
-            'errData'=>"",
-            'errPrezzoA'=>"",
-            'errPrezzoN'=>""
-        );
-        //possibili errori:
-        //film giá presente
-        //prezzo noleggio maggiore o uguale del prezzo di acquisto
-        //campo dati assente
-    }
-
-    public function recuperaFilePath(){
-        $file_path='';
+    public function presenzaTitolo(){
+        $queryPresenza="SELECT titolo FROM film WHERE film.titolo=".$this->titolo;
         $connessione=new Connessione();
         $connessione->apriConnessione();
-        $gestisci_img = new gestione_img();
-        if(isset($_FILES['copertinaFilm']) && is_uploaded_file($_FILES['copertinaFilm']['tmp_name'])){
-            $upload_result=$gestisci_img->uploadImg("img_film/", "copertinaFilm");
-            print_r($upload_result['path']);
-            if($upload_result['error']==''){
-                $file_path=$upload_result['path'];
-                return $file_path;
-            }
-            else
-                return false;
-        }
+        $presenza=$connessione->interrogaDB($queryPresenza);
+        $connessione->chiudiConnessione();
+        if($presenza)
+            return true;
+
+        return false;
+
     }
 
     public function recuperaIDGeneri(){
@@ -89,69 +79,104 @@ class GestoreFilm{
         return $ris;
     }
 
-    public function inserisciFilm(){
+//sostituisce nella pagina i messaggi di errore
+    public function stampaErrori(&$pagina){
+            $pagina=str_replace('%errTitolo%',$this->erroriFilm['errTitolo'],$pagina);
+            $pagina=str_replace('%errAlt%',$this->erroriFilm['errDescrizione'],$pagina);
+            $pagina=str_replace('%errTrama%',$this->erroriFilm['errTrama'],$pagina);
+            $pagina=str_replace('%errDurata%',$this->erroriFilm['errDurata'],$pagina);
+            $pagina=str_replace('%errData%',$this->erroriFilm['errDataUscita'],$pagina);
+            $pagina=str_replace('%errPrezzoA%',$this->erroriFilm['errPrezzoA'],$pagina);
+            $pagina=str_replace('%errPrezzoN%',$this->erroriFilm['errPrezzoN'],$pagina);
+            $pagina=str_replace('%errCopertina%',$this->erroriFilm['errDimensioneImmagine'].$this->erroriFilm['errFormatoImmagine'].$this->erroriFilm['errCaricamentoImmagine'],$pagina);
+    }
 
-        $path=$this->recuperaFilePath();
-        $queryFotoCopertina="INSERT INTO foto_film (path, descrizione) VALUES 
-        (\"$path\", '".$_POST['descrizione']."')";
-
-        $connessione=new Connessione();
-        $connessione->apriConnessione();
-        $connessione->inizioTransazione();
-
-        $esitoFoto=$connessione->eseguiQuery($queryFotoCopertina);
-        if(!$esitoFoto)
-            echo 'esito foto fallito';
-
-        $queryIDFoto="SELECT id FROM foto_film ORDER BY id DESC LIMIT 1";
-        $IDFoto=$connessione->interrogaDB($queryIDFoto);
+    public function controlloErroriForm(){
+        //controlli sul titolo
+        // if(strlen($this->titolo)>50)
+        //     $this->erroriFilm['errTitolo']=$this->erroriFilm['errTitolo'].'<div class="error_box">Il titolo non puó superare i 50 caratteri (spazi inclusi)</dir>';
+        // if($this->presenzaTitolo())
+        //     $this->erroriFilm['errTitolo']=$this->erroriFilm['errTitolo'].'<div class="error_box">'.$this->titolo.' é giá presente nel database</dir>';
+return true;
         
-        print_r($this->titolo);
-        print_r($IDFoto[0]['id']);
-        print_r($this->trama);
-        print_r($this->durata);
-        print_r($this->dataUscita);
-        print_r($this->prezzoA);
-        print_r($this->prezzoN);
-        $time = strtotime($this->dataUscita);
-        $newformat = date('d-m-Y',$time); 
-        echo $newformat;
-        $queryFilm="INSERT INTO film (titolo,copertina,trama,durata,data_uscita,prezzo_acquisto,prezzo_noleggio) VALUES ('".$this->titolo."',".$IDFoto[0]['id'].",'".$this->trama."',".$this->durata.",".$newformat.",".$this->prezzoA.",".$this->prezzoN.")";
-        
-        $ok=true;
-        $esitoFilm=$connessione->eseguiQuery($queryFilm);
-        if(!$esitoFilm){
-            $ok=false;
-            echo 'primo';
-        }
-             
-        if($esitoFilm){
-            //recupero l'id del film
-            $queryIDFilm="SELECT ID FROM film ORDER BY id DESC LIMIT 1";
-            $queryIDGenere="SELECT ID FROM genere WHERE nome_genere='azione'";
-            $genere=$connessione->interrogaDB($queryIDGenere)[0]['ID'];
-            $this->id=$connessione->interrogaDB($queryIDFilm)[0]['ID'];
-            $x=$this->recuperaIDGeneri();
-            foreach($x as $valore){
-                $queryAppartenenza="INSERT INTO appartenenza (ID_film,ID_genere) VALUES 
-                ($this->id,".$valore.")";
-                $esitoAppartenenza=$connessione->eseguiQuery($queryAppartenenza);
-                if(!$esitoAppartenenza)
-                    $ok=false;
-           }
-        
-        $connessione->fineTransazione($ok);      
-        $connessione->chiudiConnessione();
-        if(!$ok){
-            $this->id=null;
-            echo 'inserimento fallito';
-        }
-        if($ok)
-            echo 'inserito con successo';
-            
-        return $ok;
+
+
+    }
     
+    public function inserisciFilm(&$pagina){
+        
+        $gestisci_img = new gestione_img();    
+        $queryFotoCopertina='';
+        $path='';
+        if(isset($_FILES['copertinaFilm']) && is_uploaded_file($_FILES['copertinaFilm']['tmp_name']))
+            $path=$gestisci_img->caricaImmagine("img_film/", "copertinaFilm");
+        if($path)
+            $queryFotoCopertina="INSERT INTO foto_film (path, descrizione) VALUES ('".$path."', '".$_POST['descrizione']."')";
+        else{
+            $this->erroreFilm['erroreDimensioneImmagine']=$gestisci_img->getErroreDimensione();
+            $this->erroreFilm['erroreFormatoImmagine']=$gestisci_img->getErroreFormato();
+            $this->erroreFilm['erroreCaricamentoImmagine']=$gestisci_img->getErroreCaricamento();
         }
+
+        //non ci sono errori dovuti alla form e posso iniziare la transazione
+        if($this->controlloErroriForm() && $path){
+            //imposto i messaggi di errore relativi alla form a vuoti
+            $connessione=new Connessione();
+            $connessione->apriConnessione();
+            $connessione->inizioTransazione();
+    
+            $esitoFoto=$connessione->eseguiQuery($queryFotoCopertina);
+            $ok=true;
+            if(!$esitoFoto)
+                $ok=false;
+            
+            $IDFoto=null;
+            if($ok){
+                $queryIDFoto="SELECT id FROM foto_film ORDER BY id DESC LIMIT 1";
+                $IDFoto=$connessione->interrogaDB($queryIDFoto);
+                if(count($IDFoto)==0)
+                    $ok=false;
+            }
+            $newformat=null;
+            if($ok){
+                echo 'sono la data di uscita';
+                print_r($this->dataUscita);     
+                $queryFilm="INSERT INTO film (titolo,copertina,trama,durata,data_uscita,prezzo_acquisto,prezzo_noleggio) VALUES ('".$this->titolo."',".$IDFoto[0]['id'].",'".$this->trama."','".$this->durata."','".$this->dataUscita."',".$this->prezzoA.",".$this->prezzoN.")";
+                $esitoFilm=$connessione->eseguiQuery($queryFilm);
+                if(!$esitoFilm)
+                    $ok=false;          
+            }
+    
+            if($ok){
+                //recupero l'id del film
+                $queryIDFilm="SELECT ID FROM film ORDER BY id DESC LIMIT 1";
+                $this->id=$connessione->interrogaDB($queryIDFilm)[0]['ID'];
+                $x=$this->recuperaIDGeneri();
+                foreach($x as $valore){
+                    $queryAppartenenza="INSERT INTO appartenenza (ID_film,ID_genere) VALUES 
+                    ($this->id,".$valore.")";
+                    $esitoAppartenenza=$connessione->eseguiQuery($queryAppartenenza);
+                    if(!$esitoAppartenenza)
+                        $ok=false;
+                }
+            }
+            $connessione->fineTransazione($ok);      
+            $connessione->chiudiConnessione(); 
+        }
+        else
+            $ok=false;
+        $this->stampaErrori($pagina); 
+            if(!$ok){
+                $this->id=null;
+                //segnaposto esito transazione (fallita)
+                $pagina=str_replace('%esitoTransazione%','fallita',$pagina);
+                return false;
+            }
+            else{
+            //segnaposto esito transazione (successo)
+            $pagina=str_replace('%esitoTransazione%','successo',$pagina);
+            return true;
+            }
     }
 //fine classe GestoreFilm
 }
