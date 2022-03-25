@@ -47,6 +47,7 @@ class Connessione{
         else
             return false;
     }
+    
 
     public function inizioTransazione(){
         $this->conn->autocommit(false);

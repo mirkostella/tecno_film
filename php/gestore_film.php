@@ -1,5 +1,7 @@
 <?php
 
+require_once("reg_check.php");
+
 class GestoreFilm{
     public $id=null;
     public $titolo;
@@ -54,7 +56,7 @@ class GestoreFilm{
     }
 
     public function presenzaTitolo(){
-        $queryPresenza="SELECT titolo FROM film WHERE film.titolo=".$this->titolo;
+        $queryPresenza="SELECT titolo FROM film WHERE film.titolo='".$this->titolo."'";
         $connessione=new Connessione();
         $connessione->apriConnessione();
         $presenza=$connessione->interrogaDB($queryPresenza);
@@ -92,15 +94,43 @@ class GestoreFilm{
     }
 
     public function controlloErroriForm(){
-        //controlli sul titolo
-        // if(strlen($this->titolo)>50)
-        //     $this->erroriFilm['errTitolo']=$this->erroriFilm['errTitolo'].'<div class="error_box">Il titolo non puó superare i 50 caratteri (spazi inclusi)</dir>';
-        // if($this->presenzaTitolo())
-        //     $this->erroriFilm['errTitolo']=$this->erroriFilm['errTitolo'].'<div class="error_box">'.$this->titolo.' é giá presente nel database</dir>';
-return true;
-        
-
-
+        $no_error=true;
+        if(!check_titolo($this->titolo)){
+            $this->erroriFilm['errTitolo']=$this->erroriFilm['errTitolo'].'<div class="error_box">Il titolo non puó superare i 50 caratteri (spazi inclusi).</div>';
+            $no_error=false;
+        }
+        if($this->presenzaTitolo()){     
+           $this->erroriFilm['errTitolo']=$this->erroriFilm['errTitolo'].'<div class="error_box">'.$this->titolo.' Il film è giá presente nel database.</div>';
+           $no_error=false;
+        }
+        if(!check_dataUscita($this->dataUscita)){
+            $this->erroriFilm['errDataUscita']=$this->erroriFilm['errDataUscita'].'<div class="error_box">La data di uscita non può essere superiore a quella attuale.</div>';
+            $no_error=false;
+        }
+        if(!check_durata($this->durata)){
+            print_r($this->durata);
+            $this->erroriFilm['errDurata']=$this->erroriFilm['errDurata'].'<div class="error_box">La durata deve essere maggiore di 0.</div>';
+            $no_error=false;
+            print_r($this->erroriFilm['errDurata']);
+        }
+        if(!check_prezzo($this->prezzoA)){
+            $this->erroriFilm['errPrezzoA']=$this->erroriFilm['errPrezzoA'].'<div class="error_box">Il prezzo di acquisto deve essere maggiore di 0.</div>';
+            $no_error=false;
+            print_r($this->erroriFilm['errPrezzoA']);
+        }
+        if(!check_prezzo($this->prezzoN)){
+            $this->erroriFilm['errPrezzoN']=$this->erroriFilm['errPrezzoN'].'<div class="error_box">Il prezzo del noleggio deve essere maggiore di 0.</div>';
+            $no_error=false;
+        }
+        if(!check_trama($this->trama)){
+            $this->erroriFilm['errTrama']=$this->erroriFilm['errTrama'].'<div class="error_box">Il film deve avere una trama lunga almeno 20 caratteri.</div>';
+            $no_error=false;
+        }
+        if(!check_descrizione($this->descrizione)){
+            $this->erroriFilm['errDescrizione']=$this->erroriFilm['errDescrizione'].'<div class="error_box">La copertina deve avere una descrizione di almeno 15 caratteri.</div>';
+            $no_error=false;
+        }
+        return $no_error;
     }
     
     public function inserisciFilm(&$pagina){
@@ -113,9 +143,9 @@ return true;
         if($path)
             $queryFotoCopertina="INSERT INTO foto_film (path, descrizione) VALUES ('".$path."', '".$_POST['descrizione']."')";
         else{
-            $this->erroreFilm['erroreDimensioneImmagine']=$gestisci_img->getErroreDimensione();
-            $this->erroreFilm['erroreFormatoImmagine']=$gestisci_img->getErroreFormato();
-            $this->erroreFilm['erroreCaricamentoImmagine']=$gestisci_img->getErroreCaricamento();
+            $this->erroriFilm['erroreDimensioneImmagine']=$gestisci_img->getErroreDimensione();
+            $this->erroriFilm['erroreFormatoImmagine']=$gestisci_img->getErroreFormato();
+            $this->erroriFilm['erroreCaricamentoImmagine']=$gestisci_img->getErroreCaricamento();
         }
 
         //non ci sono errori dovuti alla form e posso iniziare la transazione
@@ -165,7 +195,7 @@ return true;
         }
         else
             $ok=false;
-        $this->stampaErrori($pagina); 
+        $this->stampaErrori($pagina);
             if(!$ok){
                 $this->id=null;
                 //segnaposto esito transazione (fallita)

@@ -74,11 +74,9 @@
 			$no_error=false;
 		}
 		else
-			$pagina=str_replace('%error_cognome%', '', $pagina);	
-		$date = new DateTime($data_nascita);
-		$now = new DateTime();
-		$delta = $now->diff($date);
-		if($delta->y<18){
+			$pagina=str_replace('%error_cognome%', '', $pagina);
+
+		if(!check_dataNascita($data_nascita)){
 			$pagina=str_replace('%error_data%', "<div class=\"msg_box error_box\">L'età minima per poter utilizzare questo sito è 18 anni.</div>", $pagina);
 			$no_error=false;
 		}
@@ -91,6 +89,7 @@
 		}
 		else
 			$pagina=str_replace('%error_email%', '', $pagina);
+			
 		$query_email="SELECT * FROM utente WHERE BINARY email='".$email."'"; //CASE SENSITIVE??
 		$query_user ="SELECT * FROM utente WHERE BINARY username='".$username."'"; //CASE SENSITIVE??
 
@@ -128,7 +127,7 @@
 			$gestisci_img = new gestione_img();
 
 			if(isset($_FILES['immagineProfilo']) && is_uploaded_file($_FILES['immagineProfilo']['tmp_name'])){
-				$upload_result=$gestisci_img->uploadImg("Utenti/", "immagineProfilo");
+				$upload_result=$gestisci_img->caricaImmagine("Utenti/", "immagineProfilo");
 				$pagina = str_replace('%error_foto%', $upload_result['error'], $pagina);
 				if($upload_result['error']==''){
 					$file_path=$upload_result['path'];

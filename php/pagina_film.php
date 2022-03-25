@@ -66,8 +66,8 @@
     $testoNuovaRecensione="";
     $valutazioneNuovaRecensione="";
     if(isset($_POST['inviaRecensione'])){
-        $testo=$_POST['testoRecensione'];
-        $valutazione=$_POST['valutazioneRecensione'];
+        $testo=trim($_POST['testoRecensione']);
+        $valutazione=trim($_POST['valutazioneRecensione']);
         $data=date('Y/m/d H:i:s',time());
         $datiRecensione=array(
             'idFilm'=>$idFilm,

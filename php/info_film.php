@@ -135,6 +135,8 @@
 
     //restituisce i film che non sono stati acquistati o noleggiati dello stesso genere dell'ultimo film acquistato o noleggiato.
     //i film vengono ordinati prima per data e poi per valutazione (maggiore uguale a 3 stelle)
+    
+    //????
     function recuperaSceltiPerTe($limite){
         $queryCard="SELECT film.ID as id,titolo,nome_genere as genere,copertina,trama,TIME_TO_SEC(durata) as durata,data_uscita as annoUscita,prezzo_acquisto as prezzoA,prezzo_noleggio as prezzoN,
         path as copertina,descrizione,AVG(valutazione) as valutazione FROM film JOIN appartenenza 
