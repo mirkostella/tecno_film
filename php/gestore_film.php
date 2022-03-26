@@ -1,6 +1,6 @@
 <?php
 
-require_once("reg_check.php");
+require_once("controlli_form.php");
 
 class GestoreFilm{
     public $id=null;

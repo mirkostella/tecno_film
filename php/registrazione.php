@@ -3,7 +3,7 @@
 	require_once('sessione.php');
 	require_once('connessione.php');
 	require_once('struttura.php');
-	require_once('reg_check.php');
+	require_once('controlli_form.php');
 	require_once('upload_img.php');
 
 	$pagina=file_get_contents("../html/registrazione.html");
@@ -174,7 +174,35 @@
 			}		
 		}
 
+		$pagina=str_replace('%nome%', $nome, $pagina);
+		$pagina=str_replace('%cognome%', $cognome, $pagina);
+		$pagina=str_replace('%dataN%', $data_nascita, $pagina);
+		$pagina=str_replace('%email%', $email, $pagina);
+		$pagina=str_replace('%username%', $username, $pagina);
+		$pagina=str_replace('%psw%', $psw, $pagina);
+		$pagina=str_replace('%conf_psw%', $conf_psw, $pagina);
+		if($sesso='M'){
+			$pagina=str_replace('%sel_uomo%', "selected=\"selected\"", $pagina);
+			$pagina=str_replace('%sel_donna%', "", $pagina);
+		}
+		else if($sesso='F'){
+			$pagina=str_replace('%sel_uomo%', "", $pagina);
+			$pagina=str_replace('%sel_donna%', "selected=\"selected\"", $pagina);
+		}
+		$pagina=str_replace('%path%', $file_path, $pagina);
+
 	}
+	 
+	$pagina=str_replace('%nome%','', $pagina);
+	$pagina=str_replace('%cognome%', '', $pagina);
+	$pagina=str_replace('%dataN%', $data_nascita, $pagina);
+	$pagina=str_replace('%sel_uomo%', "", $pagina);
+	$pagina=str_replace('%sel_donna%', "", $pagina);
+	$pagina=str_replace('%email%', '', $pagina);
+	$pagina=str_replace('%username%', '', $pagina);
+	$pagina=str_replace('%psw%', $psw, $pagina);
+	$pagina=str_replace('%conf_psw%', $conf_psw, $pagina);
+	$pagina=str_replace('%path%', '',$pagina);
 	$pagina=str_replace('%error_conn%', '', $pagina);
 	$pagina=str_replace('%error_nome%', '', $pagina);
 	$pagina=str_replace('%error_cognome%', '', $pagina);

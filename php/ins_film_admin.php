@@ -21,6 +21,12 @@ $queryNomiGeneri="SELECT nome_genere FROM genere ORDER BY nome_genere ASC";
 $connessione=new Connessione();
 $connessione->apriConnessione();
 $generi=$connessione->interrogaDB($queryNomiGeneri);
+$generi_modifica=array();
+foreach($generi as $valore){
+    array_push($generi_modifica,$valore['nome_genere']) ;
+}
+
+print_r($generi_modifica);
 
 $listaGeneri="";
 foreach($generi as $valore){
@@ -52,15 +58,16 @@ if(isset($_POST['inserisciFilm'])){
         $pagina=str_replace('%dataUscita%', $datiNuovoFilm['dataUscita'], $pagina);
         $pagina=str_replace('%prezzoA%', $datiNuovoFilm['prezzoA'], $pagina);
         $pagina=str_replace('%prezzoN%', $datiNuovoFilm['prezzoN'], $pagina);
-        print_r($generi['nome_genere']);
+        print_r($generi);
         echo "</br>";
         print_r($_POST['generi']);
+
 
         foreach($_POST['generi'] as $valore){
             $pagina=str_replace('%'.$valore.'%', 'checked="checked"', $pagina);
         }
 
-        $diffGeneri=array_diff($generi, $_POST['generi']);
+        $diffGeneri=array_diff($generi_modifica, $_POST['generi']);
         foreach($diffGeneri as $valore){
             $pagina=str_replace('%'.$valore.'%', "", $pagina);
         }
