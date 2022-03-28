@@ -171,7 +171,7 @@
         }
     }
 
-    function recuperaAzione($limite){
+    /*function recuperaAzione($limite){
         $queryCard="SELECT film.ID as id,titolo,nome_genere as genere,copertina,trama,TIME_TO_SEC(durata) as durata,data_uscita as annoUscita,prezzo_acquisto as prezzoA,prezzo_noleggio as prezzoN,
         path as copertina,descrizione,AVG(valutazione) as valutazione FROM film JOIN appartenenza 
         ON(film.ID=appartenenza.ID_film) JOIN genere ON (appartenenza.ID_genere=genere.ID) JOIN foto_film ON(film.copertina=foto_film.ID) LEFT JOIN recensione ON (film.ID=recensione.ID_film) 
@@ -192,6 +192,33 @@
             else
                 $categoriaCard=str_replace('%categoria%',"<h2 id=\"azione\">Azione</h2>",$categoriaCard);
             $pulsanteVediAltro=str_replace('%nomeCategoria%',"Azione",$pulsanteVediAltro);
+            $categoriaCard=str_replace('%vediAltro%',$pulsanteVediAltro,$categoriaCard);
+            $categoriaCard=str_replace('%collegamento%',"film_categoria.php",$categoriaCard);
+            return $categoriaCard;
+        }
+    }*/
+
+    function recuperaPerGenere($limite, $genere){
+        $queryCard="SELECT film.ID as id,titolo,nome_genere as genere,copertina,trama,TIME_TO_SEC(durata) as durata,data_uscita as annoUscita,prezzo_acquisto as prezzoA,prezzo_noleggio as prezzoN,
+        path as copertina,descrizione,AVG(valutazione) as valutazione FROM film JOIN appartenenza 
+        ON(film.ID=appartenenza.ID_film) JOIN genere ON (appartenenza.ID_genere=genere.ID) JOIN foto_film ON(film.copertina=foto_film.ID) LEFT JOIN recensione ON (film.ID=recensione.ID_film) 
+        WHERE nome_genere='".$genere."' GROUP BY id ORDER BY valutazione,annoUscita LIMIT $limite";
+        $connessione=new Connessione();
+        $connessione->apriConnessione();
+        $ris=$connessione->interrogaDB($queryCard);
+        $connessione->chiudiConnessione();
+        $listaCard=creaListaCard($ris);
+        if(!$listaCard)
+            return false;
+        else{
+            $pulsanteVediAltro=file_get_contents('../componenti/vediAltro.html');
+            $categoriaCard=file_get_contents('../componenti/categoria_index.html');
+            $categoriaCard=str_replace('%listaCard%',$listaCard,$categoriaCard);
+            if(isset($_GET['nomeCategoria']))
+                $categoriaCard=str_replace('%categoria%',"",$categoriaCard);
+            else
+                $categoriaCard=str_replace('%categoria%',"<h2 id=\"$genere\">".$genere."</h2>",$categoriaCard);
+            $pulsanteVediAltro=str_replace('%nomeCategoria%',".$genere.",$pulsanteVediAltro);
             $categoriaCard=str_replace('%vediAltro%',$pulsanteVediAltro,$categoriaCard);
             $categoriaCard=str_replace('%collegamento%',"film_categoria.php",$categoriaCard);
             return $categoriaCard;
