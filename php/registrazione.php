@@ -127,17 +127,16 @@
 			$gestisci_img = new gestione_img();
 
 			if(isset($_FILES['immagineProfilo']) && is_uploaded_file($_FILES['immagineProfilo']['tmp_name'])){
-				$upload_result=$gestisci_img->caricaImmagine("Utenti/", "immagineProfilo");
-				$pagina = str_replace('%error_foto%', $upload_result['error'], $pagina);
-				if($upload_result['error']==''){
-					$file_path=$upload_result['path'];
-				}
-				else{
+				if(!$upload_result=$gestisci_img->caricaImmagine("Utenti/", "immagineProfilo")){
+				//stampo gli errori
+					$pagina = str_replace('%error_foto%',$gestisci_img->getErroreDimensione().$gestisci_img->getErroreFormato().$gestisci_img->getErroreCaricamento(), $pagina);
 					$no_error=false;
 				}
+				else
+					$file_path=$upload_result;
 			}
 
-			if(($file_path !== "../img/Utenti/") && ($upload_result['error'] =='')){
+			if(($file_path !== "../img/Utenti/") && $upload_result){
 				$insert_Foto="INSERT INTO foto_utente(ID, path, descrizione) VALUES (NULL, '$file_path', NULL)";
 				$connessione->eseguiQuery($insert_Foto);
 				$check_insert="SELECT * FROM foto_utente WHERE path='".$file_path."'";

@@ -36,7 +36,9 @@ class GestoreFilm{
             'errDimensioneImmagine'=>'',
             'errFormatoImmagine'=>'',
             'errCaricamentoImmagine'=>'',
-            'errDescrizione'=>''
+            'errDescrizione'=>'',
+            'errGeneri'=>'',
+            'errMancanzaImmagine'=>''
         );    
     }
 
@@ -90,8 +92,9 @@ class GestoreFilm{
             $pagina=str_replace('%errData%',$this->erroriFilm['errDataUscita'],$pagina);
             $pagina=str_replace('%errPrezzoA%',$this->erroriFilm['errPrezzoA'],$pagina);
             $pagina=str_replace('%errPrezzoN%',$this->erroriFilm['errPrezzoN'],$pagina);
-            $pagina=str_replace('%errCopertina%',$this->erroriFilm['errDimensioneImmagine'].$this->erroriFilm['errFormatoImmagine'].$this->erroriFilm['errCaricamentoImmagine'],$pagina);
-    }
+            $pagina=str_replace('%errCopertina%',$this->erroriFilm['errDimensioneImmagine'].$this->erroriFilm['errFormatoImmagine'].$this->erroriFilm['errCaricamentoImmagine'].$this->erroriFilm['errMancanzaImmagine'],$pagina);
+            $pagina=str_replace('%errGeneri%',$this->erroriFilm['errGeneri'], $pagina);
+        }
 
     public function controlloErroriForm(){
         $no_error=true;
@@ -100,7 +103,7 @@ class GestoreFilm{
             $no_error=false;
         }
         if($this->presenzaTitolo()){     
-           $this->erroriFilm['errTitolo']=$this->erroriFilm['errTitolo'].'<div class="error_box">'.$this->titolo.' Il film è giá presente nel database.</div>';
+           $this->erroriFilm['errTitolo']=$this->erroriFilm['errTitolo'].'<div class="error_box">Il film è giá presente nel database.</div>';
            $no_error=false;
         }
         if(!check_dataUscita($this->dataUscita)){
@@ -108,15 +111,12 @@ class GestoreFilm{
             $no_error=false;
         }
         if(!check_durata($this->durata)){
-            print_r($this->durata);
             $this->erroriFilm['errDurata']=$this->erroriFilm['errDurata'].'<div class="error_box">La durata deve essere maggiore di 0.</div>';
             $no_error=false;
-            print_r($this->erroriFilm['errDurata']);
         }
         if(!check_prezzo($this->prezzoA)){
             $this->erroriFilm['errPrezzoA']=$this->erroriFilm['errPrezzoA'].'<div class="error_box">Il prezzo di acquisto deve essere maggiore di 0.</div>';
             $no_error=false;
-            print_r($this->erroriFilm['errPrezzoA']);
         }
         if(!check_prezzo($this->prezzoN)){
             $this->erroriFilm['errPrezzoN']=$this->erroriFilm['errPrezzoN'].'<div class="error_box">Il prezzo del noleggio deve essere maggiore di 0.</div>';
@@ -130,6 +130,10 @@ class GestoreFilm{
             $this->erroriFilm['errDescrizione']=$this->erroriFilm['errDescrizione'].'<div class="error_box">La copertina deve avere una descrizione di almeno 15 caratteri.</div>';
             $no_error=false;
         }
+        if(count($this->genere)==0){
+            $this->erroriFilm['errGeneri']=$this->erroriFilm['errGeneri'].'<div class="error_box">Seleziona almeno un genere.</div>';
+            $no_error=false;
+        }
         return $no_error;
     }
     
@@ -140,12 +144,14 @@ class GestoreFilm{
         $path='';
         if(isset($_FILES['copertinaFilm']) && is_uploaded_file($_FILES['copertinaFilm']['tmp_name']))
             $path=$gestisci_img->caricaImmagine("img_film/", "copertinaFilm");
+        else
+            $this->erroriFilm['errMancanzaImmagine']='<div class="error_box">Immagine mancante</div>';
         if($path)
             $queryFotoCopertina="INSERT INTO foto_film (path, descrizione) VALUES ('".$path."', '".$_POST['descrizione']."')";
         else{
-            $this->erroriFilm['erroreDimensioneImmagine']=$gestisci_img->getErroreDimensione();
-            $this->erroriFilm['erroreFormatoImmagine']=$gestisci_img->getErroreFormato();
-            $this->erroriFilm['erroreCaricamentoImmagine']=$gestisci_img->getErroreCaricamento();
+            $this->erroriFilm['errDimensioneImmagine']=$gestisci_img->getErroreDimensione();
+            $this->erroriFilm['errFormatoImmagine']=$gestisci_img->getErroreFormato();
+            $this->erroriFilm['errCaricamentoImmagine']=$gestisci_img->getErroreCaricamento();
         }
 
         //non ci sono errori dovuti alla form e posso iniziare la transazione
@@ -168,9 +174,7 @@ class GestoreFilm{
                     $ok=false;
             }
             $newformat=null;
-            if($ok){
-                echo 'sono la data di uscita';
-                print_r($this->dataUscita);     
+            if($ok){    
                 $queryFilm="INSERT INTO film (titolo,copertina,trama,durata,data_uscita,prezzo_acquisto,prezzo_noleggio) VALUES ('".$this->titolo."',".$IDFoto[0]['id'].",'".$this->trama."','".$this->durata."','".$this->dataUscita."',".$this->prezzoA.",".$this->prezzoN.")";
                 $esitoFilm=$connessione->eseguiQuery($queryFilm);
                 if(!$esitoFilm)
@@ -199,12 +203,12 @@ class GestoreFilm{
             if(!$ok){
                 $this->id=null;
                 //segnaposto esito transazione (fallita)
-                $pagina=str_replace('%esitoTransazione%','fallita',$pagina);
+                $pagina=str_replace('%esitoTransazione%','<div class="error_box">Inserimento fallito</div>',$pagina);
                 return false;
             }
             else{
             //segnaposto esito transazione (successo)
-            $pagina=str_replace('%esitoTransazione%','successo',$pagina);
+            $pagina=str_replace('%esitoTransazione%','<div class="success_box">Film inserito correttamente</div>',$pagina);
             return true;
             }
     }

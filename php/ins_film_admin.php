@@ -4,8 +4,12 @@ require_once("connessione.php");
 require_once("gestore_film.php");
 require_once("upload_img.php");
 
-
-print_r($_POST);
+//echo 'POST </br>';
+//print_r($_POST);
+// echo 'FILES </br>';
+print_r($_FILES);
+// echo 'error files </br>';
+// print_r($_FILES['copertinaFilm']['error']);
 
 if($_SESSION['admin']==false){
     header('location: login_admin.php');
@@ -22,16 +26,22 @@ $connessione=new Connessione();
 $connessione->apriConnessione();
 $generi=$connessione->interrogaDB($queryNomiGeneri);
 
+
+
 $listaGeneri="";
 foreach($generi as $valore){
-    $nuovaVoce='<label for="'.$valore['nome_genere'].'">'.$valore['nome_genere'].'</label>
-    <input type="checkbox" id="'.$valore['nome_genere'].'" name="generi[]" value="'.$valore['nome_genere'].'" class="checkmark" %'.$valore['nome_genere'].'%>';
+    $nuovaVoce='<div class="genereFilm"><input type="checkbox" id="'.$valore['nome_genere'].'" name="generi[]" value="'.$valore['nome_genere'].'" class="checkmark" %'.$valore['nome_genere'].'%><label for="'.$valore['nome_genere'].'">'.$valore['nome_genere'].'</label></div>';
     $listaGeneri=$listaGeneri.$nuovaVoce;
 }  
 $pagina=str_replace('%listaGeneri%',$listaGeneri,$pagina);
 //se sono arrivato alla pagina cercando di inserire un film
 if(isset($_POST['inserisciFilm'])){
-    
+    $generiScelti;
+    if(!isset($_POST['generi'])){
+        $generiScelti=array();
+    }
+    else
+        $generiScelti=$_POST['generi'];
     $datiNuovoFilm=array(     
         'titolo'=>trim($_POST['titoloFilm']),
         'trama'=>trim($_POST['tramaFilm']),
@@ -41,7 +51,7 @@ if(isset($_POST['inserisciFilm'])){
         'prezzoN'=>trim($_POST['prezzoNoleggioFilm']),
         'copertina'=>"",
         'descrizione'=>trim($_POST['descrizione']),
-        'generi'=>$_POST['generi']
+        'generi'=>$generiScelti
     );
 
     $gestore=new GestoreFilm($datiNuovoFilm);
@@ -52,22 +62,25 @@ if(isset($_POST['inserisciFilm'])){
         $pagina=str_replace('%dataUscita%', $datiNuovoFilm['dataUscita'], $pagina);
         $pagina=str_replace('%prezzoA%', $datiNuovoFilm['prezzoA'], $pagina);
         $pagina=str_replace('%prezzoN%', $datiNuovoFilm['prezzoN'], $pagina);
-        print_r($generi['nome_genere']);
-        echo "</br>";
-        print_r($_POST['generi']);
+        $pagina=str_replace('%valoreDurata%', $datiNuovoFilm['durata'], $pagina);
+    
+        $generi_modifica=array();
+        foreach($generi as $valore){
+            array_push($generi_modifica,$valore['nome_genere']) ;
+        }
+       
 
-        foreach($_POST['generi'] as $valore){
+        foreach($generiScelti as $valore){
             $pagina=str_replace('%'.$valore.'%', 'checked="checked"', $pagina);
         }
 
-        $diffGeneri=array_diff($generi, $_POST['generi']);
+        $diffGeneri=array_diff($generi_modifica, $generiScelti);
         foreach($diffGeneri as $valore){
             $pagina=str_replace('%'.$valore.'%', "", $pagina);
         }
         $pagina=str_replace('%trama%', $datiNuovoFilm['trama'], $pagina);
     }
 }
-else{
     $pagina=str_replace('%titolo%', "", $pagina);
     $pagina=str_replace('%copertina%', "", $pagina);
     $pagina=str_replace('%altCopertina%', "", $pagina);
@@ -75,6 +88,7 @@ else{
     $pagina=str_replace('%prezzoA%', "", $pagina);
     $pagina=str_replace('%prezzoN%', "", $pagina);
     $pagina=str_replace('%trama%', "", $pagina);
+    $pagina=str_replace('%valoreDurata%',"00:00", $pagina);
     $pagina=str_replace("%errTitolo%","",$pagina);
     $pagina=str_replace("%errCopertina%","",$pagina);
     $pagina=str_replace("%errAlt%","",$pagina);
@@ -84,6 +98,8 @@ else{
     $pagina=str_replace("%errPrezzoA%","",$pagina);
     $pagina=str_replace("%errPrezzoN%","",$pagina);
     $pagina=str_replace("%esitoTransazione%","",$pagina);
-}
+    $pagina=str_replace('%errGeneri%',"", $pagina);
+    
+
     echo $pagina;
 ?>
