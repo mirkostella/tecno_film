@@ -24,6 +24,7 @@
     $struttura = new Struttura();
     $struttura->aggiungiHeader($pagina);
     $struttura->aggiungiAccount($pagina);
+    $pagina=str_replace('<a href="../php/login.php">Login</a>', '', $pagina);
     $inAttivo=file_get_contents("../componenti/menu.html");
     $attivo=file_get_contents("../componenti/menu.html");
     $struttura->aggiungiMenu($pagina,$inAttivo,$attivo);
