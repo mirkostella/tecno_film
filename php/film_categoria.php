@@ -54,12 +54,13 @@
             else{
                 $pagina=str_replace('%vedialtro%', '', $pagina);
             }   
-            if($risultatoCard)
-                $pagina=str_replace('%films%',$risultatoCard,$pagina);
-            else
-                $pagina=str_replace('%films%',"",$pagina);
         }
     }
+
+    if($risultatoCard)
+        $pagina=str_replace('%films%',$risultatoCard,$pagina);
+    else
+        $pagina=str_replace('%films%',"",$pagina);
 
     $pagina=str_replace('%classifica%',"",$pagina);
     $connessione->chiudiConnessione();

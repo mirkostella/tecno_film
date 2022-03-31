@@ -27,11 +27,9 @@ INSERT INTO admin (`email`,`password`) VALUES ('admin','admin');
 
 CREATE TABLE `foto_utente`(
 `ID` INT(10) PRIMARY KEY AUTO_INCREMENT,
-`path` text NOT NULL,
-`descrizione` text
-)ENGINE = InnoDB;
+`path` text NOT NULL)ENGINE = InnoDB;
 
-INSERT INTO `foto_utente` (`path`,`descrizione`) VALUES ('../img/Utenti','immagine profilo di default');
+INSERT INTO `foto_utente` (`path`) VALUES ('../img/Utenti/profilo.jpg');
 
 CREATE TABLE `utente` (
 `ID` INT(10) PRIMARY KEY AUTO_INCREMENT,

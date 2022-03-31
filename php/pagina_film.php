@@ -10,13 +10,7 @@
     require_once ('info_film.php');
     
     
-    $idFilm="";
-    if(isset($_POST['idFilm']))
-        $idFilm=$_POST['idFilm'];
-    
-    if(isset($_GET['idFilm']))
-        $idFilm=$_GET['idFilm'];
-
+    $idFilm=$_REQUEST['idFilm'];
     $pagina=file_get_contents('../html/pagina_film.html');
     $struttura=new Struttura();
     $struttura->aggiungiHeader($pagina);
@@ -82,8 +76,11 @@
     $testoNuovaRecensione=$nuovaRecensione->getTesto();
     $valutazioneNuovaRecensione=$nuovaRecensione->getValutazione();
     //se la recensione non viene inserita ripristino i campi della form
-    $gestore->gestisciInserisciRecensione($nuovaRecensione,$pagina);
-    }
+    if($gestore->gestisciInserisciRecensione($nuovaRecensione,$pagina))
+        $pagina=str_replace('%formRecensione%',"",$pagina);
+}
+
+
 
     if(isset($_GET['utile']))
         $gestore->gestisciUtileRecensione($_GET['idRecensione'],$pagina);

@@ -23,9 +23,6 @@
             );
 
         $info=$connessione->interrogaDB($queryInfo);
-        echo 'info........... <br>';
-        print_r($info);
-        echo '<br><br><br>';
         $durata=$info[0]['durata']/60;
         $dataUscita=strtotime($info[0]['data_uscita']);
         $cambioFormato=date('d/m/Y', $dataUscita);
@@ -66,12 +63,28 @@
             shuffle($arrayGeneri);
             foreach($arrayGeneri as $valore){
                 $genere=array_pop($arrayGeneri);
-                $queryLorenzo='SELECT idMigliore,MAX(voto) as massimo FROM (
+                /*$queryLorenzo='SELECT idMigliore,MAX(voto) as massimo FROM (
                     SELECT film.ID as idMigliore,AVG(valutazione) as voto FROM film JOIN recensione ON(recensione.ID_film=film.ID) JOIN appartenenza ON(appartenenza.ID_film=film.ID) JOIN genere ON(genere.ID=appartenenza.ID_genere) WHERE nome_genere=\''.$valore['nome_genere'].'\' GROUP BY idMigliore ORDER BY film.data_uscita DESC) as filmConMedieVoti LIMIT 1';
-                //seleziona i film piú recenti con il voto piú alto per genere
-                $film=$connessione->interrogaDB($queryLorenzo);
-                if(count($film)>0 && !is_null($film[0]['idMigliore']))
-                    array_push($filmScelti,$film[0]['idMigliore']);        
+                //seleziona i film piú recenti con il voto piú alto per genere */
+
+                //mi ritorna gli id dei film che appartengono al genere in ordine di valutazione media
+                $queryValGenere='SELECT film.ID as idMigliore,AVG(valutazione) as voto FROM film JOIN recensione ON(recensione.ID_film=film.ID) JOIN appartenenza ON(appartenenza.ID_film=film.ID) JOIN genere ON(genere.ID=appartenenza.ID_genere) WHERE nome_genere=\''.$valore['nome_genere'].'\' GROUP BY idMigliore ORDER BY voto DESC';
+                $film=$connessione->interrogaDB($queryValGenere);
+
+                if(!$filmScelti){
+                    array_push($filmScelti, $film[0]['idMigliore']);
+                }
+                else{
+                    for($i=0; $i<count($film); $i++){
+                        if(!in_array($film[$i]['idMigliore'], $filmScelti)){
+                            array_push($filmScelti, $film[$i]['idMigliore']);
+                            break;
+                        }
+                        else{
+                            continue;
+                        }
+                    }
+                }
             }
         }
         
@@ -79,21 +92,20 @@
         //$generi scelti a questo punto contiene gli id dei film da inserire nella lista
         $listaCardGeneri=array();
         $filmTrovati=count($filmScelti);
+
         if($filmTrovati>5)
             $filmTrovati=5;
         for($i=0;$i<$filmTrovati;$i++){
             $idFilmCorrente=$filmScelti[$i];
             array_push($listaCardGeneri,recuperaInfo($idFilmCorrente));
         }
-        echo "array lista card generi <br>";
-        print_r($listaCardGeneri);
+
         $listaCard=creaListaCardClassificata($listaCardGeneri);
         $categoriaCard=file_get_contents('../componenti/categoria_index.html');
         $categoriaCard=str_replace('%listaCard%',$listaCard,$categoriaCard);
         $categoriaCard=str_replace('%spazio%',"",$categoriaCard);
         $categoriaCard=str_replace('%categoria%',"<h2 id=\"topGenere\">Top 5 per genere</h2>",$categoriaCard);
         $categoriaCard=str_replace('%vediAltro%',"",$categoriaCard);
-
         return $categoriaCard;   
     }
     
@@ -170,33 +182,6 @@
             return $categoriaCard;
         }
     }
-
-    /*function recuperaAzione($limite){
-        $queryCard="SELECT film.ID as id,titolo,nome_genere as genere,copertina,trama,TIME_TO_SEC(durata) as durata,data_uscita as annoUscita,prezzo_acquisto as prezzoA,prezzo_noleggio as prezzoN,
-        path as copertina,descrizione,AVG(valutazione) as valutazione FROM film JOIN appartenenza 
-        ON(film.ID=appartenenza.ID_film) JOIN genere ON (appartenenza.ID_genere=genere.ID) JOIN foto_film ON(film.copertina=foto_film.ID) LEFT JOIN recensione ON (film.ID=recensione.ID_film) 
-        WHERE nome_genere='azione' GROUP BY id ORDER BY valutazione,annoUscita LIMIT $limite";
-        $connessione=new Connessione();
-        $connessione->apriConnessione();
-        $ris=$connessione->interrogaDB($queryCard);
-        $connessione->chiudiConnessione();
-        $listaCard=creaListaCard($ris);
-        if(!$listaCard)
-            return false;
-        else{
-            $pulsanteVediAltro=file_get_contents('../componenti/vediAltro.html');
-            $categoriaCard=file_get_contents('../componenti/categoria_index.html');
-            $categoriaCard=str_replace('%listaCard%',$listaCard,$categoriaCard);
-            if(isset($_GET['nomeCategoria']))
-                $categoriaCard=str_replace('%categoria%',"",$categoriaCard);
-            else
-                $categoriaCard=str_replace('%categoria%',"<h2 id=\"azione\">Azione</h2>",$categoriaCard);
-            $pulsanteVediAltro=str_replace('%nomeCategoria%',"Azione",$pulsanteVediAltro);
-            $categoriaCard=str_replace('%vediAltro%',$pulsanteVediAltro,$categoriaCard);
-            $categoriaCard=str_replace('%collegamento%',"film_categoria.php",$categoriaCard);
-            return $categoriaCard;
-        }
-    }*/
 
     function recuperaPerGenere($limite, $genere){
         $queryCard="SELECT film.ID as id,titolo,nome_genere as genere,copertina,trama,TIME_TO_SEC(durata) as durata,data_uscita as annoUscita,prezzo_acquisto as prezzoA,prezzo_noleggio as prezzoN,
