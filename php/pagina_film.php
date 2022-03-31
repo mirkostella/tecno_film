@@ -9,7 +9,6 @@
     require_once ('ResocontoRecensioni.php');
     require_once ('info_film.php');
     
-    
     $idFilm=$_REQUEST['idFilm'];
     $pagina=file_get_contents('../html/pagina_film.html');
     $struttura=new Struttura();
@@ -63,9 +62,16 @@
         $testo=trim($_POST['testoRecensione']);
         $valutazione=trim($_POST['valutazioneRecensione']);
         $data=date('Y/m/d H:i:s',time());
+        $queryDati="SELECT username, path FROM utente JOIN foto_utente ON (utente.ID_foto=foto_utente.ID) WHERE utente.ID = '".$_SESSION['id']."'";
+        $connessione=new Connessione();
+        $connessione->apriConnessione();
+        $ris=$connessione->interrogaDB($queryDati);
+        $connessione->chiudiConnessione();
         $datiRecensione=array(
             'idFilm'=>$idFilm,
             'idUtente'=>$_SESSION['id'],
+            'username' => $ris[0]['username'],
+            'profilo'=> $ris[0]['path'],
             'data'=>$data,
             'testo'=>$testo,
             'valutazione'=>$valutazione
@@ -75,6 +81,7 @@
     $errValutazione=$nuovaRecensione->getMessaggioErrori()['errValutazione'];
     $testoNuovaRecensione=$nuovaRecensione->getTesto();
     $valutazioneNuovaRecensione=$nuovaRecensione->getValutazione();
+
     //se la recensione non viene inserita ripristino i campi della form
     if($gestore->gestisciInserisciRecensione($nuovaRecensione,$pagina))
         $pagina=str_replace('%formRecensione%',"",$pagina);
@@ -131,6 +138,5 @@
     $pagina=str_replace('%idFilm%',$idFilm,$pagina); 
     $pagina=str_replace('%listaRecensioni%',$stringaRecensioni,$pagina);
     $pagina=str_replace('%filtro%',$stringaFiltroRecensioni,$pagina); 
-
     echo $pagina;  
 ?>

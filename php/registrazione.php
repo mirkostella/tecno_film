@@ -138,7 +138,7 @@
 			}
 
 			if(($file_path !== "../img/Utenti/") && $upload_result){
-				$insert_Foto="INSERT INTO foto_utente(ID, path, descrizione) VALUES (NULL, '$file_path', NULL)";
+				$insert_Foto="INSERT INTO foto_utente(path) VALUES ('$file_path')";
 				$connessione->eseguiQuery($insert_Foto);
 				$check_insert="SELECT * FROM foto_utente WHERE path='".$file_path."'";
 				$query_result=$connessione->conn->query($check_insert);

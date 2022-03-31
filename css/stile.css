@@ -369,6 +369,8 @@ header{
     flex-direction: row;
     margin:1em 2em 2em 2em;
     flex: 1 1 0;
+    width: 200px;
+    height: 288px;
 }
 #infoFilm{
     display: flex;
@@ -438,7 +440,7 @@ header{
 #scriviRecensione .btn{
     display: inline-block;
     position: relative;
-    left: 100%;
+    left: 90%;
     transform: translateX(-100%);
     width: 15em;
     margin-top: 1em;
