@@ -158,6 +158,15 @@ FOREIGN KEY (`ID_film`) REFERENCES `film`(`ID`) ON DELETE CASCADE ON UPDATE CASC
 FOREIGN KEY (`ID_utente`) REFERENCES `utente`(`ID`) ON DELETE CASCADE ON UPDATE CASCADE
 )ENGINE = InnoDB;
 
+INSERT INTO `recensione`(`ID_film`, `ID_utente`, `testo`, `valutazione`) VALUES
+('1', '1', 'Bellissimo', '4'),
+('2', '1', 'Interessante', '3'),
+('3', '1', 'Cast bravissimo', '5'),
+('1', '1', 'Regista super', '4'),
+('5', '1', 'Fotografia pazzesca', '4'),
+('3', '1', 'Poteva essere migliore', '3');
+
+
 CREATE TABLE `segnalazione`(
 `ID_utente` INT(10),
 `ID_recensione` INT(10),
@@ -175,6 +184,8 @@ FOREIGN KEY (`ID_recensione`) REFERENCES `recensione`(`ID`) ON DELETE CASCADE ON
 );
 
 CREATE VIEW `appartenenzaNoDoppioni` AS SELECT `ID_film`, `ID_genere` FROM `appartenenza` JOIN `genere` ON (appartenenza.ID_genere=genere.ID) GROUP BY `ID_film`; 
+
+CREATE VIEW nvoti AS SELECT `recensione`.`ID_film` AS `ID_film`,count(*) AS `n_voti` FROM`recensione` GROUP BY`recensione`.`ID_film`;
 
 COMMIT;
 SET FOREIGN_KEY_CHECKS=1;

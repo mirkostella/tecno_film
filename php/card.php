@@ -100,8 +100,8 @@
             return $cardB;
 
         }
-
     }
+    
     function creaListaCardPersonale($risultatoQuery){
         $listaCards="";
         if($risultatoQuery){

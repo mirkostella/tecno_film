@@ -18,29 +18,6 @@
 
     $struttura->aggiungiAcquistoNoleggio($pagina);
 
-    $infoFilm=recuperaInfo($idFilm);
-    $infoGeneriFilm=recuperaGeneri($idFilm);
-
-    $film=new Card($infoFilm,$infoGeneriFilm);
-    $pagina=str_replace('%idFilm%',$film->id,$pagina);
-    $pagina=str_replace('%titolo%',$film->titolo,$pagina);
-    $pagina=str_replace('%path%',$film->copertina,$pagina);
-    $pagina=str_replace('%annoUscita%',$film->annoUscita,$pagina);
-    $pagina=str_replace('%durata%',$film->durata,$pagina);
-    $stringaGeneri='';
-    $copiaGeneriFilm=$film->genere;
-    $primoGenere=array_pop($copiaGeneriFilm)['generiFilm'];
-    $stringaGeneri=$stringaGeneri.$primoGenere;
-    foreach($copiaGeneriFilm as &$valore){
-        $prossimoGenere=$valore['generiFilm'];
-        $stringaGeneri=$stringaGeneri.' , '.$prossimoGenere;
-    }
-    $pagina=str_replace('%genere%',$stringaGeneri,$pagina);
-    $pagina=str_replace('%prezzoN%',$film->prezzoN,$pagina);
-    $pagina=str_replace('%prezzoA%',$film->prezzoA,$pagina);
-    $pagina=str_replace('%trama%',$film->trama,$pagina);
-    $pagina=str_replace('%valutazione%',creaStelle($film->valutazione),$pagina);
-
     //recensioni utenti
     $ordineRecensioni='recenti';
     if(isset($_GET['applica']))
@@ -133,7 +110,33 @@
     $grafico->creaGrafico($pagina);
     //visualizzo le recensioni degli utenti
     $stringaRecensioni=$gestore->visualizzaRecensioni();
+    if(!$stringaRecensioni)
+        $pagina= str_replace('Recensioni degli altri utenti', 'Non sono ancora presenti recensioni per questo film', $pagina);
+        
     $stringaFiltroRecensioni=$gestore->visualizzaFiltro();
+
+    $infoFilm=recuperaInfo($idFilm);
+    $infoGeneriFilm=recuperaGeneri($idFilm);
+
+    $film=new Card($infoFilm,$infoGeneriFilm);
+    $pagina=str_replace('%idFilm%',$film->id,$pagina);
+    $pagina=str_replace('%titolo%',$film->titolo,$pagina);
+    $pagina=str_replace('%path%',$film->copertina,$pagina);
+    $pagina=str_replace('%annoUscita%',$film->annoUscita,$pagina);
+    $pagina=str_replace('%durata%',$film->durata,$pagina);
+    $stringaGeneri='';
+    $copiaGeneriFilm=$film->genere;
+    $primoGenere=array_pop($copiaGeneriFilm)['generiFilm'];
+    $stringaGeneri=$stringaGeneri.$primoGenere;
+    foreach($copiaGeneriFilm as &$valore){
+        $prossimoGenere=$valore['generiFilm'];
+        $stringaGeneri=$stringaGeneri.' , '.$prossimoGenere;
+    }
+    $pagina=str_replace('%genere%',$stringaGeneri,$pagina);
+    $pagina=str_replace('%prezzoN%',$film->prezzoN,$pagina);
+    $pagina=str_replace('%prezzoA%',$film->prezzoA,$pagina);
+    $pagina=str_replace('%trama%',$film->trama,$pagina);
+    $pagina=str_replace('%valutazione%',creaStelle($film->valutazione),$pagina);
 
     $pagina=str_replace('%idFilm%',$idFilm,$pagina); 
     $pagina=str_replace('%listaRecensioni%',$stringaRecensioni,$pagina);

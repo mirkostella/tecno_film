@@ -5,25 +5,22 @@
 }
 /* ------------------------- variabili globali ------------------------- */
 :root{
-    --colore-bordo-btn:#ed3b3b;
-    --colore-btn:#ed3b3b;
-    --colore-bordo-btn-hover:#ba3838;
-    --colore-btn-hover:#f75d5d;
-    --colore-bordo-header:#e0e0e0;
-    --colore-cerca-titolo:#f2f6ff;
+    --colore-btn:crimson;
+    /* --colore-bordo-btn-hover:#ba3838; */
+    --colore-btn-hover:rgb(246, 65, 101);
+    /* --colore-bordo-header:#e0e0e0; */
+    --colore-cerca-titolo:white;
     --colore-voce-menu-hover:#d8d8d8;
-    --colore-bordo-card:#a1a1a1;
-    --colore-bordo-card:#a1a1a1;
-    --colore-dettagli-card:#f9f9f9;
-    --colore-news:#ffffce;
-    --colore-btn-azione-hover:#53a8e9;
-    --colore-btn-azione:#489cdb;
+    --colore-bordo-card:black;
+    --colore-dettagli-card:white;
+    --colore-btn-azione-hover:rgb(246, 65, 101);
+    --colore-btn-azione:crimson;
 }
 /* ------------------------- stili generici ------------------------- */
 html,body{
     max-width: 1200px;
     margin:auto;
-    background-color: #eee;
+    background-color: peachpuff;
     font-family: 'Times New Roman', Times, serif;
 }
 h1{
@@ -40,25 +37,25 @@ h2{
 h3{margin:0.9em 0}
 hr{
     border:none;
-    border-top: 1px solid var(--colore-bordo-header);
     margin:2em auto;
     width: 70%;
 }
 .btn{
     color: white;
     background-color: var(--colore-btn);
-    border:2px solid var(--colore-bordo-btn);
     padding:0.7em 1.5em;
     display: block; 
-    border-radius: 5px;
     transition: ease-in-out 0.2s;
     text-align: center;
     text-decoration: none;
     font-size: 0.8em;
+    border: none;
+    border-radius: 5px;
 }
 .btn:hover{
     background-color: var(--colore-btn-hover);
-    border: 2px solid var(--colore-bordo-btn-hover);
+    border: none;
+    border-radius: 5px;
 }
 input[class="btn btnAzione"]{
     background-color: var(--colore-btn-azione);
@@ -95,16 +92,17 @@ fieldset{text-align: center;}
 /* intestazione */
 header{
     width: 100%;
-    background-color: white;
+    background-color: seashell;
     display: flex;
     flex-flow: row nowrap;
     padding: 1em 2em;
-    border: 2px solid var(--colore-bordo-header);
 }
+
 #logo{
     font-size: 3.7em;
     margin:0;
     white-space: nowrap;
+    color: black;
 }
 #ricerca{
     display: flex;
@@ -121,13 +119,18 @@ header{
     font-size: 1.3em;
     background-color: var(--colore-cerca-titolo) ;
     max-width: 21em;
+    border: 2px solid;
+    border-color: crimson;
 }
 #submit_ricerca{
     padding: 0 0.6em;
-    height: 1.9em;
+    margin-left: 0.7em;
+    height: 50%;
     font-size: 1.1em;
     background-color: var(--colore-btn-azione);
-    color:white; 
+    color:white;
+    border: 2px solid;
+    border-color: crimson;
 }
 #account{
     display: flex;
@@ -143,8 +146,7 @@ header{
     font-size: 1.2em;
     padding:0.5em 2.2em;
     margin-top:0.4em;
-    background-color: white;
-    border: 2px solid var(--colore-bordo-header);
+    background-color: seashell;
 }
 
 /* messaggi di errore */
@@ -183,37 +185,18 @@ header{
 }
 
 #menuPrincipale #attivo{
-    background-color: yellow;
-    color:red;
+    background-color: peachpuff;
+    color:crimson;
     padding: 1em 0;
 }
 
-#novita{
-    background-color: var(--colore-news);
-    padding:0 1em 1em 1em;
-    font-size:1.2em;
-    border: 2px solid var(--colore-bordo-header);
-    font-size: 16px;
-    line-height: 1.5em;
-    margin-top: 0.6em;
-}
-#novita h2{
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-}
-#menuPrincipale {
-    font-weight: bold;
-    color: red;
-    background-color: yellow;
-    padding: 1em 0;
-    text-decoration: none;
-}
 #menuPrincipale{
     text-align: center;
-    background-color: white;
-    border: 2px solid var(--colore-bordo-header);
+    background-color: seashell;
     font-size: 1.2em;
+    font-weight: bold;
 }
+
 #menuPrincipale ul{margin:1em 0;}
 #menuPrincipale li{display: block;}
 #menuPrincipale li:hover{background-color: var(--colore-voce-menu-hover);}
@@ -224,8 +207,7 @@ header{
 /* ------------------------- contenuto ------------------------- */
 #contenutoFull{
     width: 100%;
-    background-color: white;
-    border: 2px solid var(--colore-bordo-header); 
+    background-color: seashell;
 }
 #imgEsito{
     width: 50%;
@@ -235,9 +217,8 @@ header{
 }
 #contenuto{
     width: 80%;
-    background-color: white;
-    padding:0.6em;
-    border: 2px solid var(--colore-bordo-header);  
+    background-color: seashell;
+    padding:0.6em; 
     position:relative;
 }
 
@@ -273,16 +254,20 @@ header{
     background-color: var(--colore-dettagli-card);
     font-size: 1.1em;
     border:1px solid var(--colore-bordo-card);
+    display: flex;
+    flex-direction: column;
 }
 
-.card dt{height: 70%;
-    margin-bottom: 0.2em;}
+.card dt{
+    height: 70%;
+    margin-bottom: 0.2em;
+    overflow: hidden;}
 
 .copertina{height:100%;}
 
 .copertina input[type="image"]{ 
     width: 100%;
-    height: 100%; 
+    height: 100%;
     transition: ease-in-out 0.3s;
 }
 
@@ -293,9 +278,11 @@ header{
     padding-bottom: 0.2em;
     height: 30%;
 }
+
 .titolo{  
     overflow: hidden;
     height: 40%;
+    font-weight: bold;
 }
 
 .titolo input[type="submit"]{
@@ -304,10 +291,12 @@ header{
     border:none;
     background-color: transparent;
     font-size: 1.2em;
+    color: crimson;
+    font-weight: bold;
 }
 
 .titolo input[type="submit"]:hover{
-    color:red;
+    color:black;
     cursor: pointer;
 }
 
@@ -320,12 +309,11 @@ header{
 
 .valutazionePrezzo{
     display: flex;
-    flex-flow: row nowrap;
     align-items: center;
     height: 30%;
 }
 
-.valutazione{flex: 1 0 0;}
+.valutazione{flex: 1 1 0;}
 
 .stella{
     display: inline-block;
@@ -347,7 +335,7 @@ header{
     display: block;
     text-align: center;
     font-weight: bold;
-    color: #ff0000;
+    color: crimson;
 }
 
 #menuProposte{
@@ -511,8 +499,8 @@ header{
     display: inline-block;
     margin-left:1em;
     min-width: 7em;
-    background-color: #fff;
-    color: black;
+    background-color: crimson;
+    color: white;
 }
 /* ------------------------- pagina registrazione ------------------------- */
 .reg_log{
@@ -780,15 +768,7 @@ div.genereFilm{
         flex-direction:row;
         flex-wrap: wrap;
     }
-    #menu-news{
-        margin-right: 0;
-        width: 100%;
-    }
 
-    #novita{
-        margin-top: 0;
-        border: 1px solid var(--colore-bordo-header);
-    }
     #menuPrincipale{
         position: absolute;
         width: 100%;
@@ -816,6 +796,10 @@ div.genereFilm{
     .tbl tfoot tr td:nth-child(2){
         display: none;
     }
+
+    .card dt{
+        overflow:unset;
+    }
 }
 
 /* //////////////////////////////////////////////////////////////////////////////////////////////////////  */
@@ -829,16 +813,16 @@ div.genereFilm{
         height: unset;
         margin-bottom:1em;
     }
-    .dettagli{
-        position: relative;
-    }
+
     .valutazionePrezzo{
         width: 100%;
-        position: absolute;
+        position: relative;
         bottom: 0;
-        align-items: flex-start;
+        flex-direction: column;
+        align-items: baseline;
 
     }
+
     .prezzo{
         margin-top: 0;
     }
@@ -855,7 +839,9 @@ div.genereFilm{
 
     .copertina{height: unset;}
 
-    .card dt{flex: 1 0 0;}
+    .card dt{flex: 1 0 0;
+            overflow:unset;
+    }
 
     div.card dl{
         height: 100%;
@@ -865,20 +851,22 @@ div.genereFilm{
         width: 60%;
         height: 100%;
         padding-right:1em;
+        position: relative;
     }
+
     .genere{
         font-size: 1.1em;
-        margin-bottom:0.5em;
     }
     .centrale{
         width: 30%;
         font-size: 0.8em;
     }
+
     .stella{
         width: 1em;
         height: 1em;
     }
-    .card .posizione{
+    .posizione{
         font-size:1.3em;
         margin-right: 0.3em;
     }
@@ -923,6 +911,10 @@ div.genereFilm{
     .card{
         width: 100%;
         font-size: 1.2em;
+    }
+
+    .card dt{
+        overflow:unset;
     }
     .nascosto2{display: none;}
     .centrale{width: 40%;}
