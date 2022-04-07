@@ -26,7 +26,7 @@
         <div id="menu-news">
             <nav id="menuPrincipale">
                 <ul>
-                    <li><a href="amministratore_loggato.html">Vista generale</a></li>
+                    <li>Vista generale</li>
                     <li><a href="aggiungi_film.html">Aggiungi film</a></li>
                     
                 </ul>
@@ -51,9 +51,9 @@
             <h2 id="cambiaStato">Cambia stato utente</h2>
             <form action="modifica_stato_utente.php" method="get">
                 <label for="attivo">Attivo:</label>
-                <input type="radio" id="attivo" name="statoAttuale" checked="checked" disabled="disabled">
+                <input type="radio" id="attivo" name="stato" value="Attivo" >
                 <label for="avvisato">Avvisato:</label>
-                <input type="radio" id="avvisato" name="stato">
+                <input type="radio" id="avvisato" name="stato" value="Avvisato">
                 <label for="bloccato">Bloccato:</label>
                 <input type="radio" id="bloccato" name="stato" value="Bloccato">
                 <input type="hidden" name="id" value="%idUtente%">

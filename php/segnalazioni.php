@@ -33,9 +33,21 @@
     $segnalazioni=trovaSegnalazioni($risultato_info_utente[0]['ID'],$connessione);
     $pagina=str_replace('%numSegnalazioni%',$segnalazioni,$pagina);
 
-    /*$query_recensione="select testo,ID_utente,data from recensione where ID_utente=$id";
+
+
+    $query_recensione="select recensione.ID as id,recensione.ID_film as idFilm,recensione.ID_utente as idUtente,
+    foto_utente.path,
+    utente.username,recensione.data,recensione.testo,recensione.valutazione
+    
+    from foto_utente join utente  join recensione 
+    on utente.ID_foto=foto_utente.ID and utente.ID=recensione.ID_utente
+    
+     where ID_utente=$id";
+
     $risultato_recensione=$connessione->interrogaDB($query_recensione);
-    $rec=new RecensioneUtente($risultato_recensione[0]);*/
+    $rec=new RecensioneUtente($risultato_recensione[0]);
+    $pagina=str_replace('%recensioni%',$rec->crea(),$pagina);
+    $pagina=str_replace('%idUtente%',$id,$pagina);
 
     echo $pagina;
 ?>
