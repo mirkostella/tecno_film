@@ -89,7 +89,7 @@ abstract class Recensione{
         return $this->username;
     }
     public function getUtile(){
-        $queryLike="SELECT count(*) as nLike FROM utile JOIN recensione ON (utile.ID_recensione=recensione.ID) WHERE recensione.ID=$this->id";
+        $queryLike="SELECT count(*) as nLike FROM utile JOIN recensione ON (utile.ID_recensione=recensione.ID) WHERE recensione.ID=1";
         $connessione=new Connessione();
         $connessione->apriConnessione();
         $ris=$connessione->interrogaDB($queryLike);
