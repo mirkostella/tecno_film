@@ -1,28 +1,30 @@
 <div class="recensioneUtente">
-    <dt>
-        <img class="immagineProfilo" src="%path%" alt="immagine profilo di %username%">
-        <div class="infoRecensione">
-            <span>%username%</span> 
-            <span class="stelleData">%valutazione%  <span class="data">%data%</span></span>
-        </div>
-    </dt>
-    <dd>
-        <div class="testoRecensione">
-            <div class="testo">
-                <span class="stelleData grassetto">Recensione:</span>
-                 %testo%
+    <dl>
+        <dt>
+            <img class="immagineProfilo" src="%path%" alt="immagine profilo di %username%">
+            <div class="infoRecensione">
+                <span>%username%</span> 
+                <span class="stelleData">%valutazione%  <span class="data">%data%</span></span>
             </div>
-            <div class="valoreRecensione">
-                %like%
-                %segnalazioni%
+        </dt>
+        <dd>
+            <div class="testoRecensione">
+                <div class="testo">
+                    <span class="stelleData grassetto">Recensione:</span>
+                     %testo%
+                </div>
+                <div class="valoreRecensione">
+                    %like%
+                    %segnalazioni%
+                </div>
+                    <form class="valutaCommento" method="get" action="pagina_film.php">
+                        <input type="hidden" name="idRecensione" value="%idRecensione%">
+                        <input type="hidden" name="idFilm" value="%idFilm%">
+                        %pulsanteUtile%
+                        %pulsanteSegnalazione%
+                        %elimina%
+                    </form> 
             </div>
-                <form class="valutaCommento" method="get" action="pagina_film.php">
-                    <input type="hidden" name="idRecensione" value="%idRecensione%">
-                    <input type="hidden" name="idFilm" value="%idFilm%">
-                    %pulsanteUtile%
-                    %pulsanteSegnalazione%
-                    %elimina%
-                </form> 
-        </div>
-    </dd>
+        </dd>
+    </dl>
 </div>

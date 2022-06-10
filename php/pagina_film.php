@@ -10,13 +10,8 @@
     require_once ('info_film.php');
     
     
-    $idFilm="";
-    if(isset($_POST['idFilm']))
-        $idFilm=$_POST['idFilm'];
+    $idFilm=$_REQUEST['idFilm'];
     
-    if(isset($_GET['idFilm']))
-        $idFilm=$_GET['idFilm'];
-
     $pagina=file_get_contents('../html/pagina_film.html');
     $struttura=new Struttura();
     $struttura->aggiungiHeader($pagina);
@@ -26,14 +21,23 @@
     $struttura->aggiungiAcquistoNoleggio($pagina);
 
     $infoFilm=recuperaInfo($idFilm);
+    $infoGeneriFilm=recuperaGeneri($idFilm);
 
-    $film=new Card($infoFilm);
+    $film=new Card($infoFilm,$infoGeneriFilm);
     $pagina=str_replace('%idFilm%',$film->id,$pagina);
     $pagina=str_replace('%titolo%',$film->titolo,$pagina);
     $pagina=str_replace('%path%',$film->copertina,$pagina);
     $pagina=str_replace('%annoUscita%',$film->annoUscita,$pagina);
     $pagina=str_replace('%durata%',$film->durata,$pagina);
-    $pagina=str_replace('%genere%',$film->genere,$pagina);
+    $stringaGeneri='';
+    $copiaGeneriFilm=$film->genere;
+    $primoGenere=array_pop($copiaGeneriFilm)['generiFilm'];
+    $stringaGeneri=$stringaGeneri.$primoGenere;
+    foreach($copiaGeneriFilm as &$valore){
+        $prossimoGenere=$valore['generiFilm'];
+        $stringaGeneri=$stringaGeneri.' , '.$prossimoGenere;
+    }
+    $pagina=str_replace('%genere%',$stringaGeneri,$pagina);
     $pagina=str_replace('%prezzoN%',$film->prezzoN,$pagina);
     $pagina=str_replace('%prezzoA%',$film->prezzoA,$pagina);
     $pagina=str_replace('%trama%',$film->trama,$pagina);
@@ -57,8 +61,8 @@
     $testoNuovaRecensione="";
     $valutazioneNuovaRecensione="";
     if(isset($_POST['inviaRecensione'])){
-        $testo=$_POST['testoRecensione'];
-        $valutazione=$_POST['valutazioneRecensione'];
+        $testo=trim($_POST['testoRecensione']);
+        $valutazione=trim($_POST['valutazioneRecensione']);
         $data=date('Y/m/d H:i:s',time());
         $datiRecensione=array(
             'idFilm'=>$idFilm,
@@ -73,7 +77,8 @@
     $testoNuovaRecensione=$nuovaRecensione->getTesto();
     $valutazioneNuovaRecensione=$nuovaRecensione->getValutazione();
     //se la recensione non viene inserita ripristino i campi della form
-    $gestore->gestisciInserisciRecensione($nuovaRecensione,$pagina);
+    if($gestore->gestisciInserisciRecensione($nuovaRecensione,$pagina))
+        $pagina=str_replace('%formRecensione%',"",$pagina);
     }
 
     if(isset($_GET['utile']))

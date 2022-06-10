@@ -74,11 +74,9 @@
 			$no_error=false;
 		}
 		else
-			$pagina=str_replace('%error_cognome%', '', $pagina);	
-		$date = new DateTime($data_nascita);
-		$now = new DateTime();
-		$delta = $now->diff($date);
-		if($delta->y<18){
+			$pagina=str_replace('%error_cognome%', '', $pagina);
+
+		if(!check_dataNascita($data_nascita)){
 			$pagina=str_replace('%error_data%', "<div class=\"msg_box error_box\">L'età minima per poter utilizzare questo sito è 18 anni.</div>", $pagina);
 			$no_error=false;
 		}
@@ -91,6 +89,7 @@
 		}
 		else
 			$pagina=str_replace('%error_email%', '', $pagina);
+			
 		$query_email="SELECT * FROM utente WHERE BINARY email='".$email."'"; //CASE SENSITIVE??
 		$query_user ="SELECT * FROM utente WHERE BINARY username='".$username."'"; //CASE SENSITIVE??
 
@@ -128,17 +127,16 @@
 			$gestisci_img = new gestione_img();
 
 			if(isset($_FILES['immagineProfilo']) && is_uploaded_file($_FILES['immagineProfilo']['tmp_name'])){
-				$upload_result=$gestisci_img->uploadImg("Utenti/", "immagineProfilo");
-				$pagina = str_replace('%error_foto%', $upload_result['error'], $pagina);
-				if($upload_result['error']==''){
-					$file_path=$upload_result['path'];
-				}
-				else{
+				if(!$upload_result=$gestisci_img->caricaImmagine("Utenti/", "immagineProfilo")){
+				//stampo gli errori
+					$pagina = str_replace('%error_foto%',$gestisci_img->getErroreDimensione().$gestisci_img->getErroreFormato().$gestisci_img->getErroreCaricamento(), $pagina);
 					$no_error=false;
 				}
+				else
+					$file_path=$upload_result;
 			}
 
-			if(($file_path !== "../img/Utenti/") && ($upload_result['error'] =='')){
+			if(($file_path !== "../img/Utenti/") && $upload_result){
 				$insert_Foto="INSERT INTO foto_utente(ID, path, descrizione) VALUES (NULL, '$file_path', NULL)";
 				$connessione->eseguiQuery($insert_Foto);
 				$check_insert="SELECT * FROM foto_utente WHERE path='".$file_path."'";
@@ -171,7 +169,7 @@
 			else{
 				$pagina = str_replace('%msg_reg%', "<div class=\"msg_box success_box\">Registrazione avvenuta! Verrai indirizzato al login</div>", $pagina);
 				$connessione->chiudiConnessione();
-				header("refresh: 10; url= login.php");
+				header("refresh: 7; url= login.php");
 			}		
 		}
 

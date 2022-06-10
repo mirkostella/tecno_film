@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xml:lang="it" lang="it">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="author" content="Mirko Elton Sonia Ruth"/>
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+    <title>Admin-Tecno film</title>
+    <link rel="stylesheet" type="text/css" href="../css/stile.css"/>
+</head>
+<body id="inizioPagina">
+    <header>
+        %headerAdmin%
+    </header>
+    <nav id="breadcrumb">
+        Ti trovi in: <a href="../php/index_admin.php">Pagina Amministratore</a> &#62; <span class="grassetto">Inserisci Film</span>
+    </nav>
+    <div id="impaginazione">
+        <div id="menu-news">
+            <nav id="menuPrincipale">
+                %menuAdmin%
+            </nav>
+        </div>
+        <div id="contenuto">
+           <form action="ins_film_admin.php" method="post" enctype="multipart/form-data" id="formFilm">
+               <div class="titoloFilm">
+                <label for="titolo">Titolo</label>
+                %errTitolo%
+                <input type="text" name="titoloFilm" id="titolo" value="%titolo%" required="required">
+               </div>
+            <div class="immagineFilm">
+                <label for="copertinaFilm">Immagine di Copertina</label>
+                %errCopertina%
+                <input type="file" name="copertinaFilm" id="copertinaFilm" value="%copertina%" require accept=".png, .jpg, .jpeg">
+                <div class="altImmagineFilm">
+                    <label for="altImg">Alt immagine di copertina</label>
+                    <input type="text" name="descrizione" id="altImg" value="%altCopertina%" required="required">  
+                    %errAlt%
+                </div>
+            </div>
+            <fieldset id="generi">
+                <legend>Generi:</legend>
+                <div class="ordinamento">
+                    %listaGeneri%
+                </div>   
+                %errGeneri%
+            </fieldset>
+            <div class="datiNumericiFilm">
+                <div class="dataFilm">
+                    <label for="dataUscita">Data di Uscita</label>
+                    %errData%
+                    <input type="date" name="dataUscitaFilm" id="dataUscita" value="%dataUscita%" required="required">
+                </div>
+                <div class="durataFilm">
+                    <label for="durata">Durata</label>
+                    %errDurata%
+                    <input type="time" name="durataFilm" id="durata" value="%valoreDurata%" min="00:01" required="required">
+                    <span>Ore:Minuti</span>
+                </div>
+               <fieldset class="prezzoFilm">
+                   <legend>Prezzo:</legend>
+                   <div class="prezzoAFilm">
+                        <label for="prezzoAcquisto">Prezzo di Acquisto</label>
+                        %errPrezzoA%
+                        <input type="number" step="0.01" name="prezzoAcquistoFilm" id="prezzoAcquisto" value="%prezzoA%" min="0.01" required="required">
+                    </div>
+                        
+                    <div class="prezzoNFilm">
+                        <label for="prezzoNoleggio">Prezzo di Noleggio</label>
+                        %errPrezzoN%
+                        <input type="number" step="0.01" name="prezzoNoleggioFilm" id="prezzoNoleggio" value="%prezzoN%" min="0.01" required="required">
+                    </div>
+                </fieldset>
+               
+               <!-- fine dati numerici -->
+            </div>
+            <div class="tramaFilm">
+                <label for="trama">Trama</label>
+                %errTrama%
+                <textarea name="tramaFilm" id="trama" cols="30" rows="10" required="required">%trama%</textarea> 
+            </div>
+            
+            <input type="submit" name="inserisciFilm" value="Inserisci" class="btn">
+            %esitoTransazione%
+           </form>
+            <!-- fine contenuto -->
+        </div> 
+        <!-- fine impaginazione -->
+    </div>   
+</body>
+</html>
+
+
+
+
+<!-- ricordarsi di eliminare aggiungi_film.html -->

@@ -109,11 +109,12 @@ header{
 #ricerca{
     display: flex;
     align-items: center;
+    justify-content: center;
     width: 100%;
     margin-right:3em;
     margin-left:5em;
 }
-#cercaTitolo{
+#input_ricerca{
     width: 100%;
     line-height: 2em;
     height: 1.7em;
@@ -121,7 +122,7 @@ header{
     background-color: var(--colore-cerca-titolo) ;
     max-width: 21em;
 }
-#invioTitolo{
+#submit_ricerca{
     padding: 0 0.6em;
     height: 1.9em;
     font-size: 1.1em;
@@ -267,36 +268,37 @@ header{
 .card{
     width: calc(20% - 0.6em);
     margin: 0.6em 0.3em;
+    margin-bottom:0;
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
     background-color: var(--colore-dettagli-card);
     font-size: 1.1em;
     border:1px solid var(--colore-bordo-card);
 }
-.listaCards dt{width: 100%;}
-.copertina{width: 100%;}
+.card dt{height: 70%;}
+.copertina{height: 100%;}
 .copertina input[type="image"]{ 
-    width: 100%;   
+    width: 100%;
+    height: 100%;
     transition: ease-in-out 0.3s;
 }
 .copertina input[type="image"]:hover{filter:brightness(75%);}
 .dettagli{
     padding: 0.5em;
-    display: flex;
-    flex-direction: column;
+    padding-bottom: 0.2em;
+    height: 30%;
 }
 .titolo{ 
-    width: 100%;   
     overflow: hidden;
+    height: 40%;
 }
 .titolo input[type="submit"]{
-    width: 100%;
     text-align: left;
     white-space: nowrap;
-	margin-bottom: 0.1em;
     border:none;
     background-color: transparent;
-    font-size: 1.3em;
+    font-size: 1.2em;
+    
 }
 .titolo input[type="submit"]:hover{
     color:red;
@@ -304,16 +306,19 @@ header{
 }
 .genere{
     display: block;
-    line-height: 1.3em;
-    margin-bottom: 0.5em;
+    white-space: nowrap; 
     overflow: hidden;
+    height: 30%;
 }
 .valutazionePrezzo{
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
+    height: 30%;
 }
-.valutazione{flex: 1 0 0;}
+.valutazione{
+    flex: 1 0 0;
+}
 .stella{
     display: inline-block;
     width: 0.9em;
@@ -619,6 +624,71 @@ summary{display: none;}
     font-size: 1.1em;
 }
 
+/* form inserimento film amministratore */
+#formFilm textarea{
+    resize:none;
+}
+#formFilm div:not(div.genereFilm){
+    margin:1em 0;
+}
+#formFilm input[class="btn"]{
+    margin: auto;
+    width: 30%;
+}
+#formFilm fieldset{
+    width: 60%;
+    margin: auto;
+}
+.titoloFilm{
+    text-align: center;
+}
+.titoloFilm #titolo{
+    width: 30%;
+}
+.immagineFilm{
+    text-align: center;
+}
+.altImmagineFilm{
+    display: inline-block;
+}
+.tramaFilm{
+    text-align: center;
+}
+.tramaFilm label{
+    display: block;
+}
+.tramaFilm textarea{
+    width: 50%;
+}
+.datiNumericiFilm{
+    text-align: center;
+}
+.dataFilm{
+    
+}
+.durataFilm{
+}
+.prezzoFilm{
+}
+div.genereFilm{
+    display: inline-block;
+    white-space: nowrap;
+    height: 25%;
+}
+.genereFilm label{
+    margin-left: 0.5em;
+    display: inline-block;
+}
+#formFilm div.ordinamento{
+    padding: 0 5%;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    height: 20%;
+    
+    }
+
 /* ------------------------- pagina regolamento ------------------------- */    
 #regole dt{
     font-size: 1.1em;
@@ -654,6 +724,7 @@ summary{display: none;}
 /* ------------------------- media query ------------------------- */
 /* proprietá generiche */
 @media screen and (max-width: 75em) {
+     
     #contenuto{
         width: 100%;
     }
@@ -727,6 +798,25 @@ summary{display: none;}
 /* proprietá che riguardano solo la pagina home */
 /* media per card smartphone */
 @media screen and (max-width: 60em) {
+    #formFilm div .ordinamento{display: unset;}
+    div .genereFilm{display: block;}
+    .titolo{
+        height: unset;
+        margin-bottom:1em;
+    }
+    .dettagli{
+        position: relative;
+    }
+    .valutazionePrezzo{
+        width: 100%;
+        position: absolute;
+        bottom: 0;
+        align-items: flex-start;
+        
+    }
+    .prezzo{
+        margin-top: 0;
+    }
     .card{
         display: flex;
         flex-direction: row;
@@ -736,9 +826,14 @@ summary{display: none;}
         background-color: #fff;
         border:none;
     }
+    .copertina{height:unset;}
     .card dt{flex: 1 0 0;}
+    div.card dl{
+        height: 100%;
+    }
     .dettagli{
         width: 60%;
+        height: 100%;
         padding-right:1em;
     }
     .genere{
@@ -758,16 +853,11 @@ summary{display: none;}
         margin-right: 0.3em;
     }
     .nascosto{display: none;}
-    .valutazionePrezzo{
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    .prezzo{
-        margin-top:1em;
-    }
 }
 /* proprietá che riguardano solo la pagina film */
 @media screen and (max-width: 35em) {
+
+    
     #scriviRecensione .btn{
         display: block;
         position: static;
