@@ -257,14 +257,12 @@ header{
     display: flex;
     flex-direction: column;
 }
-
 .card dt{
     height: 70%;
     margin-bottom: 0.2em;
     overflow: hidden;}
 
 .copertina{height:100%;}
-
 .copertina input[type="image"]{ 
     width: 100%;
     height: 100%;
@@ -278,7 +276,6 @@ header{
     padding-bottom: 0.2em;
     height: 30%;
 }
-
 .titolo{  
     overflow: hidden;
     height: 40%;
@@ -312,9 +309,7 @@ header{
     align-items: center;
     height: 30%;
 }
-
 .valutazione{flex: 1 1 0;}
-
 .stella{
     display: inline-block;
     width: 0.9em;
@@ -697,9 +692,32 @@ div.genereFilm{
     flex-direction: column;
     flex-wrap: wrap;
     height: 20%;
-
 }
-
+.dataFilm{
+    
+}
+.durataFilm{
+}
+.prezzoFilm{
+}
+div.genereFilm{
+    display: inline-block;
+    white-space: nowrap;
+    height: 25%;
+}
+.genereFilm label{
+    margin-left: 0.5em;
+    display: inline-block;
+}
+#formFilm div.ordinamento{
+    padding: 0 5%;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    height: 20%;
+    
+    }
 
 /* ------------------------- pagina regolamento ------------------------- */    
 #regole dt{
@@ -736,7 +754,6 @@ div.genereFilm{
 /* ------------------------- media query ------------------------- */
 /* proprietá generiche */
 @media screen and (max-width: 75em) {
-
     #contenuto{
         width: 100%;
     }
@@ -806,14 +823,12 @@ div.genereFilm{
 /* proprietá che riguardano solo la pagina home */
 /* media per card smartphone */
 @media screen and (max-width: 60em) {
-
     #formFilm div .ordinamento{display: unset;}
     div .genereFilm{display: block;}
     .titolo{
         height: unset;
         margin-bottom:1em;
     }
-
     .valutazionePrezzo{
         width: 100%;
         position: relative;
@@ -826,7 +841,6 @@ div.genereFilm{
     .prezzo{
         margin-top: 0;
     }
-
     .card{
         display: flex;
         flex-direction: row;
@@ -836,7 +850,6 @@ div.genereFilm{
         background-color: #fff;
         border:none;
     }
-
     .copertina{height: unset;}
 
     .card dt{flex: 1 0 0;
@@ -846,7 +859,6 @@ div.genereFilm{
     div.card dl{
         height: 100%;
     }
-
     .dettagli{
         width: 60%;
         height: 100%;
@@ -874,7 +886,6 @@ div.genereFilm{
 }
 /* proprietá che riguardano solo la pagina film */
 @media screen and (max-width: 35em) {
-
     #scriviRecensione .btn{
         display: block;
         position: static;

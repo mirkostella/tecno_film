@@ -8,7 +8,6 @@
     require_once ('recensione.php');
     require_once ('ResocontoRecensioni.php');
     require_once ('info_film.php');
-    
     $idFilm=$_REQUEST['idFilm'];
     $pagina=file_get_contents('../html/pagina_film.html');
     $struttura=new Struttura();
@@ -63,7 +62,6 @@
     if($gestore->gestisciInserisciRecensione($nuovaRecensione,$pagina))
         $pagina=str_replace('%formRecensione%',"",$pagina);
 }
-
 
 
     if(isset($_GET['utile']))

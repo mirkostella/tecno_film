@@ -84,8 +84,7 @@ class GestoreRecensioni{
             if($presenzaRecensione)
                 return true;
         }
-        return false;
-    
+        return false;   
     }
 
     public function controlloPresenzaUtileUtente(){
@@ -108,11 +107,9 @@ class GestoreRecensioni{
             if($presenzaSegnalazione){
                 return true;  
             }
-
         }
         return false;
     }
-
     //ritorna la stringa da sostituire al segnaposto per il filtro recensioni
     public function visualizzaFiltro(){
         $htmlFiltro=file_get_contents('../componenti/filtro.html');
@@ -223,7 +220,6 @@ class GestoreRecensioni{
             $pagina=str_replace('%messaggioEsitoRecensione%','<div class="error_box">Segnalazione recensione fallita... per favore riprova piú tardi</div>',$pagina);
         }
     }
-
     public function gestisciAnnullaUtileRecensione($idRecensione,&$pagina){
         if(RecensioneUtente::rimuoviUtile($idRecensione))
             $pagina=str_replace('%messaggioEsitoRecensione%','<div class="success_box">Utile rimosso dalla recensione con successo!</div>',$pagina);

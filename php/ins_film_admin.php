@@ -4,8 +4,6 @@ require_once("connessione.php");
 require_once("gestore_film.php");
 require_once("upload_img.php");
 
-
-
 if($_SESSION['admin']==false){
     header('location: login_admin.php');
     exit();
@@ -27,9 +25,11 @@ foreach($generi as $valore){
 
 print_r($generi_modifica);
 
+
+
 $listaGeneri="";
 foreach($generi as $valore){
-    $nuovaVoce=$nuovaVoce='<div class="genereFilm"><input type="checkbox" id="'.$valore['nome_genere'].'" name="generi[]" value="'.$valore['nome_genere'].'" class="checkmark" %'.$valore['nome_genere'].'%><label for="'.$valore['nome_genere'].'">'.$valore['nome_genere'].'</label></div>';
+    $nuovaVoce='<div class="genereFilm"><input type="checkbox" id="'.$valore['nome_genere'].'" name="generi[]" value="'.$valore['nome_genere'].'" class="checkmark" %'.$valore['nome_genere'].'%><label for="'.$valore['nome_genere'].'">'.$valore['nome_genere'].'</label></div>';
     $listaGeneri=$listaGeneri.$nuovaVoce;
 }  
 $pagina=str_replace('%listaGeneri%',$listaGeneri,$pagina);
@@ -41,7 +41,6 @@ if(isset($_POST['inserisciFilm'])){
     }
     else
         $generiScelti=$_POST['generi'];
-
     $datiNuovoFilm=array(     
         'titolo'=>trim($_POST['titoloFilm']),
         'trama'=>trim($_POST['tramaFilm']),
@@ -63,13 +62,10 @@ if(isset($_POST['inserisciFilm'])){
         $pagina=str_replace('%prezzoA%', $datiNuovoFilm['prezzoA'], $pagina);
         $pagina=str_replace('%prezzoN%', $datiNuovoFilm['prezzoN'], $pagina);
         $pagina=str_replace('%valoreDurata%', $datiNuovoFilm['durata'], $pagina);
-
         $generi_modifica=array();
         foreach($generi as $valore){
             array_push($generi_modifica,$valore['nome_genere']) ;
         }
-
-
         foreach($generiScelti as $valore){
             $pagina=str_replace('%'.$valore.'%', 'checked="checked"', $pagina);
         }
@@ -81,7 +77,6 @@ if(isset($_POST['inserisciFilm'])){
         $pagina=str_replace('%trama%', $datiNuovoFilm['trama'], $pagina);
     }
 }
-
 $pagina=str_replace('%titolo%', "", $pagina);
 $pagina=str_replace('%copertina%', "", $pagina);
 $pagina=str_replace('%altCopertina%', "", $pagina);
@@ -100,6 +95,5 @@ $pagina=str_replace("%errPrezzoA%","",$pagina);
 $pagina=str_replace("%errPrezzoN%","",$pagina);
 $pagina=str_replace("%esitoTransazione%","",$pagina);
 $pagina=str_replace('%errGeneri%',"", $pagina);
-
 echo $pagina;
 ?>

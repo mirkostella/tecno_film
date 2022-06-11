@@ -96,6 +96,7 @@ class GestoreFilm{
             $pagina=str_replace('%errGeneri%',$this->erroriFilm['errGeneri'], $pagina);
     }
 
+
     public function controlloErroriForm(){
         $no_error=true;
         if(!check_titolo($this->titolo)){
@@ -130,12 +131,10 @@ class GestoreFilm{
             $this->erroriFilm['errDescrizione']=$this->erroriFilm['errDescrizione'].'<div class="error_box">La copertina deve avere una descrizione di almeno 15 caratteri.</div>';
             $no_error=false;
         }
-
         if(count($this->genere)==0){
             $this->erroriFilm['errGeneri']=$this->erroriFilm['errGeneri'].'<div class="error_box">Seleziona almeno un genere.</div>';
             $no_error=false;
         }
-
         return $no_error;
     }
     
