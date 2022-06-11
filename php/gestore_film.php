@@ -1,6 +1,6 @@
 <?php
 
-require_once("reg_check.php");
+require_once("controlli_form.php");
 
 class GestoreFilm{
     public $id=null;
@@ -94,7 +94,8 @@ class GestoreFilm{
             $pagina=str_replace('%errPrezzoN%',$this->erroriFilm['errPrezzoN'],$pagina);
             $pagina=str_replace('%errCopertina%',$this->erroriFilm['errDimensioneImmagine'].$this->erroriFilm['errFormatoImmagine'].$this->erroriFilm['errCaricamentoImmagine'].$this->erroriFilm['errMancanzaImmagine'],$pagina);
             $pagina=str_replace('%errGeneri%',$this->erroriFilm['errGeneri'], $pagina);
-        }
+    }
+
 
     public function controlloErroriForm(){
         $no_error=true;
@@ -102,8 +103,8 @@ class GestoreFilm{
             $this->erroriFilm['errTitolo']=$this->erroriFilm['errTitolo'].'<div class="error_box">Il titolo non puó superare i 50 caratteri (spazi inclusi).</div>';
             $no_error=false;
         }
-        if($this->presenzaTitolo()){     
-           $this->erroriFilm['errTitolo']=$this->erroriFilm['errTitolo'].'<div class="error_box">Il film è giá presente nel database.</div>';
+        if($this->presenzaTitolo()){
+            $this->erroriFilm['errTitolo']=$this->erroriFilm['errTitolo'].'<div class="error_box">Il film è giá presente nel database.</div>';
            $no_error=false;
         }
         if(!check_dataUscita($this->dataUscita)){

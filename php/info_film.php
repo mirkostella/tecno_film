@@ -23,9 +23,6 @@
             );
 
         $info=$connessione->interrogaDB($queryInfo);
-        echo 'info........... <br>';
-        print_r($info);
-        echo '<br><br><br>';
         $durata=$info[0]['durata']/60;
         $dataUscita=strtotime($info[0]['data_uscita']);
         $cambioFormato=date('d/m/Y', $dataUscita);
@@ -53,49 +50,6 @@
         $connessione->chiudiConnessione();
         return $generi;
     }
-
-    //tra gli ultimi aggiunti restituisce la lista dei film che sono tra i migliori per ogni genere (generi scelti casualmente tra tutti)
-    function recuperaMiglioriPerGenere(){
-        //recupero i generi associati ad almeno un film
-        $queryGeneri="SELECT nome_genere FROM genere WHERE nome_genere IN (SELECT nome_genere FROM genere JOIN appartenenza ON(appartenenza.ID_genere=genere.ID))";  
-        $connessione=new Connessione();
-        $connessione->apriConnessione();
-        $filmScelti=array();
-        $arrayGeneri=$connessione->interrogaDB($queryGeneri);
-        if($arrayGeneri){
-            shuffle($arrayGeneri);
-            foreach($arrayGeneri as $valore){
-                $genere=array_pop($arrayGeneri);
-                $queryLorenzo='SELECT idMigliore,MAX(voto) as massimo FROM (
-                    SELECT film.ID as idMigliore,AVG(valutazione) as voto FROM film JOIN recensione ON(recensione.ID_film=film.ID) JOIN appartenenza ON(appartenenza.ID_film=film.ID) JOIN genere ON(genere.ID=appartenenza.ID_genere) WHERE nome_genere=\''.$valore['nome_genere'].'\' GROUP BY idMigliore ORDER BY film.data_uscita DESC) as filmConMedieVoti LIMIT 1';
-                //seleziona i film piú recenti con il voto piú alto per genere
-                $film=$connessione->interrogaDB($queryLorenzo);
-                if(count($film)>0 && !is_null($film[0]['idMigliore']))
-                    array_push($filmScelti,$film[0]['idMigliore']);        
-            }
-        }
-        
-        $connessione->chiudiConnessione();
-        //$generi scelti a questo punto contiene gli id dei film da inserire nella lista
-        $listaCardGeneri=array();
-        $filmTrovati=count($filmScelti);
-        if($filmTrovati>5)
-            $filmTrovati=5;
-        for($i=0;$i<$filmTrovati;$i++){
-            $idFilmCorrente=$filmScelti[$i];
-            array_push($listaCardGeneri,recuperaInfo($idFilmCorrente));
-        }
-        echo "array lista card generi <br>";
-        print_r($listaCardGeneri);
-        $listaCard=creaListaCardClassificata($listaCardGeneri);
-        $categoriaCard=file_get_contents('../componenti/categoria_index.html');
-        $categoriaCard=str_replace('%listaCard%',$listaCard,$categoriaCard);
-        $categoriaCard=str_replace('%spazio%',"",$categoriaCard);
-        $categoriaCard=str_replace('%categoria%',"<h2 id=\"topGenere\">Top 5 per genere</h2>",$categoriaCard);
-        $categoriaCard=str_replace('%vediAltro%',"",$categoriaCard);
-
-        return $categoriaCard;   
-    }
     
     function pulsanteVediAltro($nomeCategoria,$collegamento, $limite){
         $pulsanteVediAltro=file_get_contents('../componenti/vediAltro.html');
@@ -109,7 +63,7 @@
     function recuperaNuoveUscite($limite){
         $queryCard="SELECT film.ID as id,titolo,nome_genere as genere,copertina,trama,TIME_TO_SEC(durata) as durata,data_uscita as annoUscita,prezzo_acquisto as prezzoA,prezzo_noleggio as prezzoN,
         path as copertina,descrizione,AVG(valutazione) as valutazione FROM film JOIN appartenenza 
-        ON(film.ID=appartenenza.ID_film) JOIN genere ON (appartenenza.ID_genere=genere.ID) JOIN foto_film ON(film.copertina=foto_film.ID) LEFT JOIN recensione ON (film.ID=recensione.ID_film) GROUP BY film.ID ORDER BY annoUscita DESC LIMIT $limite";
+        ON(film.ID=appartenenza.ID_film) JOIN genere ON (appartenenza.ID_genere=genere.ID) JOIN foto_film ON(film.copertina=foto_film.ID) LEFT JOIN recensione ON (film.ID=recensione.ID_film) GROUP BY film.ID ORDER BY annoUscita DESC, valutazione DESC LIMIT $limite";
         $connessione=new Connessione();
         $connessione->apriConnessione();
         $ris=$connessione->interrogaDB($queryCard);
@@ -136,20 +90,19 @@
     //restituisce i film che non sono stati acquistati o noleggiati dello stesso genere dell'ultimo film acquistato o noleggiato.
     //i film vengono ordinati prima per data e poi per valutazione (maggiore uguale a 3 stelle)
     
-    //????
     function recuperaSceltiPerTe($limite){
         $queryCard="SELECT film.ID as id,titolo,nome_genere as genere,copertina,trama,TIME_TO_SEC(durata) as durata,data_uscita as annoUscita,prezzo_acquisto as prezzoA,prezzo_noleggio as prezzoN,
         path as copertina,descrizione,AVG(valutazione) as valutazione FROM film JOIN appartenenza 
         ON(film.ID=appartenenza.ID_film) JOIN genere ON (appartenenza.ID_genere=genere.ID) JOIN foto_film ON(film.copertina=foto_film.ID) LEFT JOIN recensione ON (film.ID=recensione.ID_film) 
         WHERE valutazione>=3 AND film.ID NOT IN (SELECT film.ID FROM film JOIN acquisto ON(film.ID=acquisto.ID_film) WHERE acquisto.ID_utente=".$_SESSION['id']." UNION SELECT film.ID FROM film
-        JOIN noleggio ON(film.ID=noleggio.ID_film) WHERE noleggio.ID_utente=".$_SESSION['id'].") AND ID_genere=(SELECT ID_genere FROM (SELECT data_noleggio as data_transizione,ID_genere,film.ID as film 
+        JOIN noleggio ON(film.ID=noleggio.ID_film) WHERE noleggio.ID_utente=".$_SESSION['id'].") AND ID_genere IN (SELECT ID_genere FROM (SELECT data_noleggio as data_transizione,ID_genere,film.ID as film 
         FROM utente JOIN noleggio ON (noleggio.ID_utente=utente.ID) JOIN film ON(film.ID=noleggio.ID_film) JOIN appartenenza ON(appartenenza.ID_film=film.ID)  WHERE utente.ID=".$_SESSION['id']." UNION 
         SELECT data_acquisto as data_transizione,ID_genere,film.ID as film FROM utente JOIN acquisto ON (acquisto.ID_utente=utente.ID) JOIN film ON(film.ID=acquisto.ID_film) JOIN 
         appartenenza ON(appartenenza.ID_film=film.ID) WHERE utente.ID=".$_SESSION['id'].")ultime_transizioni WHERE data_transizione=(SELECT MAX(ultime_transizioni.data_transizione) FROM 
         (SELECT data_noleggio as data_transizione,ID_genere,film.ID as film FROM utente JOIN noleggio ON (noleggio.ID_utente=utente.ID) JOIN film ON(film.ID=noleggio.ID_film) JOIN
         appartenenza ON(appartenenza.ID_film=film.ID) WHERE utente.ID=".$_SESSION['id']." UNION SELECT data_acquisto as data_transizione,ID_genere,film.ID as film FROM utente JOIN 
         acquisto ON (acquisto.ID_utente=utente.ID) JOIN film ON(film.ID=acquisto.ID_film) JOIN appartenenza ON(appartenenza.ID_film=film.ID) WHERE utente.ID=".$_SESSION['id'].")ultime_transizioni)) 
-        GROUP BY film.ID ORDER BY valutazione,annoUscita DESC LIMIT $limite";
+        GROUP BY film.ID ORDER BY valutazione DESC, annoUscita DESC LIMIT $limite";
         $connessione=new Connessione();
         $connessione->apriConnessione();
         $ris=$connessione->interrogaDB($queryCard);
@@ -172,11 +125,11 @@
         }
     }
 
-    function recuperaAzione($limite){
+    function recuperaPerGenere($limite, $genere){
         $queryCard="SELECT film.ID as id,titolo,nome_genere as genere,copertina,trama,TIME_TO_SEC(durata) as durata,data_uscita as annoUscita,prezzo_acquisto as prezzoA,prezzo_noleggio as prezzoN,
         path as copertina,descrizione,AVG(valutazione) as valutazione FROM film JOIN appartenenza 
         ON(film.ID=appartenenza.ID_film) JOIN genere ON (appartenenza.ID_genere=genere.ID) JOIN foto_film ON(film.copertina=foto_film.ID) LEFT JOIN recensione ON (film.ID=recensione.ID_film) 
-        WHERE nome_genere='azione' GROUP BY id ORDER BY valutazione,annoUscita LIMIT $limite";
+        WHERE nome_genere='".$genere."' GROUP BY id ORDER BY valutazione DESC, annoUscita DESC LIMIT $limite";
         $connessione=new Connessione();
         $connessione->apriConnessione();
         $ris=$connessione->interrogaDB($queryCard);
@@ -191,8 +144,8 @@
             if(isset($_GET['nomeCategoria']))
                 $categoriaCard=str_replace('%categoria%',"",$categoriaCard);
             else
-                $categoriaCard=str_replace('%categoria%',"<h2 id=\"azione\">Azione</h2>",$categoriaCard);
-            $pulsanteVediAltro=str_replace('%nomeCategoria%',"Azione",$pulsanteVediAltro);
+                $categoriaCard=str_replace('%categoria%',"<h2 id=\"$genere\">".$genere."</h2>",$categoriaCard);
+            $pulsanteVediAltro=str_replace('%nomeCategoria%',".$genere.",$pulsanteVediAltro);
             $categoriaCard=str_replace('%vediAltro%',$pulsanteVediAltro,$categoriaCard);
             $categoriaCard=str_replace('%collegamento%',"film_categoria.php",$categoriaCard);
             return $categoriaCard;
@@ -236,20 +189,25 @@
             $raccoltaCardAcquisti=str_replace('%vediAltro%',"",$raccoltaCardAcquisti);
         }
     }
-        //restituisce i nuovi film con le valutazioni piú alte (non é esattamente un top 5 settimana)
-        //per essere un TOP5sett devono venire inseriti almeno 5 film ogni settimana
-    function recuperaTop5Sett(){
-        $queryCard="SELECT film.ID as id,titolo,nome_genere as genere,copertina,trama,TIME_TO_SEC(durata) as durata,data_uscita as annoUscita,prezzo_acquisto as prezzoA,prezzo_noleggio as prezzoN, path as copertina,descrizione,AVG(valutazione) as valutazione FROM film JOIN appartenenza ON(film.ID=appartenenza.ID_film) JOIN genere ON (appartenenza.ID_genere=genere.ID) JOIN foto_film ON(film.copertina=foto_film.ID) LEFT JOIN recensione ON (film.ID=recensione.ID_film) GROUP BY film.ID ORDER BY valutazione DESC,annoUscita DESC LIMIT 5";
+
+    //restituisce i film più acquistati/noleggiati nell'ultima settimana
+    function recuperaTop5VistiSettimana(){
+        $queryCard="SELECT idfilm, SUM(somma) as risultato from (SELECT acquisto.ID_film as idfilm,count(*) as somma from acquisto WHERE acquisto.data_acquisto >= DATE_SUB(CURRENT_DATE, INTERVAL 1 WEEK) GROUP BY idfilm UNION ALL SELECT noleggio.ID_film as idfilm,count(*) as somma from noleggio WHERE noleggio.data_noleggio>= DATE_SUB(CURRENT_DATE, INTERVAL 1 WEEK) GROUP BY idfilm) as tot JOIN film ON (tot.idfilm=film.ID) GROUP BY idfilm ORDER BY risultato DESC LIMIT 5";
         $connessione=new Connessione();
         $connessione->apriConnessione();
         $ris=$connessione->interrogaDB($queryCard);
         $connessione->chiudiConnessione();
-
-        $listaCard=creaListaCardClassificata($ris);
+        $Top5Settimana=array();
+        if($ris){
+            foreach($ris as $valore){
+                array_push($Top5Settimana,recuperaInfo($valore['idfilm']));
+                }
+        }
+        
+        $listaCard=creaListaCardClassificata($Top5Settimana);
         if(!$listaCard)
             return false;
         else{
-            
             $categoriaCard=file_get_contents('../componenti/categoria_index.html');
             $categoriaCard=str_replace('%listaCard%',$listaCard,$categoriaCard);
             $categoriaCard=str_replace('%spazio%',"",$categoriaCard);
@@ -260,8 +218,9 @@
             return $categoriaCard;
         }
     }
+
     function recuperaPiuVisti(){
-        $queryCard="SELECT idfilm,data_uscita,SUM(somma) as risultato from (SELECT acquisto.ID_film as idfilm,count(*) as somma from acquisto GROUP BY idfilm UNION ALL SELECT noleggio.ID_film as idfilm,count(*) as somma from noleggio GROUP BY idfilm) as tot JOIN film ON (tot.idfilm=film.ID) GROUP BY idfilm ORDER BY data_uscita DESC,risultato DESC LIMIT 10";
+        $queryCard="SELECT idfilm,data_uscita,SUM(somma) as risultato from (SELECT acquisto.ID_film as idfilm,count(*) as somma from acquisto GROUP BY idfilm UNION ALL SELECT noleggio.ID_film as idfilm,count(*) as somma from noleggio GROUP BY idfilm) as tot JOIN film ON (tot.idfilm=film.ID) GROUP BY idfilm ORDER BY risultato DESC LIMIT 10";
         $connessione=new Connessione();
         $connessione->apriConnessione();
         $ris=$connessione->interrogaDB($queryCard);
@@ -279,13 +238,35 @@
             return false;
         else{
             $categoriaCard=file_get_contents('../componenti/categoria_index.html');
-        $categoriaCard=str_replace('%listaCard%',$listaCard,$categoriaCard);
-        $categoriaCard=str_replace('%spazio%',"",$categoriaCard);
-        $categoriaCard=str_replace('%categoria%',"<h2 id=\"visti\">Top 10 piú visti</h2>",$categoriaCard);
+            $categoriaCard=str_replace('%listaCard%',$listaCard,$categoriaCard);
+            if(isset($_GET['nomeCategoria']))
+                $categoriaCard=str_replace('%categoria%',"",$categoriaCard);
+            else{
+                $categoriaCard=str_replace('%categoria%','<h2 id=\"visti\"> Top 10 più visti</h2>',$categoriaCard);
+            }
+            return $categoriaCard;
+        }
+    }
+
+    function recuperaPiuVotati(){
+        $queryCard="SELECT film.ID as id,titolo,nome_genere as genere,copertina,trama,TIME_TO_SEC(durata) as durata,data_uscita as annoUscita,prezzo_acquisto as prezzoA,prezzo_noleggio as prezzoN, path as copertina,descrizione,AVG(valutazione) as valutazione, n_voti FROM film JOIN appartenenza ON(film.ID=appartenenza.ID_film) JOIN genere ON (appartenenza.ID_genere=genere.ID) JOIN foto_film ON(film.copertina=foto_film.ID) LEFT JOIN recensione ON (recensione.ID_film=film.ID) LEFT JOIN nvoti ON (film.ID=nvoti.ID_film) GROUP BY film.ID ORDER BY valutazione DESC, n_voti DESC LIMIT 10";
+        $connessione=new Connessione();
+        $connessione->apriConnessione();
+        $ris=$connessione->interrogaDB($queryCard);
+        $connessione->chiudiConnessione();
         
-        $categoriaCard=str_replace('%vediAltro%',"",$categoriaCard);
-        
-        return $categoriaCard;
+        $listaCard=creaListaCardClassificata($ris);
+        if(!$listaCard)
+            return false;
+        else{
+            $categoriaCard=file_get_contents('../componenti/categoria_index.html');
+            $categoriaCard=str_replace('%listaCard%',$listaCard,$categoriaCard);
+            if(isset($_GET['nomeCategoria']))
+                $categoriaCard=str_replace('%categoria%',"",$categoriaCard);
+            else{
+                $categoriaCard=str_replace('%categoria%','<h2 id=\"votati\"> Top 10 più votati</h2>',$categoriaCard);
+            }
+            return $categoriaCard;
         }
     }
 

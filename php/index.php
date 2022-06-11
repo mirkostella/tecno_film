@@ -47,19 +47,43 @@
         $pagina=str_replace('%hrSceltiPerTe%',"",$pagina);
     }
     
-    $risultatoCard=recuperaAzione($ncard);
-    if($risultatoCard){
-        $pagina=str_replace('%azione%',$risultatoCard,$pagina);
-        $pagina=str_replace('%hrAzione%',"<hr>",$pagina);
-        $pulsanteVedialtro=pulsanteVediAltro('Azione','film_categoria.php', $ncard+5);
-        $pagina=str_replace('%vediAltroAzione%',$pulsanteVedialtro ,$pagina);
+    $queryGeneri="SELECT DISTINCT nome_genere FROM genere JOIN appartenenza ON (genere.ID = appartenenza.ID_genere)";
+    $connessione=new Connessione();
+    $connessione->apriConnessione();
+    $ElencoGeneriNonVuoti=$connessione->InterrogaDB($queryGeneri);
+    $generi=array();
+    foreach($ElencoGeneriNonVuoti as $valore){
+        array_push($generi, $valore['nome_genere']);
     }
-    else{
-        $pagina=str_replace('%azione%',"",$pagina);
-        $pagina=str_replace('%hrAzione%',"",$pagina);
-        $pagina=str_replace('<li><a href="#azione">Azione</a></li>',"",$pagina);
-        $pagina=str_replace('%vediAltroAzione%',"",$pagina);
+
+    $listaCollegamenti="";
+    $listaSegnaposti="";
+    foreach($generi as $valore){
+        $nuovoCollegamento='<li><a href="#'.$valore.'">'.$valore.'</a></li>';
+        $SegnapostiGenere='%hr'.$valore.'%'.'%'.$valore.'%'.'%vediAltro'.$valore.'%';
+        $listaCollegamenti=$listaCollegamenti.$nuovoCollegamento;
+        $listaSegnaposti=$listaSegnaposti.$SegnapostiGenere;
     }
+
+    $pagina=str_replace('%listaSegnaposti%', $listaSegnaposti, $pagina);
+    $pagina=str_replace('%listaCollegamenti%',$listaCollegamenti,$pagina);
+    foreach($generi as $valore){
+        $risultatoCard=recuperaPerGenere($ncard, $valore);
+        if($risultatoCard){
+        $pagina=str_replace('%'.$valore.'%',$risultatoCard,$pagina);
+        $pagina=str_replace('%hr'.$valore.'%',"<hr>",$pagina);
+        $pulsanteVedialtro=pulsanteVediAltro($valore,'film_categoria.php', $ncard+5);
+        $pagina=str_replace('%vediAltro'.$valore.'%',$pulsanteVedialtro ,$pagina);
+        }
+        else{
+        $pagina=str_replace('%'.$valore.'%',"",$pagina);
+        $pagina=str_replace('%hr'.$valore.'%',"",$pagina);
+        $pagina=str_replace('<li><a href="#'.$valore.'">'.$valore.'</a></li>',"",$pagina);
+        $pagina=str_replace('%vediAltro'.$valore.'%',"",$pagina);
+        }
+    }
+    $connessione->chiudiConnessione();
+    
         
 
     //rimuove il segnaposto classifica dalle card non classificate
