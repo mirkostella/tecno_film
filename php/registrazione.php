@@ -85,7 +85,7 @@
 			$pagina=str_replace('%error_data%', '', $pagina);
 
 		if(!check_email($email)){
-			$pagina=str_replace('%error_email%', "<div class=\"msg_box error_box\">L'email inserita non è valida.</div>", $pagina);
+			$pagina=str_replace('%error_email%', "<div class=\"msg_box error_box\">L'email inserita non è valida. Esempio: mariorossi@email.com</div>", $pagina);
 			$no_error=false;
 		}
 		else
@@ -181,18 +181,17 @@
 		$pagina=str_replace('%username%', $username, $pagina);
 		$pagina=str_replace('%psw%', $psw, $pagina);
 		$pagina=str_replace('%conf_psw%', $conf_psw, $pagina);
-		if($sesso='M'){
-			$pagina=str_replace('%sel_uomo%', "selected=\"selected\"", $pagina);
-			$pagina=str_replace('%sel_donna%', "", $pagina);
+		if($sesso=="M"){
+			$pagina=str_replace('%sel_uomo%', 'selected="selected"', $pagina);
+			$pagina=str_replace('%sel_donna%', '', $pagina);
 		}
-		else if($sesso='F'){
-			$pagina=str_replace('%sel_uomo%', "", $pagina);
-			$pagina=str_replace('%sel_donna%', "selected=\"selected\"", $pagina);
+		else if($sesso=="F"){
+			$pagina=str_replace('%sel_uomo%', '', $pagina);
+			$pagina=str_replace('%sel_donna%', 'selected="selected"', $pagina);
 		}
 		$pagina=str_replace('%path%', $file_path, $pagina);
-
 	}
-	 
+
 	$pagina=str_replace('%nome%','', $pagina);
 	$pagina=str_replace('%cognome%', '', $pagina);
 	$pagina=str_replace('%dataN%', $data_nascita, $pagina);

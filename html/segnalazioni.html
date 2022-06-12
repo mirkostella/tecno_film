@@ -12,12 +12,7 @@
 </head>
 <body id="inizioPagina">
     <header>
-        <a href="#contenuto" aria-label="salta al contenuto"></a>
-        <h1 id="logo" class="flexEsteso">Tecno Film</h1>
-        <div id="account">
-            <a href="amministratore.html">Logout</a>
-            <a href="#menuPrincipale" id="menuHam">Menu</a> 
-        </div>
+        %headerAdmin%
     </header>
     <nav id="breadcrumb">
         Ti trovi in: Home &gt; <span class="grassetto">Gestione segnalazioni %username%</span>
@@ -25,11 +20,7 @@
     <div id="impaginazione">
         <div id="menu-news">
             <nav id="menuPrincipale">
-                <ul>
-                    <li>Vista generale</li>
-                    <li><a href="aggiungi_film.html">Aggiungi film</a></li>
-                    
-                </ul>
+                %menuAdmin%
             </nav>
         </div>
         <div id="contenuto">
@@ -58,10 +49,7 @@
                 <input type="radio" id="bloccato" name="stato" value="Bloccato">
                 <input type="hidden" name="id" value="%idUtente%">
                 <input type="submit" value="Cambia stato">
-
-            </form>
-
-             
+            </form>   
             <!-- fine contenuto -->
         </div> 
         <!-- fine impaginazione -->

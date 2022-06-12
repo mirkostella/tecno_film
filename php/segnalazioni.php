@@ -2,12 +2,16 @@
 
     //inclusione dei file 
     require_once ('connessione.php');
+    require_once("struttura.php");
     require_once ('info_utente.php');
     require_once ('recensione.php');
+    
     $pagina=file_get_contents("../html/segnalazioni.html");
+    $struttura = new Struttura();
+    $struttura->aggiungiHeader_admin($pagina);
+    $struttura->aggiungMenu_admin($pagina);
 
     $connessione=new Connessione();
-
     if(!$connessione->apriConnessione()){
         echo "errore di connessione al db";
     }

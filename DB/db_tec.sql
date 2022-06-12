@@ -3,6 +3,7 @@ SET AUTOCOMMIT = 0;
 SET @@session.time_zone = "+01:00";
 SET FOREIGN_KEY_CHECKS=0;
 START TRANSACTION;
+
 DROP TABLE IF EXISTS admin;
 DROP TABLE IF EXISTS acquisto;
 DROP TABLE IF EXISTS noleggio;
@@ -16,6 +17,12 @@ DROP TABLE IF EXISTS utile;
 DROP TABLE IF EXISTS foto_film;
 DROP TABLE IF EXISTS foto_utente;
 DROP TABLE IF EXISTS segnalazione_foto_utente;
+
+DROP VIEW IF EXISTS appartenenzaNoDoppioni;
+DROP VIEW IF EXISTS nvoti;
+DROP VIEW IF EXISTS n_acquisti;
+DROP VIEW IF EXISTS n_noleggi;
+
 
 CREATE TABLE `admin`(
   `ID` int(11) PRIMARY KEY AUTO_INCREMENT,
@@ -185,7 +192,11 @@ FOREIGN KEY (`ID_recensione`) REFERENCES `recensione`(`ID`) ON DELETE CASCADE ON
 
 CREATE VIEW `appartenenzaNoDoppioni` AS SELECT `ID_film`, `ID_genere` FROM `appartenenza` JOIN `genere` ON (appartenenza.ID_genere=genere.ID) GROUP BY `ID_film`; 
 
-CREATE VIEW nvoti AS SELECT `recensione`.`ID_film` AS `ID_film`,count(*) AS `n_voti` FROM`recensione` GROUP BY`recensione`.`ID_film`;
+CREATE VIEW `nvoti` AS SELECT `recensione`.`ID_film` AS `ID_film`,count(*) AS `n_voti` FROM`recensione` GROUP BY`recensione`.`ID_film`;
+
+CREATE VIEW `n_acquisti` AS SELECT `acquisto`.`ID_film` AS `ID`, count(*) AS `N_acquisti` from `acquisto` GROUP BY `acquisto`.`ID_film`;
+
+CREATE VIEW `n_noleggi` AS SELECT `noleggio`.`ID_film` AS `ID`, count(*) AS `N_noleggi` from `noleggio` GROUP BY `noleggio`.`ID_film`;
 
 COMMIT;
 SET FOREIGN_KEY_CHECKS=1;

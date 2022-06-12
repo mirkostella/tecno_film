@@ -21,14 +21,14 @@
         $pagina=str_replace('%hrCardSett%',"<hr>",$pagina);
     }
     else
+        $pagina=str_replace('<li><a href="#top">Top 5 della settimana</a></li>',"", $pagina);
         $pagina=str_replace('%hrCardSett%',"",$pagina);
 
     ////////I 10 FILM PIU VISTI (con il maggior numero di acquisti e noleggi)//////////
 
     $listaCards=recuperaPiuVisti();
-    
+    $pagina=str_replace('%listaCardVisti%',$listaCards,$pagina);
     if($listaCards){
-        $pagina=str_replace('%listaCardVisti%',$listaCards,$pagina);
         $pagina=str_replace('%hrCardVisti%',"<hr>",$pagina);
     }
     else{

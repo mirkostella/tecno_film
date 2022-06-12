@@ -117,7 +117,7 @@
             if(isset($_GET['nomeCategoria']))
                 $categoriaCard=str_replace('%categoria%',"",$categoriaCard);
             else
-                $categoriaCard=str_replace('%categoria%',"<h2 id=\"nuove\">Scelti per te</h2>",$categoriaCard);
+                $categoriaCard=str_replace('%categoria%',"<h2 id=\"scelti\">Scelti per te</h2>",$categoriaCard);
             $pulsanteVediAltro=str_replace('%nomeCategoria%',"Scelti per te",$pulsanteVediAltro);
             $categoriaCard=str_replace('%vediAltro%',$pulsanteVediAltro,$categoriaCard);
             $categoriaCard=str_replace('%collegamento%',"film_categoria.php",$categoriaCard);
@@ -242,7 +242,7 @@
             if(isset($_GET['nomeCategoria']))
                 $categoriaCard=str_replace('%categoria%',"",$categoriaCard);
             else{
-                $categoriaCard=str_replace('%categoria%','<h2 id=\"visti\"> Top 10 più visti</h2>',$categoriaCard);
+                $categoriaCard=str_replace('%categoria%',"<h2 id=\"visti\"> Top 10 più visti</h2>",$categoriaCard);
             }
             return $categoriaCard;
         }
@@ -264,7 +264,7 @@
             if(isset($_GET['nomeCategoria']))
                 $categoriaCard=str_replace('%categoria%',"",$categoriaCard);
             else{
-                $categoriaCard=str_replace('%categoria%','<h2 id=\"votati\"> Top 10 più votati</h2>',$categoriaCard);
+                $categoriaCard=str_replace('%categoria%',"<h2 id=\"votati\"> Top 10 più votati</h2>",$categoriaCard);
             }
             return $categoriaCard;
         }
