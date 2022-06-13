@@ -3,19 +3,13 @@
     require_once('struttura.php');
     require_once('connessione.php');
 
-    //se la sessione è già aperta come admin, effettua il logout e mi porta alla home
-    if($_SESSION['loggato'] == true && $_SESSION['admin'] == true)
-    {
-        header('location: logout.php');
+    //se la sessione è già aperta come utente normale, mi porta direttamente alla home
+    if($_SESSION['loggato'] == true && $_SESSION['admin'] == false){
+      header('location: index.php');
         exit();
     }
 
-    //se la sessione è già aperta come utente normale, mi porta direttamente alla home
-  //  if($_SESSION['loggato'] == true && $_SESSION['admin'] == false){
-  //      header('location: index.php');
-  //      exit();
-   // }
-   $idFilm="";
+    $idFilm="";
     if(isset($_REQUEST['idFilm']))
         $idFilm=$_REQUEST['idFilm'];
 

@@ -85,7 +85,7 @@
     }
         
     else{
-        if($_SESSION['loggato']){
+        if($_SESSION['loggato'] && $_SESSION['admin']==false){
             //inserire il form
             $formRecensione=file_get_contents("../componenti/ins_recensione.html");
             $formRecensione=str_replace('%id%',$idFilm,$formRecensione);

@@ -3,6 +3,7 @@
     require_once('struttura.php');
     require_once('connessione.php');
 
+    
     //se la sessione è già aperta come admin mi porta direttamente alla home dell'admin
     if($_SESSION['loggato'] == true && $_SESSION['admin']==true){
         header('location: amministratore_loggato.php');
@@ -10,8 +11,6 @@
     }
 
     $pagina = file_get_contents('../html/login_admin.html');
-
-    $error = NULL;
     $email = NULL;
     $psw = NULL;
 
@@ -26,7 +25,7 @@
         $connessione = new Connessione();
         if($connessione->apriConnessione()){
             if(!$login_array= $connessione->interrogaDB("SELECT * FROM admin WHERE email = \"$email\" AND password = \"$psw\"")){
-                $error = "<div class=\"msg_error_box\">Le credenziali non sono corrette</div>";
+                $pagina = str_replace('%errore_credenziali%', "<div class=\"msg_box error_box\">Le credenziali non sono corrette</div>", $pagina);
             }
             else{
                 $_SESSION['loggato']=true;
@@ -41,10 +40,12 @@
 
         }
         else{
-            $error = "<div class=\"msg_error_box\">Errore di connessione al database</div>";
+            $pagina = str_replace('%errore_conn%', "<div class=\"msg_box error_box\">Errore di connessione al database</div>", $pagina);
         }
     }
 
-    $pagina=str_replace('%error%', $error, $pagina);
+    $pagina=str_replace('%errore_conn%', "", $pagina);
+    $pagina = str_replace('%errore_credenziali%', "", $pagina);
+
     echo $pagina;
 ?>

@@ -12,7 +12,7 @@ class GestoreRecensioni{
     public $ordineRecensioni;
 
     public function __construct($idF,$ordine){
-        if($_SESSION['loggato']==true)
+        if($_SESSION['loggato']==true && $_SESSION['admin']==false)
             $this->idUtenteLoggato=$_SESSION['id'];
         $this->idFilm=$idF;
         $this->ordineRecensioni=$ordine; 

@@ -135,12 +135,17 @@ class RecensioneUtente extends Recensione{
         $rec=str_replace('%idRecensione%',$this->id,$rec);
         $rec=str_replace('%segnalazioni%',"",$rec);
         $rec=str_replace('%like%',"<span class=\"grassetto\">Recensione piaciuta a: </span>".$this->getUtile()." persone",$rec);
-        if($_SESSION['loggato']==true && $_SESSION['id']==$this->idUtente){
+        if($_SESSION['loggato']==true && $_SESSION['admin']==true){
+            $rec=str_replace('%pulsanteUtile%',"",$rec);
+            $rec=str_replace('%pulsanteSegnalazione%',"",$rec);
+            $rec=str_replace('%elimina%',"",$rec);
+        }
+        if($_SESSION['loggato']==true && $_SESSION['admin']==false && $_SESSION['id']==$this->idUtente){
             $rec=str_replace('%pulsanteUtile%',"",$rec);
             $rec=str_replace('%pulsanteSegnalazione%',"",$rec);
             $rec=str_replace('%elimina%',"<input type=\"submit\" value=\"Elimina\" name=\"eliminaRecensione\" class=\"btn btnRecensione\">",$rec);
         }
-        if($_SESSION['loggato']==true && $_SESSION['id']!=$this->idUtente){
+        if($_SESSION['loggato']==true && $_SESSION['admin']==false && $_SESSION['id']!=$this->idUtente){
                 $rec=str_replace('%elimina%',"",$rec);
                 $utile=new Utile($_SESSION['id'],$this->id);
                 $segnalazione=new Segnalazione($_SESSION['id'],$this->id);
@@ -226,7 +231,7 @@ class RecensioneAdmin extends Recensione{
         $rec=str_replace('%segnalazioni%',"<span class=\"grassetto\">Recensione segnalata da: </span>".$this->getSegnalazioni()." persone",$rec);
         $rec=str_replace('%pulsanteUtile%',"",$rec);
         $rec=str_replace('%pulsanteSegnalazione%',"",$rec);
-        $rec=str_replace('%elimina%','<input type="submit" value="Elimina" class="btn btnRecensione">',$rec);
+        $rec=str_replace('%elimina%','<input type="submit" value="Elimina" name="eliminaRecensione" class="btn btnRecensione">',$rec);
         return $rec;
     }
 

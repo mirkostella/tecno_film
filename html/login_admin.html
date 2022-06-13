@@ -19,9 +19,11 @@
         Ti trovi in: <span class="grassetto">Login Amministrazione</span> 
     </nav>
         <div id="contenuto_amministratore">
+            %errore_conn%
             <form action="login_admin.php" method = "post" class="reg_log" id="loginAdmin">
                 <fieldset>
                     <legend>Login Amministratore</legend>
+                    %errore_credenziali%
                     <fieldset id="datiAccount">
                         <legend>Dati login</legend>
                         <label for="email">Email:</label>

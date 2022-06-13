@@ -1,6 +1,7 @@
 <?php
     require_once ('connessione.php');
     require_once ('sessione.php');
+
     class Struttura{
 
         public function aggiungiHeader(&$pagina){
@@ -101,41 +102,41 @@
                 $idFilm=$_GET['idFilm'];
             $pulsanti=file_get_contents('../componenti/pulsanti_acquisto_noleggio.html');
             
-            if($_SESSION['loggato']==true){  
-            $queryAcquisto="SELECT ID_utente FROM acquisto WHERE ID_utente=".$_SESSION['id']." and ID_film=".$idFilm;
-            $queryNoleggio="SELECT ID_utente FROM noleggio WHERE ID_utente=".$_SESSION['id']." and ID_film=".$idFilm;
-            $connessione=new Connessione();
-            $connessione->apriConnessione();
-            $presenzaAcquisto=$connessione->interrogaDB($queryAcquisto);
-            if(!$presenzaAcquisto){
-                $pulsanti=str_replace('%pulsanteAcquisto%',
-                '<form action="acquisto_noleggio.php" method="get">
-                <input type="hidden" name="idFilm" value="%idFilm%">
-                <input id="acquisto" type="submit" value="Acquista a %prezzoA%&euro;" name="acquisto" class="btn">
-                </form>'  
-                ,$pulsanti);
+            if($_SESSION['loggato']==true && $_SESSION['admin']==false){  
+                $queryAcquisto="SELECT ID_utente FROM acquisto WHERE ID_utente=".$_SESSION['id']." and ID_film=".$idFilm;
+                $queryNoleggio="SELECT ID_utente FROM noleggio WHERE ID_utente=".$_SESSION['id']." and ID_film=".$idFilm;
+                $connessione=new Connessione();
+                $connessione->apriConnessione();
+                $presenzaAcquisto=$connessione->interrogaDB($queryAcquisto);
+                if(!$presenzaAcquisto){
+                    $pulsanti=str_replace('%pulsanteAcquisto%',
+                    '<form action="acquisto_noleggio.php" method="get">
+                    <input type="hidden" name="idFilm" value="%idFilm%">
+                    <input id="acquisto" type="submit" value="Acquista a %prezzoA%&euro;" name="acquisto" class="btn">
+                    </form>'  
+                    ,$pulsanti);
+                }
+                else
+                    $pulsanti=str_replace('%pulsanteAcquisto%',"",$pulsanti);
+        
+                $presenzaNoleggio=$connessione->interrogaDB($queryNoleggio);
+                if(!$presenzaNoleggio){
+                    $pulsanti=str_replace('%pulsanteNoleggio%',
+                    '<form action="acquisto_noleggio.php" method="get">
+                    <input type="hidden" name="idFilm" value="%idFilm%">
+                    <input id="noleggio" type="submit" value="Noleggia a %prezzoN%&euro;" name="noleggio" class="btn">
+                    </form>'  
+                    ,$pulsanti);
+                }
+                else
+                    $pulsanti=str_replace('%pulsanteNoleggio%',"",$pulsanti);
+        
+                if(!$presenzaAcquisto && !$presenzaNoleggio)
+                    $pagina=str_replace('%pulsantiAcquistoNoleggio%',$pulsanti,$pagina);
+                else
+                    $pagina=str_replace('%pulsantiAcquistoNoleggio%',"",$pagina);
             }
-            else
-                $pulsanti=str_replace('%pulsanteAcquisto%',"",$pulsanti);
-    
-            $presenzaNoleggio=$connessione->interrogaDB($queryNoleggio);
-            if(!$presenzaNoleggio){
-                $pulsanti=str_replace('%pulsanteNoleggio%',
-                '<form action="acquisto_noleggio.php" method="get">
-                <input type="hidden" name="idFilm" value="%idFilm%">
-                <input id="noleggio" type="submit" value="Noleggia a %prezzoN%&euro;" name="noleggio" class="btn">
-                </form>'  
-                ,$pulsanti);
-            }
-            else
-                $pulsanti=str_replace('%pulsanteNoleggio%',"",$pulsanti);
-    
-            if(!$presenzaAcquisto && !$presenzaNoleggio)
-                $pagina=str_replace('%pulsantiAcquistoNoleggio%',$pulsanti,$pagina);
-            else
-                $pagina=str_replace('%pulsantiAcquistoNoleggio%',"",$pagina);
-        }
-        else{
+            else{
                 $pulsanti=str_replace('%pulsanteAcquisto%',
                 '<form action="login.php" method="get">
                 <input type="hidden" name="idFilm" value='.$_GET['idFilm'].'>
@@ -149,9 +150,9 @@
                 </form>'  
                 ,$pulsanti);
                 $pagina=str_replace('%pulsantiAcquistoNoleggio%',$pulsanti,$pagina);
+            }
         }
-    } 
-    
-}
+        
+    }   
 
 ?>

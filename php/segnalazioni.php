@@ -5,7 +5,12 @@
     require_once("struttura.php");
     require_once ('info_utente.php');
     require_once ('recensione.php');
-    
+
+    if($_SESSION['admin']==false){
+        header('location: login_admin.php');
+        exit();
+    }
+
     $pagina=file_get_contents("../html/segnalazioni.html");
     $struttura = new Struttura();
     $struttura->aggiungiHeader_admin($pagina);
@@ -18,8 +23,8 @@
 
     $id=$_GET['id'];
     
-    $query_info_utente="select ID,username, nome,cognome,sesso,stato,email,data_nascita
-    from utente where id=$id";
+    $query_info_utente="SELECT utente.ID as u_ID, username, nome, cognome, sesso, stato, email, data_nascita, foto_utente.path as path
+    FROM utente JOIN foto_utente ON (utente.ID_foto = foto_utente.ID) WHERE utente.ID=$id";
     $risultato_info_utente=$connessione->interrogaDB($query_info_utente);
 
     $pagina=str_replace('%username%',$risultato_info_utente[0]['username'],$pagina);
@@ -29,28 +34,28 @@
     $pagina=str_replace('%emailUtente%',$risultato_info_utente[0]['email'],$pagina);
     $pagina=str_replace('%sessoUtente%',$risultato_info_utente[0]['sesso'],$pagina);
     $pagina=str_replace('%statoUtente%',$risultato_info_utente[0]['stato'],$pagina);
+    $pagina=str_replace('%path%',$risultato_info_utente[0]['path'], $pagina);
 
-    $query_foto_utente="select path from foto_utente where ID = $id";
-    $risultato_foto_utente=$connessione->interrogaDB($query_foto_utente);
-    $pagina=str_replace('%immagine profilo%',$risultato_foto_utente[0]['path'],$pagina);
-
-    $segnalazioni=trovaSegnalazioni($risultato_info_utente[0]['ID'],$connessione);
+    $segnalazioni=trovaSegnalazioni($risultato_info_utente[0]['u_ID'],$connessione);
     $pagina=str_replace('%numSegnalazioni%',$segnalazioni,$pagina);
 
-
-
-    $query_recensione="select recensione.ID as id,recensione.ID_film as idFilm,recensione.ID_utente as idUtente,
-    foto_utente.path,
-    utente.username,recensione.data,recensione.testo,recensione.valutazione
+    $query_recensione = "SELECT recensione.ID as id,recensione.ID_film as idFilm,recensione.ID_utente as idUtente,
+    foto_utente.path as profilo,
+    utente.username as username,recensione.data as data,recensione.testo as testo,recensione.valutazione as valutazione
     
-    from foto_utente join utente  join recensione 
-    on utente.ID_foto=foto_utente.ID and utente.ID=recensione.ID_utente
-    
-     where ID_utente=$id";
+    FROM utente JOIN recensione 
+    on (utente.ID=recensione.ID_utente) JOIN foto_utente ON (utente.ID_foto=foto_utente.ID) 
+    WHERE ID_utente=$id";
 
     $risultato_recensione=$connessione->interrogaDB($query_recensione);
-    $rec=new RecensioneUtente($risultato_recensione[0]);
-    $pagina=str_replace('%recensioni%',$rec->crea(),$pagina);
+    $stringaRecensioni="";
+    foreach($risultato_recensione as $ris){
+        $rec=new RecensioneAdmin($ris);
+        $stringaRecensione=$rec->crea();
+        $stringaRecensioni=$stringaRecensioni.$stringaRecensione;
+
+    }
+    $pagina=str_replace('%recensioni%',$stringaRecensioni,$pagina);
     $pagina=str_replace('%idUtente%',$id,$pagina);
 
     echo $pagina;
