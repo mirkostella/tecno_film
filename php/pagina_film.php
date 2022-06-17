@@ -16,13 +16,14 @@
     $struttura->aggiungiMenu($pagina,"","");
 
     $struttura->aggiungiAcquistoNoleggio($pagina);
-
+    
     //recensioni utenti
     $ordineRecensioni='recenti';
     if(isset($_GET['applica']))
         $ordineRecensioni=$_GET['ordine'];
 
     $gestore=new GestoreRecensioni($idFilm,$ordineRecensioni);
+    
 
     //se eliminare recensione
     if(isset($_GET['eliminaRecensione']))
@@ -33,8 +34,9 @@
     $errTesto="";
     $errValutazione="";
     $testoNuovaRecensione="";
-    $valutazioneNuovaRecensione="";
-    if(isset($_POST['inviaRecensione'])){
+    $valutazioneNuovaRecensione=""; 
+    if(isset($_POST['inviaRecensione']) && !$gestore->controlloPresenzaRecensioneUtente()){
+        if($_SESSION['admin']==false){
         $testo=trim($_POST['testoRecensione']);
         $valutazione=trim($_POST['valutazioneRecensione']);
         $data=date('Y/m/d H:i:s',time());
@@ -61,7 +63,11 @@
     //se la recensione non viene inserita ripristino i campi della form
     if($gestore->gestisciInserisciRecensione($nuovaRecensione,$pagina))
         $pagina=str_replace('%formRecensione%',"",$pagina);
-}
+        }
+        else
+            header('location: login.php');
+
+    }
 
 
     if(isset($_GET['utile']))

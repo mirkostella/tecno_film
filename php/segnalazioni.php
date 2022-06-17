@@ -10,7 +10,7 @@
         header('location: login_admin.php');
         exit();
     }
-
+print_r($_GET);
     $pagina=file_get_contents("../html/segnalazioni.html");
     $struttura = new Struttura();
     $struttura->aggiungiHeader_admin($pagina);
@@ -22,6 +22,9 @@
     }
 
     $id=$_GET['id'];
+    if($_GET['eliminaRecensione']){
+        Recensione::elimina($_GET['idRecensione']);
+    }
     
     $query_info_utente="SELECT utente.ID as u_ID, username, nome, cognome, sesso, stato, email, data_nascita, foto_utente.path as path
     FROM utente JOIN foto_utente ON (utente.ID_foto = foto_utente.ID) WHERE utente.ID=$id";

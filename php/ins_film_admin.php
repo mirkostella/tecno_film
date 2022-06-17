@@ -3,6 +3,7 @@ require_once("sessione.php");
 require_once("connessione.php");
 require_once("gestore_film.php");
 require_once("upload_img.php");
+require_once("struttura.php");
 
 if($_SESSION['admin']==false){
     header('location: login_admin.php');
@@ -12,22 +13,29 @@ if($_SESSION['admin']==false){
 $pagina=file_get_contents("../html/ins_film_admin.html");
 $header=file_get_contents('../componenti/header_admin_log.html');
 $menu=file_get_contents('../componenti/menu_admin_log.html');
-$pagina=str_replace('%headerAdmin%',$header,$pagina);
-$pagina=str_replace('%menuAdmin%',$menu,$pagina);
-$queryNomiGeneri="SELECT nome_genere FROM genere ORDER BY nome_genere ASC";
 $connessione=new Connessione();
-$connessione->apriConnessione();
+if(!$connessione->apriConnessione()){
+    echo "errore di connessione al db";
+}
+
+$struttura = new Struttura();
+
+$struttura->aggiungiHeader_admin($pagina);
+
+
+$struttura->aggiungMenu_admin($pagina,'<li><a href="ins_film_admin.php">Aggiungi film</a></li>',"<li id=\"attivo\">Aggiungi film</li>");
+$queryNomiGeneri="SELECT nome_genere FROM genere ORDER BY nome_genere ASC";
 $generi=$connessione->interrogaDB($queryNomiGeneri);
 $generi_modifica=array();
 foreach($generi as $valore){
     array_push($generi_modifica,$valore['nome_genere']) ;
 }
 
-print_r($generi_modifica);
-
-
-
 $listaGeneri="";
+$pathCopertina="";
+if(isset($_FILES['copertinaFilm']))
+    $pathCopertina=$_FILES['copertinaFilm']['name'];
+
 foreach($generi as $valore){
     $nuovaVoce='<div class="genereFilm"><input type="checkbox" id="'.$valore['nome_genere'].'" name="generi[]" value="'.$valore['nome_genere'].'" class="checkmark" %'.$valore['nome_genere'].'%><label for="'.$valore['nome_genere'].'">'.$valore['nome_genere'].'</label></div>';
     $listaGeneri=$listaGeneri.$nuovaVoce;
@@ -48,15 +56,16 @@ if(isset($_POST['inserisciFilm'])){
         'dataUscita'=>trim($_POST['dataUscitaFilm']),
         'prezzoA'=>trim($_POST['prezzoAcquistoFilm']),
         'prezzoN'=>trim($_POST['prezzoNoleggioFilm']),
-        'copertina'=>"",
+        'copertina'=>$pathCopertina,
         'descrizione'=>trim($_POST['descrizione']),
         'generi'=>$generiScelti
     );
 
     $gestore=new GestoreFilm($datiNuovoFilm);
+    //se non inserito
     if(!$gestore->inserisciFilm($pagina)){
         $pagina=str_replace('%titolo%', $datiNuovoFilm['titolo'], $pagina);
-        $pagina=str_replace('%copertina%', $datiNuovoFilm['copertina'], $pagina);
+        $pagina=str_replace('%copertina%', $pathCopertina, $pagina);
         $pagina=str_replace('%altCopertina%', $datiNuovoFilm['descrizione'], $pagina);
         $pagina=str_replace('%dataUscita%', $datiNuovoFilm['dataUscita'], $pagina);
         $pagina=str_replace('%prezzoA%', $datiNuovoFilm['prezzoA'], $pagina);

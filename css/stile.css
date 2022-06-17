@@ -852,8 +852,10 @@ div.genereFilm{
     }
     .copertina{height: unset;}
 
-    .card dt{flex: 1 0 0;
-            overflow:unset;
+    .card dt{
+        flex: 1 0 0;
+        overflow:unset;
+        height: 100%;
     }
 
     div.card dl{

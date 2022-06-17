@@ -43,9 +43,10 @@
             $menu=str_replace($InAttivo,$attivo,$menu); 
             $pagina=str_replace('%menu%',$menu,$pagina);
         }
-      public function aggiungMenu_admin(&$pagina)
+      public function aggiungMenu_admin(&$pagina,$InAttivo,$attivo)
         {
             $menu = file_get_contents("../componenti/menu_admin_log.html");
+            $menu=str_replace($InAttivo,$attivo,$menu); 
             $pagina=str_replace("%menuAdmin%", $menu, $pagina);
         }
 

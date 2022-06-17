@@ -111,6 +111,7 @@ abstract class Recensione{
 
     public function aggiungiBase(){
         $rec=file_get_contents("../componenti/recensione.html");
+        $rec=str_replace('%id%',$this->getIDUtente(),$rec);
         $rec=str_replace('%idFilm%',$this->idFilm,$rec);
         $rec=str_replace('%username%',$this->username,$rec);
         $rec=str_replace('%path%',$this->profilo,$rec);
@@ -121,6 +122,15 @@ abstract class Recensione{
         return $rec;
     }
     abstract function crea();
+    //false se fallisce
+    static public function elimina($idRecensione){
+        $connessione=new Connessione();
+        $connessione->apriConnessione(); 
+        $rec="DELETE FROM recensione WHERE ID=$idRecensione";
+        $ok=$connessione->eseguiQuery($rec);
+        $connessione->chiudiConnessione();
+        return $ok;
+    }
 
 }
                
@@ -133,19 +143,15 @@ class RecensioneUtente extends Recensione{
     public function crea(){
         $rec=Recensione::aggiungiBase();
         $rec=str_replace('%idRecensione%',$this->id,$rec);
+        $rec=str_replace('%destinazione%',"pagina_film.php",$rec);
         $rec=str_replace('%segnalazioni%',"",$rec);
         $rec=str_replace('%like%',"<span class=\"grassetto\">Recensione piaciuta a: </span>".$this->getUtile()." persone",$rec);
-        if($_SESSION['loggato']==true && $_SESSION['admin']==true){
-            $rec=str_replace('%pulsanteUtile%',"",$rec);
-            $rec=str_replace('%pulsanteSegnalazione%',"",$rec);
-            $rec=str_replace('%elimina%',"",$rec);
-        }
-        if($_SESSION['loggato']==true && $_SESSION['admin']==false && $_SESSION['id']==$this->idUtente){
+        if($_SESSION['loggato']==true && $_SESSION['id']==$this->idUtente){
             $rec=str_replace('%pulsanteUtile%',"",$rec);
             $rec=str_replace('%pulsanteSegnalazione%',"",$rec);
             $rec=str_replace('%elimina%',"<input type=\"submit\" value=\"Elimina\" name=\"eliminaRecensione\" class=\"btn btnRecensione\">",$rec);
         }
-        if($_SESSION['loggato']==true && $_SESSION['admin']==false && $_SESSION['id']!=$this->idUtente){
+        if($_SESSION['loggato']==true && $_SESSION['id']!=$this->idUtente){
                 $rec=str_replace('%elimina%',"",$rec);
                 $utile=new Utile($_SESSION['id'],$this->id);
                 $segnalazione=new Segnalazione($_SESSION['id'],$this->id);
@@ -190,16 +196,7 @@ class RecensioneUtente extends Recensione{
             return  false;
         }
     }
-    //false se fallisce
-    static public function elimina($idRecensione){
-        $connessione=new Connessione();
-        $connessione->apriConnessione(); 
-        $rec="DELETE FROM recensione WHERE ID=$idRecensione";
-        $ok=$connessione->eseguiQuery($rec);
-        $connessione->chiudiConnessione();
-        return $ok;
-    }
-    
+      
     static public function segnala($idRecensione){
         $segnalazione=new Segnalazione($_SESSION['id'],$idRecensione);
         return $segnalazione->inserisci();
@@ -227,6 +224,7 @@ class RecensioneAdmin extends Recensione{
 
     public function crea(){
         $rec=Recensione::aggiungiBase();
+        $rec=str_replace('%destinazione%',"segnalazioni.php",$rec);
         $rec=str_replace('%like%',"",$rec);
         $rec=str_replace('%segnalazioni%',"<span class=\"grassetto\">Recensione segnalata da: </span>".$this->getSegnalazioni()." persone",$rec);
         $rec=str_replace('%pulsanteUtile%',"",$rec);
