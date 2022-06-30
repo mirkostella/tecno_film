@@ -497,6 +497,11 @@ header{
     background-color: crimson;
     color: white;
 }
+#mostraPassword{
+    color:black;
+    display:inline;
+    width:20%;
+}
 /* ------------------------- pagina registrazione ------------------------- */
 .reg_log{
     width: 60%;

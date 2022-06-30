@@ -10,11 +10,19 @@
     }
 
     $idFilm="";
+    $valoreEmail="";
+    $valorePassword="";
     if(isset($_REQUEST['idFilm']))
         $idFilm=$_REQUEST['idFilm'];
+    if(isset($_REQUEST['email']))
+        $valoreEmail=$_REQUEST['email'];
+    if(isset($_REQUEST['password']))
+        $valorePassword=$_REQUEST['password'];
 
     $pagina = file_get_contents('../html/login.html');
     $pagina = str_replace('%idFilm%',$idFilm,$pagina);
+    $pagina = str_replace('%email%',$valoreEmail,$pagina);
+    $pagina = str_replace('%password%',$valorePassword,$pagina);
     $struttura = new Struttura();
     $struttura->aggiungiHeader($pagina);
     $struttura->aggiungiAccount($pagina);

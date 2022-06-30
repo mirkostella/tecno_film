@@ -32,9 +32,10 @@
                     <fieldset id="datiAccount">
                         <legend>Dati login</legend>
                         <label for="email">Email:</label>
-                        <input type="text" name="email" id="email" placeholder="Inserisci email" required="required" class="soloBordoBottom">  
+                        <input type="text" name="email" id="email" placeholder="Inserisci email" required="required" class="soloBordoBottom" value="%email%">  
                         <label for="password">Password:</label>
-                        <input type="password" name="password" id="password" placeholder="Inserisci password" required="required" class="soloBordoBottom">
+                        <input type="password" name="password" id="password" placeholder="Inserisci password" required="required" class="soloBordoBottom" value="%password%">
+                        <input type="button" id="mostraPassword" value="vedi" class="btnVediPassword">
                     </fieldset>
                     <input type="hidden" name="idFilm" value="%idFilm%">
                     <input type="submit" name="invia" id="invia" value="Accedi" class="btn btnAzione">
