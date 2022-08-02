@@ -171,7 +171,7 @@
 			else{
 				$pagina = str_replace('%msg_reg%', "<div class=\"msg_box success_box\">Registrazione avvenuta! Verrai indirizzato al login</div>", $pagina);
 				$connessione->chiudiConnessione();
-				header("refresh: 10; url= login.php");
+				header("refresh: 7; url= login.php");
 			}		
 		}
 

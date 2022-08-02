@@ -19,24 +19,21 @@
     <nav id="breadcrumb">
         Ti trovi in: <span class="grassetto">Login Amministrazione</span> 
     </nav>
-        <div id="contenuto_amministratore">
-            <form action="amministratore_loggato.php" class="reg_log" id="loginAdmin">
-                <fieldset>
-                    <legend>Login Amministratore</legend>
-                    <fieldset id="datiAccount">
-                        <legend>Dati login</legend>
-                        <label for="nome">Email:</label>
-                        <input type="text" name="email" id="email" placeholder="Inserisci email" required="required" class="soloBordoBottom">  
-                        <label for="password">Password:</label>
-                        <input type="password" name="password" id="password" placeholder="Inserisci password" required="required" class="soloBordoBottom">
-                    </fieldset>
-                    <input type="submit" name="invia" id="invia" value="Accedi" class="btn btnAzione">
+    <div id="contenuto_amministratore">
+        <form action="amministratore_loggato.php" class="reg_log" id="loginAdmin">
+            <fieldset>
+                <legend>Login Amministratore</legend>
+                <fieldset id="datiAccount">
+                    <legend>Dati login</legend>
+                    <label for="email">Email:</label>
+                    <input type="text" name="email" id="email" placeholder="Inserisci email" required="required" class="soloBordoBottom">  
+                    <label for="password">Password:</label>
+                    <input type="password" name="password" id="password" placeholder="Inserisci password" required="required" class="soloBordoBottom">
                 </fieldset>
-            </form>
-            
+                <input type="submit" name="invia" id="invia" value="Accedi" class="btn btnAzione">
+            </fieldset>
+        </form> 
             <!-- fine contenuto -->
-        </div> 
-        <!-- fine impaginazione -->
-    </div>   
+    </div>  
 </body>
 </html>
