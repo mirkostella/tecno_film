@@ -3,6 +3,7 @@ SET AUTOCOMMIT = 0;
 SET @@session.time_zone = "+01:00";
 SET FOREIGN_KEY_CHECKS=0;
 START TRANSACTION;
+
 DROP TABLE IF EXISTS admin;
 DROP TABLE IF EXISTS acquisto;
 DROP TABLE IF EXISTS noleggio;
@@ -17,6 +18,12 @@ DROP TABLE IF EXISTS foto_film;
 DROP TABLE IF EXISTS foto_utente;
 DROP TABLE IF EXISTS segnalazione_foto_utente;
 
+DROP VIEW IF EXISTS appartenenzaNoDoppioni;
+DROP VIEW IF EXISTS nvoti;
+DROP VIEW IF EXISTS n_acquisti;
+DROP VIEW IF EXISTS n_noleggi;
+
+
 CREATE TABLE `admin`(
   `ID` int(11) PRIMARY KEY AUTO_INCREMENT,
   `email` varchar(64) NOT NULL,
@@ -27,11 +34,9 @@ INSERT INTO admin (`email`,`password`) VALUES ('admin','admin');
 
 CREATE TABLE `foto_utente`(
 `ID` INT(10) PRIMARY KEY AUTO_INCREMENT,
-`path` text NOT NULL,
-`descrizione` text
-)ENGINE = InnoDB;
+`path` text NOT NULL)ENGINE = InnoDB;
 
-INSERT INTO `foto_utente` (`path`,`descrizione`) VALUES ('../img/Utenti','immagine profilo di default');
+INSERT INTO `foto_utente` (`path`) VALUES ('../img/Utenti/profilo.jpg');
 
 CREATE TABLE `utente` (
 `ID` INT(10) PRIMARY KEY AUTO_INCREMENT,
@@ -57,6 +62,14 @@ CREATE TABLE `foto_film` (
 `descrizione` text
 )ENGINE = InnoDB;
 
+INSERT INTO `foto_film`(`path`) VALUES 
+('../img/img_film/1647963180.jpg'),
+('../img/img_film/1647963239.jpg'),
+('../img/img_film/1647963469.jpg'),
+('../img/img_film/1648496841.jpg'),
+('../img/img_film/1648496955.png');
+
+
 CREATE TABLE `film` (
 `ID` INT(10) PRIMARY KEY AUTO_INCREMENT,
 `titolo` varchar(64) NOT NULL,
@@ -68,6 +81,14 @@ CREATE TABLE `film` (
 `prezzo_noleggio` decimal(5,2) NOT NULL,
 FOREIGN KEY (`copertina`) REFERENCES `foto_film`(`ID`) ON DELETE CASCADE ON UPDATE CASCADE
 )ENGINE = InnoDB;
+
+INSERT INTO `film`(`titolo`, `copertina`, `trama`, `durata`, `data_uscita`, `prezzo_acquisto`, `prezzo_noleggio`) VALUES 
+('Baby Boss 2', '1', 'trama di Baby Boss 2', '01:30:00', '2021/10/07', '12.99', '3.99'),
+('Clifford', '2', 'trama di Clifford', '01:30:00', '2021/12/02', '12.99', '3.99'),
+('Masquerade', '3', 'trama di Masquerade', '01:30:00', '2021/07/30', '12.99', '3.99'),
+('Venom', '4', 'trama di Venom', '01:30:00', '2018/10/04', '12.99', '3.99'),
+('Venom, La furia di Carnage', '5', 'trama di Venom, La furia di Carnage', '01:30:00', '2021/10/14', '12.99', '3.99');
+
 
 CREATE TABLE `segnalazione_foto_utente`(
 `ID_utente` INT(10),
@@ -104,10 +125,14 @@ CREATE TABLE `genere`(
 INSERT INTO genere (`nome_genere`) VALUES
 ('Azione'),
 ('Drammatico'),
-('Comico'),
-('Animato'),
+('Commedia'),
+('Animazione'),
 ('Horror'),
-('Storico');
+('Storico'),
+('Thriller'),
+('Romantico'),
+('Fantasy'),
+('Biografico');
 
 
 CREATE TABLE `appartenenza`(
@@ -117,6 +142,17 @@ PRIMARY KEY (`ID_film`,`ID_genere`),
 FOREIGN KEY (`ID_film`) REFERENCES `film`(`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
 FOREIGN KEY (`ID_genere`) REFERENCES `genere`(`ID`) ON DELETE CASCADE ON UPDATE CASCADE
 )ENGINE = InnoDB;
+
+INSERT INTO `appartenenza`(`ID_film`, `ID_genere`) VALUES
+('1', '4'),
+('1', '3'),
+('2', '4'),
+('2', '3'),
+('3', '1'),
+('4', '1'),
+('4', '7'),
+('5', '1'),
+('5', '7');
 
 CREATE TABLE `recensione`(
 `ID` INT(10) PRIMARY KEY AUTO_INCREMENT,
@@ -128,6 +164,15 @@ CREATE TABLE `recensione`(
 FOREIGN KEY (`ID_film`) REFERENCES `film`(`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
 FOREIGN KEY (`ID_utente`) REFERENCES `utente`(`ID`) ON DELETE CASCADE ON UPDATE CASCADE
 )ENGINE = InnoDB;
+
+INSERT INTO `recensione`(`ID_film`, `ID_utente`, `testo`, `valutazione`) VALUES
+('1', '1', 'Bellissimo', '4'),
+('2', '1', 'Interessante', '3'),
+('3', '1', 'Cast bravissimo', '5'),
+('1', '1', 'Regista super', '4'),
+('5', '1', 'Fotografia pazzesca', '4'),
+('3', '1', 'Poteva essere migliore', '3');
+
 
 CREATE TABLE `segnalazione`(
 `ID_utente` INT(10),
@@ -144,6 +189,14 @@ PRIMARY KEY (`ID_utente`,`ID_recensione`),
 FOREIGN KEY (`ID_utente`) REFERENCES `utente`(`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
 FOREIGN KEY (`ID_recensione`) REFERENCES `recensione`(`ID`) ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+CREATE VIEW `appartenenzaNoDoppioni` AS SELECT `ID_film`, `ID_genere` FROM `appartenenza` JOIN `genere` ON (appartenenza.ID_genere=genere.ID) GROUP BY `ID_film`; 
+
+CREATE VIEW `nvoti` AS SELECT `recensione`.`ID_film` AS `ID_film`,count(*) AS `n_voti` FROM`recensione` GROUP BY`recensione`.`ID_film`;
+
+CREATE VIEW `n_acquisti` AS SELECT `acquisto`.`ID_film` AS `ID`, count(*) AS `N_acquisti` from `acquisto` GROUP BY `acquisto`.`ID_film`;
+
+CREATE VIEW `n_noleggi` AS SELECT `noleggio`.`ID_film` AS `ID`, count(*) AS `N_noleggi` from `noleggio` GROUP BY `noleggio`.`ID_film`;
 
 COMMIT;
 SET FOREIGN_KEY_CHECKS=1;

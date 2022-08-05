@@ -1,11 +1,14 @@
 <?php
 
+
     //inclusione dei file 
     require_once ('sessione.php');
     require_once ('connessione.php');
     require_once ('struttura.php');
     require_once ('card.php');
     require_once ('info_film.php');
+
+    print_r($_SESSION);
     
     $pagina=file_get_contents("../html/raccolta_personale.html");
     $struttura=new Struttura();
@@ -15,8 +18,7 @@
     $inAttivo="<li><a href=\"../php/raccolta_personale.php\">I miei film</a></li>";
     $attivo="<li id=\"attivo\">I miei film</li>";
     $struttura->aggiungiMenu($pagina,$inAttivo,$attivo);
-    if($_SESSION['loggato']==true){
-        
+    if($_SESSION['loggato']==true && $_SESSION['admin']==false){
         $raccoltaCardNoleggi="";
         $raccoltaCardAcquisti="";
         recuperaRaccoltaPersonale($raccoltaCardNoleggi,$raccoltaCardAcquisti);

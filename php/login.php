@@ -3,27 +3,30 @@
     require_once('struttura.php');
     require_once('connessione.php');
 
-    //se la sessione è già aperta come admin, effettua il logout e mi porta alla home
-    if($_SESSION['loggato'] == true && $_SESSION['admin'] == true)
-    {
-        header('location: logout.php');
+    //se la sessione è già aperta come utente normale, mi porta direttamente alla home
+    if($_SESSION['loggato'] == true && $_SESSION['admin'] == false){
+      header('location: index.php');
         exit();
     }
 
-    //se la sessione è già aperta come utente normale, mi porta direttamente alla home
-  //  if($_SESSION['loggato'] == true && $_SESSION['admin'] == false){
-  //      header('location: index.php');
-  //      exit();
-   // }
-   $idFilm="";
+    $idFilm="";
+    $valoreEmail="";
+    $valorePassword="";
     if(isset($_REQUEST['idFilm']))
         $idFilm=$_REQUEST['idFilm'];
+    if(isset($_REQUEST['email']))
+        $valoreEmail=$_REQUEST['email'];
+    if(isset($_REQUEST['password']))
+        $valorePassword=$_REQUEST['password'];
 
     $pagina = file_get_contents('../html/login.html');
     $pagina = str_replace('%idFilm%',$idFilm,$pagina);
+    $pagina = str_replace('%email%',$valoreEmail,$pagina);
+    $pagina = str_replace('%password%',$valorePassword,$pagina);
     $struttura = new Struttura();
     $struttura->aggiungiHeader($pagina);
     $struttura->aggiungiAccount($pagina);
+    $pagina=str_replace('<a href="../php/login.php">Login</a>', '', $pagina);
     $inAttivo=file_get_contents("../componenti/menu.html");
     $attivo=file_get_contents("../componenti/menu.html");
     $struttura->aggiungiMenu($pagina,$inAttivo,$attivo);

@@ -3,13 +3,14 @@
 	require_once('sessione.php');
 	require_once('connessione.php');
 	require_once('struttura.php');
-	require_once('reg_check.php');
+	require_once('controlli_form.php');
 	require_once('upload_img.php');
 
 	$pagina=file_get_contents("../html/registrazione.html");
 	$struttura=new Struttura();
 	$struttura->aggiungiHeader($pagina);
 	$struttura->aggiungiAccount($pagina);
+	$pagina=str_replace('<a href="../php/registrazione.php">Registrati</a>', '', $pagina);
 	$inAttivo=file_get_contents("../componenti/menu.html");
 	$attivo=file_get_contents("../componenti/menu.html");
     $struttura->aggiungiMenu($pagina,$inAttivo,$attivo);
@@ -74,11 +75,9 @@
 			$no_error=false;
 		}
 		else
-			$pagina=str_replace('%error_cognome%', '', $pagina);	
-		$date = new DateTime($data_nascita);
-		$now = new DateTime();
-		$delta = $now->diff($date);
-		if($delta->y<18){
+			$pagina=str_replace('%error_cognome%', '', $pagina);
+
+		if(!check_dataNascita($data_nascita)){
 			$pagina=str_replace('%error_data%', "<div class=\"msg_box error_box\">L'età minima per poter utilizzare questo sito è 18 anni.</div>", $pagina);
 			$no_error=false;
 		}
@@ -86,11 +85,12 @@
 			$pagina=str_replace('%error_data%', '', $pagina);
 
 		if(!check_email($email)){
-			$pagina=str_replace('%error_email%', "<div class=\"msg_box error_box\">L'email inserita non è valida.</div>", $pagina);
+			$pagina=str_replace('%error_email%', "<div class=\"msg_box error_box\">L'email inserita non è valida. Esempio: mariorossi@email.com</div>", $pagina);
 			$no_error=false;
 		}
 		else
 			$pagina=str_replace('%error_email%', '', $pagina);
+			
 		$query_email="SELECT * FROM utente WHERE BINARY email='".$email."'"; //CASE SENSITIVE??
 		$query_user ="SELECT * FROM utente WHERE BINARY username='".$username."'"; //CASE SENSITIVE??
 
@@ -128,18 +128,17 @@
 			$gestisci_img = new gestione_img();
 
 			if(isset($_FILES['immagineProfilo']) && is_uploaded_file($_FILES['immagineProfilo']['tmp_name'])){
-				$upload_result=$gestisci_img->uploadImg("Utenti/", "immagineProfilo");
-				$pagina = str_replace('%error_foto%', $upload_result['error'], $pagina);
-				if($upload_result['error']==''){
-					$file_path=$upload_result['path'];
-				}
-				else{
-					$no_error=false;
-				}
+				if(!$upload_result=$gestisci_img->caricaImmagine("Utenti/", "immagineProfilo")){
+					//stampo gli errori
+						$pagina = str_replace('%error_foto%',$gestisci_img->getErroreDimensione().$gestisci_img->getErroreFormato().$gestisci_img->getErroreCaricamento(), $pagina);
+						$no_error=false;
+					}
+					else
+						$file_path=$upload_result;
 			}
 
-			if(($file_path !== "../img/Utenti/") && ($upload_result['error'] =='')){
-				$insert_Foto="INSERT INTO foto_utente(ID, path, descrizione) VALUES (NULL, '$file_path', NULL)";
+			if(($file_path !== "../img/Utenti/") && $upload_result){
+				$insert_Foto="INSERT INTO foto_utente(path) VALUES ('$file_path')";
 				$connessione->eseguiQuery($insert_Foto);
 				$check_insert="SELECT * FROM foto_utente WHERE path='".$file_path."'";
 				$query_result=$connessione->conn->query($check_insert);
@@ -175,7 +174,34 @@
 			}		
 		}
 
+		$pagina=str_replace('%nome%', $nome, $pagina);
+		$pagina=str_replace('%cognome%', $cognome, $pagina);
+		$pagina=str_replace('%dataN%', $data_nascita, $pagina);
+		$pagina=str_replace('%email%', $email, $pagina);
+		$pagina=str_replace('%username%', $username, $pagina);
+		$pagina=str_replace('%psw%', $psw, $pagina);
+		$pagina=str_replace('%conf_psw%', $conf_psw, $pagina);
+		if($sesso=="M"){
+			$pagina=str_replace('%sel_uomo%', 'selected="selected"', $pagina);
+			$pagina=str_replace('%sel_donna%', '', $pagina);
+		}
+		else if($sesso=="F"){
+			$pagina=str_replace('%sel_uomo%', '', $pagina);
+			$pagina=str_replace('%sel_donna%', 'selected="selected"', $pagina);
+		}
+		$pagina=str_replace('%path%', $file_path, $pagina);
 	}
+
+	$pagina=str_replace('%nome%','', $pagina);
+	$pagina=str_replace('%cognome%', '', $pagina);
+	$pagina=str_replace('%dataN%', $data_nascita, $pagina);
+	$pagina=str_replace('%sel_uomo%', "", $pagina);
+	$pagina=str_replace('%sel_donna%', "", $pagina);
+	$pagina=str_replace('%email%', '', $pagina);
+	$pagina=str_replace('%username%', '', $pagina);
+	$pagina=str_replace('%psw%', $psw, $pagina);
+	$pagina=str_replace('%conf_psw%', $conf_psw, $pagina);
+	$pagina=str_replace('%path%', '',$pagina);
 	$pagina=str_replace('%error_conn%', '', $pagina);
 	$pagina=str_replace('%error_nome%', '', $pagina);
 	$pagina=str_replace('%error_cognome%', '', $pagina);

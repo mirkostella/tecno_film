@@ -5,8 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta name="author" content="Mirko Elton Sonia Ruth"/>
-    <meta name="description" content=""/>
-    <meta name="keywords" content=""/>
+    <meta name="description" content="Pagina di registrazione"/>
+    <meta name="keywords" content="registrazione,tecno film"/>
     <title>Registrazione-Tecno film</title>
     <link rel="stylesheet" type="text/css" href="../css/stile.css"/>
 </head>
@@ -34,19 +34,18 @@
                         <legend>Dati anagrafici</legend>
                         %error_nome%
                         <label for="nome">Nome:</label>
-                        <input type="text" name="nome" id="nome" placeholder="Inserisci nome" required="required" class="soloBordoBottom">
+                        <input type="text" name="nome" id="nome" placeholder="Inserisci nome" value="%nome%"required="required" class="soloBordoBottom">
                         %error_cognome%
                         <label for="cognome">Cognome:</label>
-                        <input type="text" name="cognome" id="cognome" placeholder="Inserisci cognome" required="required" class="soloBordoBottom">
+                        <input type="text" name="cognome" id="cognome" placeholder="Inserisci cognome" value="%cognome%" required="required" class="soloBordoBottom">
                         %error_data%
                         <label for="data">Data di nascita:</label>
-                        <input type="date" name="data" id="data"  required="required" class="soloBordoBottom">
+                        <input type="date" name="data" id="data"  required="required" value="%dataN%" class="soloBordoBottom">
                         <label for="sesso">Sesso:</label>
                         <select name="sesso" id="sesso">
-                            <option value="nonSelezionato">Seleziona</option>
-                            <option value="M">Uomo</option>
-                            <option value="F">Donna</option>
-                            <!-- <option value="Altro">Altro</option> -->
+                            <option value="nonSelezionato" selected="selected">Seleziona</option>
+                            <option value="M" %sel_uomo%>Uomo</option>
+                            <option value="F" %sel_donna%>Donna</option>
                         </select>
                     </fieldset>
                     <hr>
@@ -56,20 +55,22 @@
                         %error_email%
                         %error_email_usata%
                         <label for="email">Email:</label>
-                        <input type="text" name="email" id="email" placeholder="Inserisci email" required="required" class="soloBordoBottom">
+                        <input type="text" name="email" id="email" placeholder="Inserisci email"  value="%email%" required="required" class="soloBordoBottom">
                         %error_username%
                         <label for="username">Username:</label>
-                        <input type="text" name="username" id="username" placeholder="Inserisci username" required="required" class="soloBordoBottom">
+                        <input type="text" name="username" id="username" placeholder="Inserisci username" value="%username%" required="required" class="soloBordoBottom">
                         %error_pwd%
                         <label for="password">Password:</label>
-                        <input type="password" name="password" id="password" placeholder="Inserisci password" required="required" class="soloBordoBottom">
+                        <input type="password" name="password" id="password" placeholder="Inserisci password" value="%psw%" required="required" class="soloBordoBottom">
+                        <input type="button" id="mostraPassword" value="vedi" class="btnVediPassword">
                         %error_confPwd%
                         <label for="confPassword">Conferma password:</label>
-                        <input type="password" name="confPassword" id="confPassword" placeholder="Conferma password" required="required" class="soloBordoBottom">
+                        <input type="password" name="confPassword" id="confPassword" placeholder="Conferma password" value="%conf_psw%" required="required" class="soloBordoBottom">
+                        <input type="button" id="mostraPasswordConferma" value="vedi" class="btnVediPassword">
                         %error_foto%
                         <label for="immagineProfilo">Immagine profilo:</label>
                         <img src="../img/img_componenti/profilo.jpg" alt="anteprima immagine profilo">
-                        <input type="file" id="immagineProfilo" name="immagineProfilo">
+                        <input type="file" id="immagineProfilo" name="immagineProfilo" value="%path%">
                     </fieldset>
                     <input type="submit" name="invia" id="invia" value="Registrati" class="btn btnAzione">
                     %error_reg%
@@ -79,6 +80,7 @@
             <!-- fine contenuto -->
         </div> 
         <!-- fine impaginazione -->
-    </div>   
+    </div> 
+    <script type="text/javascript" src="../js/script.js"></script>  
 </body>
 </html>

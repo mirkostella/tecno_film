@@ -5,8 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta name="author" content="Mirko Elton Sonia Ruth"/>
-    <meta name="description" content=""/>
-    <meta name="keywords" content=""/>
+    <meta name="description" content="Pagina di login per un utente di Tecno Film"/>
+    <meta name="keywords" content="tecno film,login"/>
     <title>Login-Tecno film</title>
     <link rel="stylesheet" type="text/css" href="../css/stile.css"/>
 </head>
@@ -32,20 +32,22 @@
                     <fieldset id="datiAccount">
                         <legend>Dati login</legend>
                         <label for="email">Email:</label>
-                        <input type="text" name="email" id="email" placeholder="Inserisci email" required="required" class="soloBordoBottom">  
+                        <input type="text" name="email" id="email" placeholder="Inserisci email" required="required" class="soloBordoBottom" value="%email%">  
                         <label for="password">Password:</label>
-                        <input type="password" name="password" id="password" placeholder="Inserisci password" required="required" class="soloBordoBottom">
+                        <input type="password" name="password" id="password" placeholder="Inserisci password" required="required" class="soloBordoBottom" value="%password%">
+                        <input type="button" id="mostraPassword" value="vedi" class="btnVediPassword">
                     </fieldset>
                     <input type="hidden" name="idFilm" value="%idFilm%">
                     <input type="submit" name="invia" id="invia" value="Accedi" class="btn btnAzione">
-                    <span>Non possiedi ancora un account?</span><a href="registrazione.php">Registrati</a>
+                    <span>Non possiedi ancora un account?</span><a href="registrazione.php">Registrati</a><br>
+                    <span>Sei un Admin?</span><a href="login_admin.php">Accedi qui</a>
 
                 </fieldset>
             </form>
-            
             <!-- fine contenuto -->
         </div> 
         <!-- fine impaginazione -->
     </div>   
+    <script type="text/javascript" src="../js/script.js"></script>
 </body>
 </html>

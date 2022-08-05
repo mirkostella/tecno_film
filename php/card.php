@@ -24,12 +24,12 @@
             $cardB=str_replace('%path%',$this->copertina,$cardB);
             $cardB=str_replace('%desc%',$this->descrizione,$cardB);
             //preparo la lista dei generi
-            $listaGeneri='<span>';
+            $listaGeneri='';
             foreach($this->genere as $valore){
                 $stringaGenere=$valore['generiFilm']." ";
                 $listaGeneri=$listaGeneri.$stringaGenere;
             }
-            $listaGeneri=$listaGeneri."</span>";    
+            $listaGeneri=$listaGeneri." ";    
             $cardB=str_replace('%gen%',$listaGeneri,$cardB);
             $cardB=str_replace("%titolo%",$this->titolo,$cardB);
             return $cardB;  
@@ -100,8 +100,8 @@
             return $cardB;
 
         }
-
     }
+    
     function creaListaCardPersonale($risultatoQuery){
         $listaCards="";
         if($risultatoQuery){
