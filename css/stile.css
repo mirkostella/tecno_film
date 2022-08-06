@@ -104,6 +104,19 @@ header{
     white-space: nowrap;
     color: black;
 }
+.salta {
+    background: #f5f0f1;
+    color: rgb(14, 8, 8);
+    font-weight: 700;
+    left: 10%;
+    padding: 4px;
+    position: absolute;
+    transform: translateY(-133%);
+    transition: transform 0.3s;
+  }
+  .salta:hover {
+    transform: translateY(0%);
+  }
 #ricerca{
     display: flex;
     align-items: center;
@@ -616,12 +629,13 @@ summary{display: none;}
     border:none;
     border-bottom:1px solid black;
     background-color: transparent;
+    cursor: pointer;
 }
-.segnalazione input[type="submit"]:hover{
+/*.segnalazione input[type="submit"]:hover{
     font-weight: bold;
     cursor: pointer;
     font-size: 1.1em;
-}
+}*/
 
 /* form inserimento film amministratore */
 #formFilm textarea{
