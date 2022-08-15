@@ -214,6 +214,8 @@
 	$pagina=str_replace('%error_foto%', '', $pagina);
 	$pagina=str_replace('%error_reg%', '', $pagina);
 	$pagina=str_replace('%msg_reg%', '', $pagina);
+
+	
 	echo $pagina;
 ?>
 
