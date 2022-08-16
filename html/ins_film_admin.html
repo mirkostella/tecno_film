@@ -33,7 +33,7 @@
             <div class="immagineFilm">
                 <label for="copertinaFilm">Immagine di Copertina</label>
                 %errCopertina%
-                <input type="file" name="copertinaFilm" id="copertinaFilm" value="%copertina%" require accept=".png, .jpg, .jpeg">
+                <input type="file" name="copertinaFilm" id="copertinaFilm" value="%copertina%" required="required" accept=".png, .jpg, .jpeg">
                 <div class="altImmagineFilm">
                     <label for="altImg">Alt immagine di copertina</label>
                     <input type="text" name="descrizione" id="altImg" value="%altCopertina%" required="required">  
@@ -79,13 +79,14 @@
                 %errTrama%
                 <textarea name="tramaFilm" id="trama" cols="30" rows="10" required="required">%trama%</textarea> 
             </div>
-            <input type="submit" name="inserisciFilm" value="Inserisci" class="btn">
+            <input type="submit" id="invio" name="inserisciFilm" value="Inserisci" class="btn">
             %esitoTransazione%
            </form>
             <!-- fine contenuto -->
         </div> 
         <!-- fine impaginazione -->
-    </div>   
+    </div>
+<script type="text/javascript" src="../js/script.js"></script>    
 </body>
 </html>
 
