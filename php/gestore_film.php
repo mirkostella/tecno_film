@@ -1,6 +1,7 @@
 <?php
 
 require_once("controlli_form.php");
+require_once("upload_img.php");
 
 class GestoreFilm{
     public $id=null;
@@ -42,27 +43,9 @@ class GestoreFilm{
         );    
     }
 
-    public function controlloPresenzaFilm(){
-        //controllo per titolo del film
-        $queryTuttiIFilm="SELECT film.titolo as titolo FROM film";
-        $connessione=new Connessione();
-        $connessione->apriConnessione();
-        $films=$connessione->interrogaDB($queryTuttiIFilm);
-        $connessione->chiudiConnessione();
-        $presenza=false;
-        foreach($films as $valore){
-            if($this->titolo==$valore['titolo'])
-                $presenza=true;
-        }
-        return $presenza;
-    }
-
-    public function presenzaTitolo(){
+    public function presenzaTitolo($connessione){
         $queryPresenza="SELECT titolo FROM film WHERE film.titolo='".$this->titolo."'";
-        $connessione=new Connessione();
-        $connessione->apriConnessione();
         $presenza=$connessione->interrogaDB($queryPresenza);
-        $connessione->chiudiConnessione();
         if($presenza)
             return true;
 
@@ -70,16 +53,13 @@ class GestoreFilm{
 
     }
 
-    public function recuperaIDGeneri(){
+    public function recuperaIDGeneri($connessione){
         $ris=array();
-        $connessione=new Connessione();
-        $connessione->apriConnessione();
         foreach($this->genere as $valore){
             $queryIDGenere="SELECT ID FROM genere WHERE nome_genere='".$valore."'";
             $IDGenere=$connessione->interrogaDB($queryIDGenere);
             array_push($ris,$IDGenere[0]['ID']);
         }
-        $connessione->chiudiConnessione();
         return $ris;
     }
 
@@ -97,13 +77,13 @@ class GestoreFilm{
     }
 
 
-    public function controlloErroriForm(){
+    public function controlloErroriForm($connessione){
         $no_error=true;
         if(!check_titolo($this->titolo)){
             $this->erroriFilm['errTitolo']=$this->erroriFilm['errTitolo'].'<div class="error_box">Il titolo non puó superare i 50 caratteri (spazi inclusi).</div>';
             $no_error=false;
         }
-        if($this->presenzaTitolo()){
+        if($this->presenzaTitolo($connessione)){
             $this->erroriFilm['errTitolo']=$this->erroriFilm['errTitolo'].'<div class="error_box">Il film è giá presente nel database.</div>';
            $no_error=false;
         }
@@ -138,9 +118,9 @@ class GestoreFilm{
         return $no_error;
     }
     
-    public function inserisciFilm(&$pagina){
+    public function inserisciFilm($connessione, &$pagina){
         
-        $gestisci_img = new gestione_img();    
+        $gestisci_img = new GestioneImg();    
         $queryFotoCopertina='';
         $path='';
         if(isset($_FILES['copertinaFilm']) && is_uploaded_file($_FILES['copertinaFilm']['tmp_name']))
@@ -156,10 +136,8 @@ class GestoreFilm{
         }
 
         //non ci sono errori dovuti alla form e posso iniziare la transazione
-        if($this->controlloErroriForm() && $path){
+        if($this->controlloErroriForm($connessione) && $path){
             //imposto i messaggi di errore relativi alla form a vuoti
-            $connessione=new Connessione();
-            $connessione->apriConnessione();
             $connessione->inizioTransazione();
     
             $esitoFoto=$connessione->eseguiQuery($queryFotoCopertina);
@@ -186,7 +164,7 @@ class GestoreFilm{
                 //recupero l'id del film
                 $queryIDFilm="SELECT ID FROM film ORDER BY id DESC LIMIT 1";
                 $this->id=$connessione->interrogaDB($queryIDFilm)[0]['ID'];
-                $x=$this->recuperaIDGeneri();
+                $x=$this->recuperaIDGeneri($connessione);
                 foreach($x as $valore){
                     $queryAppartenenza="INSERT INTO appartenenza (ID_film,ID_genere) VALUES 
                     ($this->id,".$valore.")";
@@ -195,8 +173,7 @@ class GestoreFilm{
                         $ok=false;
                 }
             }
-            $connessione->fineTransazione($ok);      
-            $connessione->chiudiConnessione(); 
+            $connessione->fineTransazione($ok);       
         }
         else
             $ok=false;

@@ -7,20 +7,25 @@
     require_once ('card.php');
     require_once ('info_film.php');
 
-    print_r($_GET);
+
     $pagina=file_get_contents("../html/film_categoria.html");
-    $struttura=new Struttura();
+
     $connessione=new Connessione();
-    $connessione->apriConnessione();
-    $struttura->aggiungiHeader($pagina);
+    if(!$connessione->apriConnessione()){
+        echo "<div class=\"error_box\">ERRORE DI CONNESSIONE AL DATABASE</div>";
+    }
+
+    $struttura=new Struttura();
+    $struttura->aggiungiHeader($connessione, $pagina);
     $struttura->aggiungiAccount($pagina);
     $struttura->aggiungiMenu($pagina,'','');
+
     $pagina=str_replace('%categoriaFilm%',$_GET['nomeCategoria'],$pagina);
     $limite = $_GET['limite'];
     $risultatoCard=NULL;
 
     if($_GET['nomeCategoria']=='Nuove Uscite'){
-        $risultatoCard=recuperaNuoveUscite($limite);
+        $risultatoCard=recuperaNuoveUscite($connessione, $limite);
         $query_n_film="SELECT COUNT(*) as numero FROM film WHERE year(film.data_uscita) > (year(CURRENT_TIMESTAMP)-1)";
         $num_max_film=$connessione->interrogaDB($query_n_film);
         if($limite <= $num_max_film[0]['numero']){
@@ -40,7 +45,7 @@
 
     foreach($generi as $valore){
         if($_GET['nomeCategoria']==$valore){
-            $risultatoCard=recuperaPerGenere($limite, $valore);
+            $risultatoCard=recuperaPerGenere($connessione, $limite, $valore);
             $query_n_film="SELECT COUNT(*) as numero FROM film JOIN appartenenza ON(film.ID=appartenenza.ID_film) JOIN genere ON (appartenenza.ID_genere=genere.ID) WHERE nome_genere='.$valore.'";
             $num_max_film=$connessione->interrogaDB($query_n_film);
             if($risultatoCard){
@@ -63,6 +68,7 @@
         $pagina=str_replace('%films%',"",$pagina);
 
     $pagina=str_replace('%classifica%',"",$pagina);
+    
     $connessione->chiudiConnessione();
 
      echo $pagina;

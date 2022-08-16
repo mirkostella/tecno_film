@@ -19,28 +19,24 @@
     </nav>
 
     <div id="impaginazione">
-        <div id="menu-news">
-            <nav id="menuPrincipale">
-                %menu%
-            </nav>
+      <nav id="menuPrincipale">
+        %menu%
+      </nav>
+      <div id ="contenuto">
+        <h1>Le classifiche</h1>
+        <ul id="menuProposte">
+          <li><a href="#top">Top 5 della settimana</a></li>
+          <li><a href="#visti">Top 10 più visti</a></li>
+          <li><a href="#votati">Top 10 più votati</a></li>
+        </ul>
+				<div id="classifiche">
+          %listaCardSett%
+          %hrCardSett%
+				  %listaCardVisti%
+          %hrCardVisti%
+				  %listaCardVotati%
         </div>
-		
-        <div id ="contenuto">
-				<h1>Le classifiche</h1>
-				<ul id="menuProposte">
-					<li><a href="#top">Top 5 della settimana</a></li>
-					<li><a href="#visti">Top 10 più visti</a></li>
-					<li><a href="#votati">Top 10 più votati</a></li>
-				</ul>
-				
-				%listaCardSett%
-                %hrCardSett%
-
-				%listaCardVisti%
-                %hrCardVisti%
-
-				%listaCardVotati%
-		</div>
+		  </div>
     </div>   
 </body>
 </html>

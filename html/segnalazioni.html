@@ -18,11 +18,9 @@
         Ti trovi in: <a href="amministratore_loggato.php" xml:lang="en" lang="en">Home</a> &gt; <span class="grassetto">Vista generale</span>
     </nav>
     <div id="impaginazione">
-        <div id="menu-news">
-            <nav id="menuPrincipale">
-                %menuAdmin%
-            </nav>
-        </div>
+        <nav id="menuPrincipale">
+            %menuAdmin%
+        </nav>
         <div id="contenuto">
              <h1>Informazioni profilo di %username%</h1>
             <div id="profUtente">
@@ -34,22 +32,22 @@
                     <span>Email: %emailUtente%</span>
                     <span>Sesso: %sessoUtente%</span>
                     <span>Stato: <span class="grassetto">%statoUtente%</span></span>
+                    <div id="cambiaStato">
+                        <h3>Cambia stato utente</h3>
+                        <form action="modifica_stato_utente.php" method="get">
+                            <label for="attivo">Attivo:</label>
+                            <input type="radio" id="attivo" name="stato" checked="checked" value="Attivo" >
+                            <label for="bloccato">Bloccato:</label>
+                            <input type="radio" id="bloccato" name="stato" value="Bloccato">
+                            <input type="hidden" name="id" value="%idUtente%">
+                            <input type="submit" value="Cambia stato" name="cambia_stato" class="btn btnRecensione">
+                        </form>    
+                    </div> 
                 </div>
             </div>
-             <h1 id="segnalazioni">Segnalazioni</h1>
+             <h2 id="RiepilogoRecensioni">Riepilogo recensioni</h2>
              <span>Totale segnalazioni: %numSegnalazioni%</span>
-             %recensioni%
-            <h2 id="cambiaStato">Cambia stato utente</h2>
-            <form action="modifica_stato_utente.php" method="get">
-                <label for="attivo">Attivo:</label>
-                <input type="radio" id="attivo" name="stato" checked="checked" value="Attivo" >
-                <label for="avvisato">Avvisato:</label>
-                <input type="radio" id="avvisato" name="stato" value="Avvisato">
-                <label for="bloccato">Bloccato:</label>
-                <input type="radio" id="bloccato" name="stato" value="Bloccato">
-                <input type="hidden" name="id" value="%idUtente%">
-                <input type="submit" value="Cambia stato" name="cambia_stato" class="btnRecensione">
-            </form>   
+             %recensioni% 
             <!-- fine contenuto -->
         </div> 
         <!-- fine impaginazione -->

@@ -25,7 +25,7 @@
         $connessione = new Connessione();
         if($connessione->apriConnessione()){
             if(!$login_array= $connessione->interrogaDB("SELECT * FROM admin WHERE email = \"$email\" AND password = \"$psw\"")){
-                $pagina = str_replace('%errore_credenziali%', "<div class=\"msg_box error_box\">Le credenziali non sono corrette</div>", $pagina);
+                $pagina = str_replace('%errore_credenziali%', "<div class=\"error_box\">Le credenziali non sono corrette</div>", $pagina);
             }
             else{
                 $_SESSION['loggato']=true;
@@ -40,7 +40,7 @@
 
         }
         else{
-            $pagina = str_replace('%errore_conn%', "<div class=\"msg_box error_box\">Errore di connessione al database</div>", $pagina);
+            $pagina = str_replace('%errore_conn%', "<div class=\"error_box\">ERRORE DI CONNESSIONE AL DATABASE</div>", $pagina);
         }
     }
 

@@ -15,22 +15,19 @@
 
     $connessione=new Connessione();
     if(!$connessione->apriConnessione()){
-        echo "errore di connessione al db";
+        echo "<div class=\"error_box\">ERRORE DI CONNESSIONE AL DATABASE</div>";
     }
 
     $struttura = new Struttura();
-    
     $struttura->aggiungiHeader_admin($pagina);
-    
-
     $struttura->aggiungMenu_admin($pagina,'<li><a href="amministratore_loggato.php">Vista generale</a></li>',"<li id=\"attivo\">Vista Generale</li>");
 
     $query_utente="SELECT ID,username, email,stato From utente";
     $risultato=$connessione->interrogaDB($query_utente);
 
     
-   $righe = ''; // creo righe della tabella utenti
-   foreach($risultato as $value) { //per ogni riga della query 
+    $righe = ''; // creo righe della tabella utenti
+    foreach($risultato as $value) { //per ogni riga della query 
         $rigaUtente = file_get_contents("../componenti/utente_tab.html"); //prendo la struttura della riga nel file 
         $segnalazioni=trovaSegnalazioni($value['ID'],$connessione);
         //mappo i dati della riga con i relativi campi
@@ -97,9 +94,9 @@
     $tabellaFilm=str_replace("%totIncassi%",$totIncassi,$tabellaFilm);
     
     
-    $pagina=str_replace("%tabellaUtenti%",$tabellaUtenti,$pagina); //QUI metto la mia tabella degli utenti nella mia pagina
-   // $pagina=str_replace("%tabellaFilm%",build_table($risultato_f),$pagina);
+    $pagina=str_replace("%tabellaUtenti%",$tabellaUtenti,$pagina);
     $pagina=str_replace("%tabellaFilm%",$tabellaFilm,$pagina);
+
     $connessione->chiudiConnessione();
     
     echo $pagina;

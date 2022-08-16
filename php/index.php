@@ -4,19 +4,24 @@
     require_once ('sessione.php');
     require_once ('connessione.php');
     require_once ('struttura.php');
-    require_once ('card.php');
     require_once ('info_film.php');
 
     $pagina=file_get_contents("../html/index.html");
+
+    $connessione = new Connessione();
+    if(!$connessione->apriConnessione()){
+        echo "<div class=\"error_box\">ERRORE DI CONNESSIONE AL DATABASE</div>";
+    }
+
     $struttura=new Struttura();
-    $struttura->aggiungiHeader($pagina);
+    $struttura->aggiungiHeader($connessione, $pagina);
     $struttura->aggiungiAccount($pagina);
     $inAttivo="<li><a href=\"../php/index.php\" xml:lang=\"en\" lang=\"en\">Home</a></li>";
     $attivo="<li xml:lang=\"en\" lang=\"en\" id=\"attivo\">Home</li>";
     $struttura->aggiungiMenu($pagina,$inAttivo,$attivo);
     $ncard=5;
     
-    $risultatoCard=recuperaNuoveUscite($ncard);
+    $risultatoCard=recuperaNuoveUscite($connessione, $ncard);
     if($risultatoCard){
         $pagina=str_replace('%nuoveUscite%',$risultatoCard,$pagina);
         $pulsanteVedialtro=pulsanteVediAltro('Nuove Uscite','film_categoria.php', $ncard+5);
@@ -30,7 +35,7 @@
 
     
     if(isset($_SESSION['loggato']) && $_SESSION['loggato']==true){
-        $risultatoCard=recuperaSceltiPerTe($ncard);
+        $risultatoCard=recuperaSceltiPerTe($connessione, $ncard);
         if($risultatoCard){
             $pagina=str_replace('%sceltiPerTe%',$risultatoCard,$pagina);
             $pagina=str_replace('%hrSceltiPerTe%',"<hr>",$pagina);
@@ -48,8 +53,6 @@
     }
     
     $queryGeneri="SELECT DISTINCT nome_genere FROM genere JOIN appartenenza ON (genere.ID = appartenenza.ID_genere)";
-    $connessione=new Connessione();
-    $connessione->apriConnessione();
     $ElencoGeneriNonVuoti=$connessione->InterrogaDB($queryGeneri);
     $generi=array();
     foreach($ElencoGeneriNonVuoti as $valore){
@@ -68,7 +71,7 @@
     $pagina=str_replace('%listaSegnaposti%', $listaSegnaposti, $pagina);
     $pagina=str_replace('%listaCollegamenti%',$listaCollegamenti,$pagina);
     foreach($generi as $valore){
-        $risultatoCard=recuperaPerGenere($ncard, $valore);
+        $risultatoCard=recuperaPerGenere($connessione, $ncard, $valore);
         if($risultatoCard){
         $pagina=str_replace('%'.$valore.'%',$risultatoCard,$pagina);
         $pagina=str_replace('%hr'.$valore.'%',"<hr>",$pagina);
@@ -81,13 +84,13 @@
         $pagina=str_replace('<li><a href="#'.$valore.'">'.$valore.'</a></li>',"",$pagina);
         $pagina=str_replace('%vediAltro'.$valore.'%',"",$pagina);
         }
-    }
-    $connessione->chiudiConnessione();
-    
-        
+    }      
 
     //rimuove il segnaposto classifica dalle card non classificate
     $pagina=str_replace('%classifica%',"",$pagina);
+
+    $connessione->chiudiConnessione();
+
     echo $pagina;
     
 ?>

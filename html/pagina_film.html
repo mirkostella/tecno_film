@@ -20,73 +20,73 @@
         Ti trovi in: <a href="index.php" xml:lang="en" lang="en">Home</a> &gt; <span class="grassetto">%titolo%</span>
     </nav>
     <div id="impaginazione">
-        <div id="menu-news">
-            <nav id="menuPrincipale">
-                %menu%
-            </nav>
-        </div>
+        <nav id="menuPrincipale">
+            %menu%
+        </nav>
         <div id="contenuto">
             <h1>%titolo%</h1>
             <ul id="menuProposte">
                 <li><a href="#trama">Trama</a></li>
                 <li><a href="#recensioni">Recensioni</a></li>
             </ul>
-            <div id="info">
-                <div id="infoFilm">
-                    <div id="votoCopertina">
-                            <img src="%path%" alt="Immagine di copertina %titolo%" id="immagineFilm"> 
-                            <div id="valutazione">
-                                %valutazione%
-                            </div>
-                    </div>   
-                    <dl id="infoPrincipali">
-                        <dt>Anno di uscita:</dt> 
-                        <dd>%annoUscita%</dd>
-                        <dt>Durata:</dt> 
-                        <dd>%durata% minuti</dd>
-                        <dt>Genere:</dt> 
-                        <dd>%genere%</dd>    
-                    </dl>
-                    %pulsantiAcquistoNoleggio%
+            <div id="infoFilm">
+                <div id="votoCopertina">
+                        <img src="%path%" alt="Immagine di copertina %titolo%" id="immagineFilm"> 
+                        <div id="valutazione">
+                            %valutazione%
+                        </div>
+                </div>   
+                <dl id="infoPrincipali">
+                    <dt>Anno di uscita:</dt> 
+                    <dd>%annoUscita%</dd>
+                    <dt>Durata:</dt> 
+                    <dd>%durata% minuti</dd>
+                    <dt>Genere:</dt> 
+                    <dd>%genere%</dd>    
+                </dl>
+                <div id="AcquistoNoleggio">
+                    %pulsanteNoleggio%
+                    %pulsanteAcquisto%
                 </div>
             </div>
-                <hr>
-                <h2 id="trama">Trama</h2>
-                <p>%trama%</p>
-                <hr>
-                <div id="recensioni">
-                  <h2 id="titoloRecensioni">Recensioni</h2>
-                    %messaggioEsitoRecensione%
-                    %formRecensione%
-                    <h3 id="recensioni">Come hanno votato gli altri utenti:</h3>
-                    <ul>
-                        <li>
-                            <label for="cinqueStelle">5 stelle</label>
-                            <progress id="cinqueStelle" value="%perc5%" max="100"></progress><span>%perc5%&#37;</span>
-                        </li>
-                        <li>
-                            <label for="quattroStelle">4 stelle</label>
-                            <progress id="quattroStelle" value="%perc4%" max="100"></progress><span>%perc4%&#37;</span>
-                        </li>
-                        <li>
-                            <label for="treStelle">3 stelle</label>
-                            <progress id="treStelle" value="%perc3%" max="100"></progress><span>%perc3%&#37;</span>
-                        </li>
-                        <li>
-                            <label for="dueStelle">2 stelle</label>
-                            <progress id="dueStelle" value="%perc2%" max="100"></progress><span>%perc2%&#37;</span>
-                        </li>
-                        <li>
-                            <label for="unaStella">1 stelle</label>
-                            <progress id="unaStella" value="%perc1%" max="100"></progress><span>%perc1%&#37;</span>
-                        </li>
-                    </ul>
-                    <h3>Recensioni degli altri utenti</h3>
-                    %filtro%
-                    <dl>
-                        %listaRecensioni%
-                    </dl>
-                </div>
+            %esitoAcquistoNoleggio%
+            <hr>
+            <h2 id="trama">Trama</h2>
+            <p>%trama%</p>
+            <hr>
+            <div id="recensioni">
+                <h2 id="titoloRecensioni">Recensioni</h2>
+                %messaggioEsitoRecensione%
+                %formRecensione%
+                <h3>Come hanno votato gli altri utenti:</h3>
+                <ul>
+                    <li>
+                        <label for="cinqueStelle">5 stelle</label>
+                        <progress id="cinqueStelle" value="%perc5%" max="100"></progress><span>%perc5%&#37;</span>
+                    </li>
+                    <li>
+                        <label for="quattroStelle">4 stelle</label>
+                        <progress id="quattroStelle" value="%perc4%" max="100"></progress><span>%perc4%&#37;</span>
+                    </li>
+                    <li>
+                        <label for="treStelle">3 stelle</label>
+                        <progress id="treStelle" value="%perc3%" max="100"></progress><span>%perc3%&#37;</span>
+                    </li>
+                    <li>
+                        <label for="dueStelle">2 stelle</label>
+                        <progress id="dueStelle" value="%perc2%" max="100"></progress><span>%perc2%&#37;</span>
+                    </li>
+                    <li>
+                        <label for="unaStella">1 stelle</label>
+                        <progress id="unaStella" value="%perc1%" max="100"></progress><span>%perc1%&#37;</span>
+                    </li>
+                </ul>
+                <h3>Recensioni degli altri utenti</h3>
+                %filtro%
+                <dl>
+                    %listaRecensioni%
+                </dl>
+            </div>
                 <!-- fine contenuto -->
         </div>
         <!-- fine impaginazione -->

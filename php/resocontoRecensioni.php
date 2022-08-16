@@ -13,17 +13,15 @@
         public $val2;
         public $val1;
         public $totRecensioni;
-        public function __construct($idFilm){
-            $connessione=new Connessione();
-            $connessione->apriConnessione();
+        public function __construct($connessione, $idFilm){
             $this->val5=$connessione->interrogaDB("SELECT count(valutazione) as voto FROM recensione WHERE ID_film=$idFilm AND valutazione=5")[0]['voto'];
             $this->val4=$connessione->interrogaDB("SELECT count(valutazione) as voto FROM recensione WHERE ID_film=$idFilm AND valutazione=4")[0]['voto'];
             $this->val3=$connessione->interrogaDB("SELECT count(valutazione) as voto FROM recensione WHERE ID_film=$idFilm AND valutazione=3")[0]['voto'];
             $this->val2=$connessione->interrogaDB("SELECT count(valutazione) as voto FROM recensione WHERE ID_film=$idFilm AND valutazione=2")[0]['voto'];
             $this->val1=$connessione->interrogaDB("SELECT count(valutazione) as voto FROM recensione WHERE ID_film=$idFilm AND valutazione=1")[0]['voto'];
             $this->totRecensioni=$connessione->interrogaDB("SELECT count(*) as tot FROM recensione WHERE ID_film=$idFilm")[0]['tot'];
-            $connessione->chiudiConnessione();
         }
+        
         //crea il grafico in corrispondenza del segnaposto all'interno della pagina
         public function creaGrafico(&$pagina){
             if($this->totRecensioni!=0){

@@ -3,7 +3,7 @@
 class Connessione{
     const HOST="localhost";
     const USERNAME="root";
-    const PASSWORD="root";
+    const PASSWORD="";
     const NOME_DATABASE="tec_web";
 
     public $conn=null;

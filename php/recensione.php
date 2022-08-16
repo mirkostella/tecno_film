@@ -1,9 +1,9 @@
 <?php
 
 require_once ('sessione.php');
-require_once ('connessione.php');
 require_once ('stelle.php');
 require_once ('giudizio.php');
+require_once ('info_utente.php');
 
 //valutazione contiene la stringa che rappresenta le stelle date al film
 abstract class Recensione{
@@ -88,23 +88,19 @@ abstract class Recensione{
     public function getUsername(){
         return $this->username;
     }
-    public function getUtile(){
+
+    public function getUtile($connessione){
         $queryLike="SELECT count(*) as nLike FROM utile JOIN recensione ON (utile.ID_recensione=recensione.ID) WHERE recensione.ID=1";
-        $connessione=new Connessione();
-        $connessione->apriConnessione();
         $ris=$connessione->interrogaDB($queryLike);
-        $connessione->chiudiConnessione();
         $nLike=0;
         if($ris)
             $nLike=array_pop($ris)['nLike'];
         return $nLike;
     }
-    public function getSegnalazioni(){
+
+    public function getSegnalazioni($connessione){
         $querySegnalazioni="SELECT count(*) as nSegnalazioni FROM segnalazione JOIN recensione ON (segnalazione.ID_recensione=recensione.ID) WHERE recensione.ID=$this->id";
-        $connessione=new Connessione();
-        $connessione->apriConnessione();
         $ris=$connessione->interrogaDB($querySegnalazioni);
-        $connessione->chiudiConnessione();
         $nSegnalazioni=array_pop($ris)['nSegnalazioni'];
         return $nSegnalazioni;
     }
@@ -121,14 +117,11 @@ abstract class Recensione{
         $rec=str_replace('%idRecensione%',$this->id,$rec);
         return $rec;
     }
-    abstract function crea();
+    abstract function crea($connessione);
     //false se fallisce
-    static public function elimina($idRecensione){
-        $connessione=new Connessione();
-        $connessione->apriConnessione(); 
+    static public function elimina($connessione, $idRecensione){
         $rec="DELETE FROM recensione WHERE ID=$idRecensione";
         $ok=$connessione->eseguiQuery($rec);
-        $connessione->chiudiConnessione();
         return $ok;
     }
 
@@ -140,12 +133,12 @@ class RecensioneUtente extends Recensione{
         Recensione::__construct($array);
     }
 
-    public function crea(){
+    public function crea($connessione){
         $rec=Recensione::aggiungiBase();
         $rec=str_replace('%idRecensione%',$this->id,$rec);
         $rec=str_replace('%destinazione%',"pagina_film.php",$rec);
         $rec=str_replace('%segnalazioni%',"",$rec);
-        $rec=str_replace('%like%',"<span class=\"grassetto\">Recensione piaciuta a: </span>".$this->getUtile()." persone",$rec);
+        $rec=str_replace('%like%',"<span class=\"grassetto\">Recensione piaciuta a: </span>".$this->getUtile($connessione)." persone",$rec);
         if($_SESSION['loggato']==true && $_SESSION['id']==$this->idUtente){
             $rec=str_replace('%pulsanteUtile%',"",$rec);
             $rec=str_replace('%pulsanteSegnalazione%',"",$rec);
@@ -155,25 +148,40 @@ class RecensioneUtente extends Recensione{
                 $rec=str_replace('%elimina%',"",$rec);
                 $utile=new Utile($_SESSION['id'],$this->id);
                 $segnalazione=new Segnalazione($_SESSION['id'],$this->id);
-                if(!$utile->getUtile()){
-                    $rec=str_replace('%pulsanteUtile%',"<input type=\"submit\" value=\"Utile\" name=\"utile\" class=\"btn btnRecensione\">",$rec);
+                if(!controlloStatoBloccato($connessione, $_SESSION['id'])){
+                    if(!$utile->getUtile($connessione)){
+                        $rec=str_replace('%pulsanteUtile%',"<input type=\"submit\" value=\"Utile\" name=\"utile\" class=\"btn btnRecensione\">",$rec);
+                    }
+                    else{
+                        $rec=str_replace('%pulsanteUtile%',"<input type=\"submit\" value=\"Annulla Utile\" name=\"annullaUtile\" class=\"btn btnRecensione\">",$rec);
+                    }
+                    if(!$segnalazione->getSegnalazioni($connessione)){
+                        $rec=str_replace('%pulsanteSegnalazione%',"<input type=\"submit\" value=\"Segnala\" name=\"segnala\" class=\"btn btnRecensione\">",$rec);
+                    }
+                    else{
+                        $rec=str_replace('%pulsanteSegnalazione%',"<input type=\"submit\" value=\"Rimuovi segnalazione\" name=\"annullaSegnalazione\" class=\"btn btnRecensione\">",$rec);
+                    }
                 }
-                else{
-                    $rec=str_replace('%pulsanteUtile%',"<input type=\"submit\" value=\"Annulla Utile\" name=\"annullaUtile\" class=\"btn btnRecensione\">",$rec);
+                else
+                {
+                    if(!$utile->getUtile($connessione)){
+                        $rec=str_replace('%pulsanteUtile%',"",$rec);
+                    }
+                    else{
+                        $rec=str_replace('%pulsanteUtile%',"<input type=\"submit\" value=\"Annulla Utile\" name=\"annullaUtile\" class=\"btn btnRecensione\">",$rec);
+                    }
+                    if(!$segnalazione->getSegnalazioni($connessione)){
+                        $rec=str_replace('%pulsanteSegnalazione%',"",$rec);
+                    }
+                    else{
+                        $rec=str_replace('%pulsanteSegnalazione%',"<input type=\"submit\" value=\"Rimuovi segnalazione\" name=\"annullaSegnalazione\" class=\"btn btnRecensione\">",$rec);
+                    }
                 }
-                if(!$segnalazione->getSegnalazioni()){
-                    $rec=str_replace('%pulsanteSegnalazione%',"<input type=\"submit\" value=\"Segnala\" name=\"segnala\" class=\"btn btnRecensione\">",$rec);
-                }
-                else{
-                    $rec=str_replace('%pulsanteSegnalazione%',"<input type=\"submit\" value=\"Rimuovi segnalazione\" name=\"annullaSegnalazione\" class=\"btn btnRecensione\">",$rec);
-                }
-
-                
             }
             if($_SESSION['loggato']==false){
                 $rec=str_replace('%pulsanteUtile%',"",$rec);
-            $rec=str_replace('%pulsanteSegnalazione%',"",$rec);
-            $rec=str_replace('%elimina%',"",$rec);
+                $rec=str_replace('%pulsanteSegnalazione%',"",$rec);
+                $rec=str_replace('%elimina%',"",$rec);
             }
         return $rec;
     }
@@ -181,15 +189,12 @@ class RecensioneUtente extends Recensione{
     
     //inserisce senza controllare errori
     //ritorna l'id della recensione appena inserita altrimenti false
-    public function aggiungiDB(){
-        $connessione=new Connessione();
-        $connessione->apriConnessione(); 
+    public function aggiungiDB($connessione){ 
         $ins="INSERT INTO recensione (ID_film,ID_utente,testo,data,valutazione) VALUES 
         ($this->idFilm,$this->idUtente,\"$this->testo\",\"$this->data\",$this->valutazione)";
         if($connessione->eseguiQuery($ins)){
             $queryIdNuovaRecensione="SELECT ID FROM recensione WHERE ID_film=".$this->idFilm." AND ID_utente=".$this->idUtente;
             $idNuovaRecensione=$connessione->interrogaDB($queryIdNuovaRecensione);
-            $connessione->chiudiConnessione();
             return $idNuovaRecensione[0];
         }
         else{
@@ -197,21 +202,21 @@ class RecensioneUtente extends Recensione{
         }
     }
       
-    static public function segnala($idRecensione){
+    static public function segnala($connessione, $idRecensione){
         $segnalazione=new Segnalazione($_SESSION['id'],$idRecensione);
-        return $segnalazione->inserisci();
+        return $segnalazione->inserisci($connessione);
     }
-    static public function utile($idRecensione){
+    static public function utile($connessione, $idRecensione){
         $utile=new Utile($_SESSION['id'],$idRecensione);
-        return $utile->inserisci();
+        return $utile->inserisci($connessione);
     }
-    static public function rimuoviSegnala($idRecensione){
+    static public function rimuoviSegnala($connessione, $idRecensione){
         $segnalazione=new Segnalazione($_SESSION['id'],$idRecensione);
-        return $segnalazione->rimuovi();
+        return $segnalazione->rimuovi($connessione);
     }
-    static public function rimuoviUtile($idRecensione){
+    static public function rimuoviUtile($connessione, $idRecensione){
         $utile=new Utile($_SESSION['id'],$idRecensione);
-        return $utile->rimuovi();
+        return $utile->rimuovi($connessione);
     }
 
     
@@ -222,17 +227,16 @@ class RecensioneAdmin extends Recensione{
         Recensione::__construct($array);
     }
 
-    public function crea(){
+    public function crea($connessione){
         $rec=Recensione::aggiungiBase();
         $rec=str_replace('%destinazione%',"segnalazioni.php",$rec);
         $rec=str_replace('%like%',"",$rec);
-        $rec=str_replace('%segnalazioni%',"<span class=\"grassetto\">Recensione segnalata da: </span>".$this->getSegnalazioni()." persone",$rec);
+        $rec=str_replace('%segnalazioni%',"<span class=\"grassetto\">Recensione segnalata da: </span>".$this->getSegnalazioni($connessione)." persone",$rec);
         $rec=str_replace('%pulsanteUtile%',"",$rec);
         $rec=str_replace('%pulsanteSegnalazione%',"",$rec);
         $rec=str_replace('%elimina%','<input type="submit" value="Elimina" name="eliminaRecensione" class="btn btnRecensione">',$rec);
         return $rec;
     }
-
 }
 
 ?>

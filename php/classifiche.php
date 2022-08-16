@@ -5,8 +5,14 @@
     require_once ('connessione.php');
 
     $pagina=file_get_contents("../html/classifiche.html");
+
+    $connessione = new Connessione();
+    if(!$connessione->apriConnessione()){
+        echo "<div class=\"error_box\">ERRORE DI CONNESSIONE AL DATABASE</div>";
+    }
+
     $struttura=new Struttura();
-    $struttura->aggiungiHeader($pagina);
+    $struttura->aggiungiHeader($connessione, $pagina);
     $struttura->aggiungiAccount($pagina);
     $inAttivo="<li><a href=\"../php/classifiche.php\">Classifiche</a></li>";
     $attivo="<li id=\"attivo\">Classifiche</li>";
@@ -15,7 +21,7 @@
 
     ////////TOP 5 DELLA SETTIMANA//////////
     
-    $listaCards=recuperaTop5VistiSettimana();
+    $listaCards=recuperaTop5VistiSettimana($connessione);
     $pagina=str_replace('%listaCardSett%',$listaCards,$pagina);
     if($listaCards){
         $pagina=str_replace('%hrCardSett%',"<hr>",$pagina);
@@ -26,7 +32,7 @@
 
     ////////I 10 FILM PIU VISTI (con il maggior numero di acquisti e noleggi)//////////
 
-    $listaCards=recuperaPiuVisti();
+    $listaCards=recuperaPiuVisti($connessione);
     $pagina=str_replace('%listaCardVisti%',$listaCards,$pagina);
     if($listaCards){
         $pagina=str_replace('%hrCardVisti%',"<hr>",$pagina);
@@ -39,7 +45,7 @@
     
     ////////I 10 FILM PIU VOTATI//////////
 
-    $listaCards=recuperaPiuVotati();
+    $listaCards=recuperaPiuVotati($connessione);
 
     if($listaCards){
         $pagina=str_replace('%listaCardVotati%',$listaCards,$pagina);
@@ -47,6 +53,8 @@
     else{
         $pagina=str_replace('<li><a href="#votati">Top 10 più votati</a></li>',"",$pagina);;
     }
+
+    $connessione->chiudiConnessione();
     
     echo $pagina;
 

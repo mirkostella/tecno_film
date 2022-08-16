@@ -10,20 +10,21 @@
         header('location: login_admin.php');
         exit();
     }
-print_r($_GET);
+
     $pagina=file_get_contents("../html/segnalazioni.html");
     $struttura = new Struttura();
     $struttura->aggiungiHeader_admin($pagina);
-    $struttura->aggiungMenu_admin($pagina);
+    $pagina = str_replace("Vista generale", "Panoramica utente: %username%", $pagina);
+    $struttura->aggiungMenu_admin($pagina, "", "");
 
     $connessione=new Connessione();
     if(!$connessione->apriConnessione()){
-        echo "errore di connessione al db";
+        echo "<div class=\"error_box\">ERRORE DI CONNESSIONE AL DATABASE</div>";
     }
 
     $id=$_GET['id'];
-    if($_GET['eliminaRecensione']){
-        Recensione::elimina($_GET['idRecensione']);
+    if(isset($_GET['eliminaRecensione'])){
+        Recensione::elimina($connessione, $_GET['idRecensione']);
     }
     
     $query_info_utente="SELECT utente.ID as u_ID, username, nome, cognome, sesso, stato, email, data_nascita, foto_utente.path as path
@@ -54,12 +55,13 @@ print_r($_GET);
     $stringaRecensioni="";
     foreach($risultato_recensione as $ris){
         $rec=new RecensioneAdmin($ris);
-        $stringaRecensione=$rec->crea();
+        $stringaRecensione=$rec->crea($connessione);
         $stringaRecensioni=$stringaRecensioni.$stringaRecensione;
 
     }
     $pagina=str_replace('%recensioni%',$stringaRecensioni,$pagina);
     $pagina=str_replace('%idUtente%',$id,$pagina);
 
+    $connessione->chiudiConnessione();
     echo $pagina;
 ?>

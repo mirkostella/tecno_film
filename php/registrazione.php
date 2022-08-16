@@ -7,8 +7,17 @@
 	require_once('upload_img.php');
 
 	$pagina=file_get_contents("../html/registrazione.html");
+
+	$connessione=new Connessione();
+	if(!$connessione->apriConnessione()){
+		$pagina=str_replace('%error_conn%', "<div class=\"error_box\">ERRORE DI CONNESSIONE AL DATABASE</div>", $pagina);
+		$no_error=false;
+	}
+	else
+		$pagina=str_replace('%error_conn%', '', $pagina);
+
 	$struttura=new Struttura();
-	$struttura->aggiungiHeader($pagina);
+	$struttura->aggiungiHeader($connessione, $pagina);
 	$struttura->aggiungiAccount($pagina);
 	$pagina=str_replace('<a href="../php/registrazione.php">Registrati</a>', '', $pagina);
 	$inAttivo=file_get_contents("../componenti/menu.html");
@@ -53,17 +62,10 @@
 			$conf_psw=test_input($_POST['confPassword']);
 		}	
 	
-		$connessione=new Connessione();
-		if(!$connessione->apriConnessione()){
-			$pagina=str_replace('%error_conn%', "<div class=\"msg_box error_box\">Errore di connessione al database</div>", $pagina);
-			$no_error=false;
-		}
-		else
-			$pagina=str_replace('%error_conn%', '', $pagina);
 		//controlli input
 
 		if(!check_nome($nome)){
-			$pagina=str_replace('%error_nome%', "<div class=\"msg_box error_box\">Il nome deve essere lungo almeno 2 caratteri ed essere composto solo da caratteri alfabetici.</div>", $pagina);
+			$pagina=str_replace('%error_nome%', "<div class=\"error_box\">Il nome deve essere lungo almeno 2 caratteri ed essere composto solo da caratteri alfabetici.</div>", $pagina);
 			$no_error=false;
 		}
 		else
@@ -71,21 +73,21 @@
 
 	
 		if(!check_nome($cognome)){
-			$pagina=str_replace('%error_cognome%', "<div class=\"msg_box error_box\">Il cognome deve essere lungo almeno 2 caratteri ed essere composto solo da caratteri alfabetici.</div>", $pagina);
+			$pagina=str_replace('%error_cognome%', "<div class=\"error_box\">Il cognome deve essere lungo almeno 2 caratteri ed essere composto solo da caratteri alfabetici.</div>", $pagina);
 			$no_error=false;
 		}
 		else
 			$pagina=str_replace('%error_cognome%', '', $pagina);
 
 		if(!check_dataNascita($data_nascita)){
-			$pagina=str_replace('%error_data%', "<div class=\"msg_box error_box\">L'età minima per poter utilizzare questo sito è 18 anni.</div>", $pagina);
+			$pagina=str_replace('%error_data%', "<div class=\"error_box\">L'età minima per poter utilizzare questo sito è 18 anni.</div>", $pagina);
 			$no_error=false;
 		}
 		else
 			$pagina=str_replace('%error_data%', '', $pagina);
 
 		if(!check_email($email)){
-			$pagina=str_replace('%error_email%', "<div class=\"msg_box error_box\">L'email inserita non è valida. Esempio: mariorossi@email.com</div>", $pagina);
+			$pagina=str_replace('%error_email%', "<div class=\"error_box\">L'email inserita non è valida. Esempio: mariorossi@email.com</div>", $pagina);
 			$no_error=false;
 		}
 		else
@@ -95,7 +97,7 @@
 		$query_user ="SELECT * FROM utente WHERE BINARY username='".$username."'"; //CASE SENSITIVE??
 
 		if($connessione->interrogaDB($query_email)){
-			$pagina=str_replace('%error_email_usata%', "<div class=\"msg_box error_box\">L'email inserita è già in uso.</div>", $pagina);
+			$pagina=str_replace('%error_email_usata%', "<div class=\"error_box\">L'email inserita è già in uso.</div>", $pagina);
 			$no_error=false;
 		}
 		else
@@ -103,7 +105,7 @@
 
 
 		if($connessione->interrogaDB($query_user)){
-			$pagina=str_replace('%error_username%', "<div class=\"msg_box error_box\">Questo username è già in uso. Scegline un altro</div>", $pagina);
+			$pagina=str_replace('%error_username%', "<div class=\"error_box\">Questo username è già in uso. Scegline un altro</div>", $pagina);
 			$no_error=false;
 		}
 		else
@@ -111,21 +113,21 @@
 
 
 		if($psw!=$conf_psw){
-			$pagina=str_replace('%error_confPwd%', "<div class=\"msg_box error_box\">Password e Conferma Password non coincidono.</div>", $pagina);
+			$pagina=str_replace('%error_confPwd%', "<div class=\"error_box\">Password e Conferma Password non coincidono.</div>", $pagina);
 			$no_error=false;
 		}
 		else
 			$pagina=str_replace('%error_confPwd%', '', $pagina);
 
 		if(!check_password($psw)){
-			$pagina=str_replace('%error_pwd%', "<div class=\"msg_box error_box\">La password deve essere lunga almeno 8 caratteri, contenere almeno una lettera maiuscola, una minuscola e un numero.</div>", $pagina);
+			$pagina=str_replace('%error_pwd%', "<div class=\"error_box\">La password deve essere lunga almeno 8 caratteri, contenere almeno una lettera maiuscola, una minuscola e un numero.</div>", $pagina);
 			$no_error=false;
 		}
 		else
 			$pagina=str_replace('%error_pwd%', '', $pagina);
 		//se gli input vanno bene, carico l'immagine profilo
 		if($no_error){
-			$gestisci_img = new gestione_img();
+			$gestisci_img = new GestioneImg();
 
 			if(isset($_FILES['immagineProfilo']) && is_uploaded_file($_FILES['immagineProfilo']['tmp_name'])){
 				if(!$upload_result=$gestisci_img->caricaImmagine("Utenti/", "immagineProfilo")){
@@ -164,11 +166,10 @@
 			$query_check="SELECT * FROM utente WHERE email = '".$email."'";
 
 			if(!$connessione->interrogaDB($query_check)){
-				$pagina = str_replace('%error_reg%', "<div class=\"msg_box error_box\">Errore nell'inserimento dei dati</div>", $pagina);
-				$connessione->chiudiConnessione();	
+				$pagina = str_replace('%error_reg%', "<div class=\"error_box\">Errore nell'inserimento dei dati</div>", $pagina);
 			}
 			else{
-				$pagina = str_replace('%msg_reg%', "<div class=\"msg_box success_box\">Registrazione avvenuta! Verrai indirizzato al login</div>", $pagina);
+				$pagina = str_replace('%msg_reg%', "<div class=\"success_box\">Registrazione avvenuta! Verrai indirizzato al login</div>", $pagina);
 				$connessione->chiudiConnessione();
 				header("refresh: 7; url= login.php");
 			}		
@@ -214,6 +215,8 @@
 	$pagina=str_replace('%error_foto%', '', $pagina);
 	$pagina=str_replace('%error_reg%', '', $pagina);
 	$pagina=str_replace('%msg_reg%', '', $pagina);
+
+	$connessione->chiudiConnessione();
 	echo $pagina;
 ?>
 

@@ -1,6 +1,5 @@
 <?php
     require_once('stelle.php');
-    require_once('connessione.php');
     require_once('info_film.php');
 
     class CardBase{
@@ -102,15 +101,13 @@
         }
     }
     
-    function creaListaCardPersonale($risultatoQuery){
+    function creaListaCardPersonale($connessione, $risultatoQuery){
         $listaCards="";
         if($risultatoQuery){
             //ordino le card in base alla valutazione
             $i=1;
-            $connessione=new Connessione();
-            $connessione->apriConnessione();
             foreach($risultatoQuery as $valore){
-                $generi=recuperaGeneri($valore['id']);
+                $generi=recuperaGeneri($connessione, $valore['id']);
                 $cardAttuale=new CardPersonale($valore,$generi);
                 $stringaCard=$cardAttuale->aggiungiBase();
                 if($i==6){
@@ -122,46 +119,37 @@
                 $i++;
                 $listaCards=$listaCards.$stringaCard;
             }
-            $connessione->chiudiConnessione();
         }
         return $listaCards;
     }
-    function creaListaCard($risultatoQuery){
-        $listaCards="";
-        $connessione=new Connessione();
-        $connessione->apriConnessione();
-        
-                
+
+    function creaListaCard($connessione, $risultatoQuery){
+        $listaCards="";   
         if($risultatoQuery){
             //ordino le card in base alla valutazione
             foreach($risultatoQuery as $valore){
-                $generi=recuperaGeneri($valore['id']);
+                $generi=recuperaGeneri($connessione, $valore['id']);
                 $cardAttuale=new Card($valore,$generi);
                 $stringaCard=$cardAttuale->aggiungiBase();
                 $listaCards=$listaCards.$stringaCard;
             }
-            $connessione->chiudiConnessione();
         }
         return $listaCards;
     }
     
-    function creaListaCardClassificata($risultatoQuery){
+    function creaListaCardClassificata($connessione, $risultatoQuery){
         if(!$risultatoQuery)
             return "";
         $listaCards="";
         $posizione=1;
-        $connessione=new Connessione();
-        $connessione->apriConnessione();
         //ordino le card in base alla valutazione
         foreach($risultatoQuery as $valore){
-            $generi=recuperaGeneri($valore['id']);
+            $generi=recuperaGeneri($connessione, $valore['id']);
             $cardAttuale=new CardClassificata($valore,$posizione,$generi);
             $listaCards=$listaCards.$cardAttuale->aggiungiBaseClassificata();
             $posizione++;
         }
-        $connessione->chiudiConnessione();
         return $listaCards;
-
     }
 
 ?>

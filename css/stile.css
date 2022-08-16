@@ -23,23 +23,30 @@ html,body{
     background-color: peachpuff;
     font-family: 'Times New Roman', Times, serif;
 }
+
 h1{
     font-size: 2.4em;
     text-align: center;
     margin:0.6em 0;
 }
+
 h2{
     font-size: 1.9em;
     text-align: center;
 	  font-weight: bold;
     margin:0.5em 0;
 }
-h3{margin:0.9em 0}
+
+h3{
+    margin:0.9em 0
+}
+
 hr{
     border:none;
     margin:2em auto;
     width: 70%;
 }
+
 .btn{
     color: white;
     background-color: var(--colore-btn);
@@ -52,43 +59,47 @@ hr{
     border: none;
     border-radius: 5px;
 }
+
 .btn:hover{
     background-color: var(--colore-btn-hover);
     border: none;
     border-radius: 5px;
 }
+
 input[class="btn btnAzione"]{
     background-color: var(--colore-btn-azione);
     color: white;
     border:none;
 }
+
 input[class="btn btnAzione"]:hover{
     background-color: var(--colore-btn-azione-hover);
     color: white;
     border: none; 
 }
+
 .grassetto{
     font-weight: bold;
 }
+
 .centrale{
     margin: 1em auto;
     width: 20%;
 }
-.centrale{
-    margin: 1em auto;
-    width: 20%;
-}
+
 ul{
     text-align: center;
 }
+
 ul li{
     list-style-type: none;
     display: inline-block;
 }
-fieldset{text-align: center;}
-.esitoPositivo{
-    color: green;
+
+fieldset{
+    text-align: center;
 }
+
 /* intestazione */
 header{
     width: 100%;
@@ -104,6 +115,7 @@ header{
     white-space: nowrap;
     color: black;
 }
+
 #ricerca{
     display: flex;
     align-items: center;
@@ -112,6 +124,7 @@ header{
     margin-right:3em;
     margin-left:5em;
 }
+
 #input_ricerca{
     width: 100%;
     line-height: 2em;
@@ -122,6 +135,7 @@ header{
     border: 2px solid;
     border-color: crimson;
 }
+
 #submit_ricerca{
     padding: 0 0.6em;
     margin-left: 0.7em;
@@ -132,15 +146,21 @@ header{
     border: 2px solid;
     border-color: crimson;
 }
+
 #account{
     display: flex;
     align-items: center;
 }
+
 #account a{
     margin-right:1em;
     font-size: 1.3em;
 }
-#menuHam{display: none;}
+
+#menuHam{
+    display: none;
+}
+
 #breadcrumb{
     width: 100%;
     font-size: 1.2em;
@@ -151,16 +171,11 @@ header{
 
 /* messaggi di errore */
 
-.msg_box {
-    padding: 0.5em;
-    margin: 0.5em 0 1em; 
-    font-size: 1em; 
-}
-
 .error_box{
     background-color: #fce4e4;
     border: 1px solid #fcc2c3;
     color: #cc0033;
+    margin-top: 1em;
 }
 
 .success_box{
@@ -169,6 +184,7 @@ header{
     color: #000;
     font-size: 1.2em;
     font-weight: bold;
+    margin-top: 1em;
 }
 
 /* ------------------------- menu ------------------------- */
@@ -177,44 +193,41 @@ header{
     margin-top: 0.6em;
     position: relative;
 }
-#menu-news{
-    display: flex;
-    flex-direction: column;
-    width: 20%;
-    margin-right: 0.6em;
-}
 
 #menuPrincipale #attivo{
-    background-color: peachpuff;
+    background-color: rgb(251, 205, 152);
     color:crimson;
     padding: 1em 0;
 }
 
 #menuPrincipale{
-    text-align: center;
     background-color: seashell;
     font-size: 1.2em;
     font-weight: bold;
+    margin-right: 0.6em;
+    height: fit-content;
+    width: 20%;
 }
 
-#menuPrincipale ul{margin:1em 0;}
-#menuPrincipale li{display: block;}
-#menuPrincipale li:hover{background-color: var(--colore-voce-menu-hover);}
+#menuPrincipale ul{
+    margin: 1em 0;
+}
+
+#menuPrincipale li{
+    display: block;
+}
+
+#menuPrincipale li:hover{
+    background-color: var(--colore-voce-menu-hover);
+}
+
 #menuPrincipale a{
     display:block;
     padding: 1em 0;
 }
+
 /* ------------------------- contenuto ------------------------- */
-#contenutoFull{
-    width: 100%;
-    background-color: seashell;
-}
-#imgEsito{
-    width: 50%;
-    display: block;
-    border-radius: 100%;
-    margin:auto;
-}
+
 #contenuto{
     width: 80%;
     background-color: seashell;
@@ -222,22 +235,6 @@ header{
     position:relative;
 }
 
-/* ------------------------- cards categoria ------------------------- */
-.tipoProposta{
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-end;
-    justify-content: center;
-    width: 100%;
-}
-.tipoProposta h2{
-    margin: 0.5em 1em 0 1em;
-}
-.gruppoTipo{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
 /* ------------------------- card ------------------------- */
 .listaCards{
     display: flex;
@@ -257,25 +254,32 @@ header{
     display: flex;
     flex-direction: column;
 }
+
 .card dt{
     height: 70%;
     margin-bottom: 0.2em;
     overflow: hidden;}
 
-.copertina{height:100%;}
+.copertina{
+    height:100%;
+}
+
 .copertina input[type="image"]{ 
     width: 100%;
     height: 100%;
     transition: ease-in-out 0.3s;
 }
 
-.copertina input[type="image"]:hover{filter:brightness(75%);}
+.copertina input[type="image"]:hover{
+    filter:brightness(75%);
+}
 
 .dettagli{
     padding: 0.5em;
     padding-bottom: 0.2em;
     height: 30%;
 }
+
 .titolo{  
     overflow: hidden;
     height: 40%;
@@ -309,14 +313,15 @@ header{
     align-items: center;
     height: 30%;
 }
-.valutazione{flex: 1 1 0;}
+
+.valutazione{
+    flex: 1 1 0;
+}
+
 .stella{
     display: inline-block;
     width: 0.9em;
     height: 0.9em;
-    background-image: url(../img/img_componenti/stella.png);
-    background-repeat: no-repeat;
-    background-size: cover;
     margin-right: 0.3em;
 }
 
@@ -324,7 +329,18 @@ header{
     background: url(../img/img_componenti/stella_vuota.png) no-repeat;
     background-size: cover;
 }
-/*----------------------------- pagina classifica -------------------------------*/
+
+/* -------------------------------------------------- */
+
+#menuProposte{
+    margin:1em 0;
+    text-align: center;
+}
+
+#menuProposte li{
+    margin:0 1em;
+}
+
 .posizione{
     font-size: 1.5em;
     display: block;
@@ -333,20 +349,7 @@ header{
     color: crimson;
 }
 
-#menuProposte{
-    margin:1em 0;
-    text-align: center;
-}
-#menuProposte li{margin:0 1em;}
-
 /* ------------------------- pagina film ------------------------- */
-#info{
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-start;
-    justify-content: center;
-    width: 100%;
-}
 #immagineFilm{
     display: flex;
     flex-direction: row;
@@ -355,6 +358,7 @@ header{
     width: 200px;
     height: 288px;
 }
+
 #infoFilm{
     display: flex;
     flex-flow: row wrap;
@@ -365,6 +369,7 @@ header{
     flex-direction: column-reverse;
     align-items: center;
 }
+
 #mediaRecensioni{
     font-weight: bold;
     margin-bottom: 0.5em;
@@ -376,6 +381,7 @@ header{
     flex-wrap: wrap;
     justify-content: center;
 }
+
 #valutazione .stella,#valutazione .vuota{
     height: 1.5em;
     width: 1.5em;
@@ -391,14 +397,30 @@ header{
     margin-bottom:1em;
     font-size: 1.1em;
 }
-#bottoni{width: 100%;}
-#bottoni input{
+
+#AcquistoNoleggio{
+    width: 100%;
+    text-align: center;
+}
+
+#AcquistoNoleggio::first-line{
+    margin-bottom: 1em;
+}
+
+#AcquistoNoleggio input{
     margin-top: 1em;
     display: inline-block;
-    min-width: 30%;
+    min-width: 20%;
 }
-#bottoni form{text-align: center;}
-#bottoni form:first-child input{margin-top: 0em;}
+
+#AcquistoNoleggio form{
+    text-align: center;
+}
+
+#AcquistoNoleggio form:first-child input{
+    margin-top: 0em;
+}
+
 #scriviRecensione{
     display: block;
 }
@@ -503,10 +525,12 @@ header{
     margin: 2em auto;
     margin-bottom:5em;
 }
+
 .reg_log fieldset:first-child{
     border:2px solid black;
     border-radius: 20px;
 }
+
 .reg_log fieldset{min-width: 0;}
 .reg_log fieldset:first-child{padding: 1.5em;}
 .reg_log legend{
@@ -520,16 +544,23 @@ header{
     margin-top: 0.5em;
     margin-bottom: 2em;
 }
+
 .reg_log select{
     margin-bottom: 0;
 }
 .reg_log input{
     margin-bottom: 1.5em
 }
+
 .reg_log label{
     font-weight: bold;
     font-size: 1.2em;
 }
+
+#immagineProfilo{
+    width: auto;
+}
+
 .reg_log fieldset:first-child,.reg_log input:not(input[type="submit"]){background-color: var(--colore-dettagli-card);}
 .reg_log #datiAccount input[type="file"]{
     margin-bottom: 1em;
@@ -612,10 +643,9 @@ summary{display: none;}
     border-bottom:1px solid black;
     background-color: transparent;
 }
+
 .segnalazione input[type="submit"]:hover{
     font-weight: bold;
-    cursor: pointer;
-    font-size: 1.1em;
 }
 
 /* form inserimento film amministratore */
@@ -666,16 +696,6 @@ summary{display: none;}
     text-align: center;
 }
 
-.dataFilm{
-
-}
-.durataFilm{
-
-}
-.prezzoFilm{
-
-}
-
 div.genereFilm{
     display: inline-block;
     white-space: nowrap;
@@ -693,13 +713,7 @@ div.genereFilm{
     flex-wrap: wrap;
     height: 20%;
 }
-.dataFilm{
-    
-}
-.durataFilm{
-}
-.prezzoFilm{
-}
+
 div.genereFilm{
     display: inline-block;
     white-space: nowrap;
@@ -719,17 +733,26 @@ div.genereFilm{
     
     }
 
-/* ------------------------- pagina regolamento ------------------------- */    
+/* ------------------------- pagina regolamento ------------------------- */
+dt{
+    font-size: 1.1em;
+    font-weight:bold;
+}    
 #regole dt{
     font-size: 1.1em;
     font-weight: bold;
-    margin: 1em 0;
+    margin-top: 1.2em;
 }
+
 #regole ul{
-    margin-top:1.2em;
+    margin-top:1em;
     margin-left:2em;
 }
-#regole li{margin:0.5em 0;}
+#regole li{
+    list-style-type:square;
+    display: list-item;
+    text-align: left;
+}
 
 /* ------------------------- pagina segnalazioni ------------------------- */
 #profUtente{
@@ -902,6 +925,7 @@ div.genereFilm{
         text-align: center;
     }
     #infoFilm{flex-direction: column;}
+
     .immagineProfilo{
         float: none;
         display: block;
@@ -933,4 +957,131 @@ div.genereFilm{
     .centrale{width: 40%;}
     #menuProposte li{display: block;margin-bottom: 1em;}
     .valutaCommento{text-align:center;}
+}
+
+@media print{
+    /* ------------------------- variabili globali------------------------ */
+    *{
+        color: black;
+        font-family: 'Times New Roman', Times, serif;
+    }
+
+    html, body, header{
+        background-color: white;
+    }
+
+    body{
+        font-size: 12pt;
+        float: none;
+    }
+
+    hr{
+        display: none;
+    }
+
+    h1{
+        margin: 0em 0em 0.6em 0em;
+    }
+
+    #breadcrumb, #ricerca, #account, #menuProposte, #menuPrincipale{
+        display: none;
+    }
+
+    a{
+        color: black;
+        font-style: normal;
+        font-weight: normal;
+        text-decoration: none;
+    }
+
+    a:after{
+        content: " (" attr(href) ") ";
+        font-size: 90%;
+    }
+
+    #contenuto{
+        width: 100%;
+        background-color: white;
+    }
+
+    .centrale{
+        display: none;
+    }
+
+    #AcquistoNoleggio{
+        display: none
+    }
+
+    #recensioni{
+        page-break-before: always;
+    }
+
+    #scriviRecensione{
+        display: none;
+    }
+
+    #filtroRecensioni{
+        display: none;
+    }
+
+    .btnRecensione{
+        display: none;
+    }
+
+    #cambiaStato{
+        display: none;
+    }
+
+    .listaCards{
+        display: list-item;
+    }
+    
+    .card{
+        width: auto;
+        border: none;
+        display: inline;
+    }
+
+    .card dt{
+        height: auto;
+    }
+
+    .copertina{
+        display: none;
+    }
+
+    .dettagli{
+        height: auto;
+        page-break-inside: avoid;
+    }
+
+    .titolo{
+        height: auto;
+    }
+    
+    .titolo input[type="submit"]{
+        color:#000;
+    }
+
+    .genere{
+        height: auto;
+    }
+
+    .valutazionePrezzo{
+        height: auto;
+    }
+
+    .valutazione{
+        display: none;
+    }
+
+    #classifiche .card{
+        display: flex;
+        flex-direction: row;
+    }
+
+    .posizione{
+        color: #000;
+    }
+    
 }

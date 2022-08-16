@@ -6,12 +6,19 @@
     require_once ('info_film.php');
     
     $pagina=file_get_contents('../html/acquisto_noleggio.html');
+
+    $connessione = new Connessione();
+    if(!$connessione->apriConnessione()){
+        echo "<div class=\"error_box\">ERRORE DI CONNESSIONE AL DATABASE</div>";
+    }
+
     $struttura=new Struttura();
-    $struttura->aggiungiHeader($pagina);
+    $struttura->aggiungiHeader($connessione, $pagina);
     $struttura->aggiungiAccount($pagina);
     $struttura->aggiungiMenu($pagina,"","");
-    $infoFilm=recuperaInfo($_GET['idFilm']);
-    $generiFilm=recuperaGeneri($_GET['idFilm']);
+
+    $infoFilm=recuperaInfo($connessione, $_GET['idFilm']);
+    $generiFilm=recuperaGeneri($connessione, $_GET['idFilm']);
     $film=new Card($infoFilm,$generiFilm);
     if(isset($_GET['noleggio']))
         $pagina=str_replace('%tipoConferma%',"noleggio",$pagina);
@@ -32,12 +39,14 @@
         $stringaGeneri=$stringaGeneri.' , '.$prossimoGenere;
     }
     $pagina=str_replace('%genere%',$stringaGeneri,$pagina);
-    $struttura->aggiungiConfermaAcquistoNoleggio($pagina);
+    $struttura->aggiungiConfermaAcquistoNoleggio($connessione, $pagina);
     $pagina=str_replace('%prezzoN%',$film->prezzoN,$pagina);
     $pagina=str_replace('%prezzoA%',$film->prezzoA,$pagina);
     $pagina=str_replace('%trama%',$film->trama,$pagina);
     $pagina=str_replace('%valutazione%',creaStelle($film->valutazione),$pagina);
     $pagina=str_replace('%idFilm%',$_GET['idFilm'],$pagina);
+
+    $connessione->chiudiConnessione();
     
     echo $pagina;
 ?>

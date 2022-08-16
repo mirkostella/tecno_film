@@ -1,8 +1,7 @@
 <?php
 
-require_once('sessione.php');
-require_once('connessione.php');    
-print_r($_SESSION);
+require_once('sessione.php');  
+require_once ('connessione.php');
 
 //gestisce le recensioni nella pagina film
 class GestoreRecensioni{
@@ -11,7 +10,7 @@ class GestoreRecensioni{
     public $listaRecensioni ;
     public $ordineRecensioni;
 
-    public function __construct($idF,$ordine){
+    public function __construct($connessione, $idF, $ordine){
         if($_SESSION['loggato']==true && $_SESSION['admin']==false)
             $this->idUtenteLoggato=$_SESSION['id'];
         $this->idFilm=$idF;
@@ -33,9 +32,6 @@ class GestoreRecensioni{
         
         if($this->ordineRecensioni=='miaRecensione')
             $queryRecuperoRecensioni="SELECT recensione.ID as idRecensione,recensione.ID_film,recensione.ID_utente,foto_utente.path,utente.username,recensione.testo,recensione.valutazione,recensione.data FROM recensione JOIN film ON (recensione.ID_film=film.ID) JOIN utente ON (recensione.ID_utente=utente.ID) JOIN foto_utente ON(utente.ID_foto=foto_utente.ID) WHERE film.ID=".$this->idFilm." AND utente.ID=".$this->idUtenteLoggato;
-        
-        $connessione=new connessione();
-        $connessione->apriConnessione();
               
         $recensioni=$connessione->interrogaDB($queryRecuperoRecensioni); 
         $this->listaRecensioni=array();
@@ -56,28 +52,26 @@ class GestoreRecensioni{
             $nuovaRecensione=new RecensioneUtente($datiRecensione);
             array_push($this->listaRecensioni,$nuovaRecensione);
             }
-        }         
-        $connessione->chiudiConnessione();       
+        }      
     }
 
-    public function visualizzaRecensioni(){
+    public function visualizzaRecensioni($connessione){
         //stringa che rappresenta il codice html da visualizzare (sostituire al segnaposto corrispondente)
         //se non sono presenti recensini ritorna la stringa vuota
         $listaRecensioni="";
         if(count($this->listaRecensioni)!=0){
             foreach($this->listaRecensioni as $recensione){
-            $stringaRecensione=$recensione->crea();
-            $listaRecensioni=$listaRecensioni.$stringaRecensione;
+                $stringaRecensione=$recensione->crea($connessione);
+                $listaRecensioni=$listaRecensioni.$stringaRecensione;
         }
         return $listaRecensioni;
     }
     else
         return "";       
     }
+
     //se presente una recensione dell'utente loggato restituisce true; se non loggato o non presente false
-    public function controlloPresenzaRecensioneUtente(){
-        $connessione=new Connessione();
-        $connessione->apriConnessione();
+    public function controlloPresenzaRecensioneUtente($connessione){
         if($this->idUtenteLoggato){
             $queryPresenzaRecensione="SELECT * FROM recensione WHERE recensione.ID_utente='".$this->idUtenteLoggato."' and recensione.ID_film=".$this->idFilm;
             $presenzaRecensione=$connessione->interrogaDB($queryPresenzaRecensione);
@@ -87,9 +81,7 @@ class GestoreRecensioni{
         return false;   
     }
 
-    public function controlloPresenzaUtileUtente(){
-        $connessione=new Connessione();
-        $connessione->apriConnessione();
+    public function controlloPresenzaUtileUtente($connessione){
         if($this->idUtenteLoggato){
             $queryPresenzaUtile="SELECT * FROM utile WHERE utile.ID_utente='".$this->idUtenteLoggato."' and utile.ID_recensione=".$_GET['idRecensione'];
             $presenzaUtile=$connessione->interrogaDB($queryPresenzaUtile);
@@ -98,9 +90,8 @@ class GestoreRecensioni{
         }
         return false;
     }
-    public function controlloPresenzaSegnalazioneUtente(){
-        $connessione=new Connessione();
-        $connessione->apriConnessione();
+
+    public function controlloPresenzaSegnalazioneUtente($connessione){
         if($this->idUtenteLoggato){
             $queryPresenzaSegnalazione="SELECT * FROM segnalazione WHERE segnalazione.ID_utente='".$this->idUtenteLoggato."' and segnalazione.ID_recensione=".$_GET['idRecensione'];
             $presenzaSegnalazione=$connessione->interrogaDB($queryPresenzaSegnalazione);
@@ -110,8 +101,9 @@ class GestoreRecensioni{
         }
         return false;
     }
+
     //ritorna la stringa da sostituire al segnaposto per il filtro recensioni
-    public function visualizzaFiltro(){
+    public function visualizzaFiltro($connessione){
         $htmlFiltro=file_get_contents('../componenti/filtro.html');
         $selezionato="";
         $inSelezionato="";
@@ -137,7 +129,7 @@ class GestoreRecensioni{
                 $inSelezionato="<option value=\"miaRecensione\" selected>La mia recensione</option>";
             }
             $htmlFiltro=str_replace('%focus%',"autofocus",$htmlFiltro);
-            if(!$this->controlloPresenzaRecensioneUtente())
+            if(!$this->controlloPresenzaRecensioneUtente($connessione))
                 $htmlFiltro=str_replace('%disattiva%',"disabled",$htmlFiltro);
             else
                 $htmlFiltro=str_replace('%disattiva%',"",$htmlFiltro);
@@ -149,33 +141,23 @@ class GestoreRecensioni{
             return "";
     }
 
-    public function gestisciEliminaRecensione($idRecensione,&$pagina){
-
+    public function gestisciEliminaRecensione($connessione, $idRecensione,&$pagina){
         //elimino la recensione
-    if(RecensioneUtente::elimina($idRecensione)){
-        $pagina=str_replace('%messaggioEsitoRecensione%','<div class="success_box">Recensione eliminata con successo!</div>',$pagina);
-        for($pos=0;$pos<count($this->listaRecensioni);++$pos){
-            if($this->listaRecensioni[$pos]->getID()==$idRecensione)
-                unset($this->listaRecensioni[$pos]);
-        }
-        echo 'campo lista recensioni dopo eliminazione'; 
-        print_r($this->listaRecensioni);      
-    }
-    else
-        $pagina=str_replace('%messaggioEsitoRecensione%',"",$pagina);
-    }
-
-//true se recensione inserita false altrimenti
-    public function gestisciInserisciRecensione($nuovaRecensione,&$pagina){
-        //prima di procedere controllo se é giá presente una recensione dell'utente
-        if($this->controlloPresenzaRecensioneUtente($pagina)){
-            $pagina=str_replace('%messaggioEsitoRecensione%',"",$pagina);
-            return false;
+        if(RecensioneUtente::elimina($connessione, $idRecensione)){
+            $pagina=str_replace('%messaggioEsitoRecensione%','<div class="success_box">Recensione eliminata con successo!</div>',$pagina);
+            for($pos=0;$pos<count($this->listaRecensioni);++$pos){
+                if($this->listaRecensioni[$pos]->getID()==$idRecensione)
+                    unset($this->listaRecensioni[$pos]);
+            }      
         }
         else
-        //se NON sono presenti errori ed inserisco la recensione
+            $pagina=str_replace('%messaggioEsitoRecensione%',"",$pagina);
+    }
+
+    //true se recensione inserita false altrimenti
+    public function gestisciInserisciRecensione($connessione, $nuovaRecensione,&$pagina){
         if(!$nuovaRecensione->getNumErrori()){
-            $idNuovaRecensione=$nuovaRecensione->aggiungiDB()['ID'];
+            $idNuovaRecensione=$nuovaRecensione->aggiungiDB($connessione)['ID'];
             if($idNuovaRecensione){
                 $nuovaRecensione->setID($idNuovaRecensione);
                 $pagina=str_replace('%messaggioEsitoRecensione%','<div class="success_box">Recensione inserita correttamente!</div>',$pagina);
@@ -195,40 +177,41 @@ class GestoreRecensioni{
         }
 
     }
-    public function gestisciUtileRecensione($idRecensione,&$pagina){
-        if($this->controlloPresenzaUtileUtente($pagina)){
+
+    public function gestisciUtileRecensione($connessione, $idRecensione,&$pagina){
+        if($this->controlloPresenzaUtileUtente($connessione)){
             $pagina=str_replace('%messaggioEsitoRecensione%',"",$pagina);
             return false;
         }
         else{
-            if(RecensioneUtente::utile($idRecensione))
+            if(RecensioneUtente::utile($connessione, $idRecensione))
                 $pagina=str_replace('%messaggioEsitoRecensione%','<div class="success_box">Recensione valutata utile con successo!</div>',$pagina);
             else
                 $pagina=str_replace('%messaggioEsitoRecensione%','<div class="error_box">Valutazione recensione fallita.. riprova piú tardi</div>',$pagina);
         }
     }
 
-    public function gestisciSegnalaRecensione($idRecensione,&$pagina){
-        if($this->controlloPresenzaSegnalazioneUtente($pagina)){
+    public function gestisciSegnalaRecensione($connessione, $idRecensione,&$pagina){
+        if($this->controlloPresenzaSegnalazioneUtente($connessione)){
             $pagina=str_replace('%messaggioEsitoRecensione%',"",$pagina);
             return false;
         }
         else{
-            if(RecensioneUtente::segnala($idRecensione))
+            if(RecensioneUtente::segnala($connessione, $idRecensione))
             $pagina=str_replace('%messaggioEsitoRecensione%','<div class="success_box">Recensione segnalata con successo!</div>',$pagina);
         else
             $pagina=str_replace('%messaggioEsitoRecensione%','<div class="error_box">Segnalazione recensione fallita... per favore riprova piú tardi</div>',$pagina);
         }
     }
-    public function gestisciAnnullaUtileRecensione($idRecensione,&$pagina){
-        if(RecensioneUtente::rimuoviUtile($idRecensione))
+    public function gestisciAnnullaUtileRecensione($connessione, $idRecensione,&$pagina){
+        if(RecensioneUtente::rimuoviUtile($connessione, $idRecensione))
             $pagina=str_replace('%messaggioEsitoRecensione%','<div class="success_box">Utile rimosso dalla recensione con successo!</div>',$pagina);
         else
             $pagina=str_replace('%messaggioEsitoRecensione%','',$pagina);
     }
 
-    public function gestisciAnnullaSegnalazioneRecensione($idRecensione,&$pagina){
-        if(RecensioneUtente::rimuoviSegnala($idRecensione))
+    public function gestisciAnnullaSegnalazioneRecensione($connessione, $idRecensione,&$pagina){
+        if(RecensioneUtente::rimuoviSegnala($connessione, $idRecensione))
             $pagina=str_replace('%messaggioEsitoRecensione%','<div class="success_box">Segnalazione rimossa dalla recensione con successo!</div>',$pagina);
         else
             $pagina=str_replace('%messaggioEsitoRecensione%','',$pagina);

@@ -5,10 +5,15 @@
     require_once('card.php');
     require_once('info_film.php');
 
-    print_r($_GET);
     $pagina=file_get_contents("../html/search_results.html");
+
+    $connessione=new Connessione();
+    if(!$connessione->apriConnessione()){
+        echo "<div class=\"error_box\">ERRORE DI CONNESSIONE AL DATABASE</div>";
+    }
+
     $struttura = new Struttura();
-    $struttura->aggiungiHeader($pagina);
+    $struttura->aggiungiHeader($connessione, $pagina);
 	$struttura->aggiungiAccount($pagina);
 	$inAttivo=file_get_contents("../componenti/menu.html");
 	$attivo=file_get_contents("../componenti/menu.html");
@@ -20,11 +25,8 @@
             $queryRisultatiRicerca = "SELECT film.ID as id,titolo,nome_genere as genere,copertina,trama,TIME_TO_SEC(durata) as durata,data_uscita as annoUscita,prezzo_acquisto as prezzoA,prezzo_noleggio as prezzoN,
             path as copertina,descrizione,AVG(valutazione) as valutazione FROM film JOIN appartenenza 
             ON(film.ID=appartenenza.ID_film) JOIN genere ON (appartenenza.ID_genere=genere.ID) JOIN foto_film ON(film.copertina=foto_film.ID) LEFT JOIN recensione ON (film.ID=recensione.ID_film) WHERE titolo LIKE '%".$_GET['input_ricerca']."%' GROUP BY id";
-            $connessione=new Connessione();
-            $connessione->apriConnessione();
             $ris=$connessione->interrogaDB($queryRisultatiRicerca);
-            $listaCard=creaListaCard($ris);
-            $connessione->chiudiConnessione();
+            $listaCard=creaListaCard($connessione, $ris);
             if($listaCard){
                 $pagina=str_replace("%risultatiRicerca%", $listaCard, $pagina);
                 $pagina=str_replace("%classifica%", "", $pagina);
@@ -35,5 +37,6 @@
         }
     }
 
+    $connessione->chiudiConnessione();
     echo $pagina;
 ?>

@@ -1,5 +1,5 @@
 <?php
-    class gestione_img{
+    class GestioneImg{
         public $erroriImg;
         public $file_path=null;
         public $dimensioneFile;
@@ -32,11 +32,11 @@
             $this->dimensioneFile=round($_FILES[$input_name]["size"]/(pow(2,20)),2);
             //check file size
             if($_FILES[$input_name]["size"] > 4000000)
-                $this->erroriImg['errDim']="<div class=\"msg_box error_box\">Il file è troppo grande, carica un file di dimensione minore di 4MB. (dimensione del file: '".$this->dimensioneFile."'MB)</div>";
+                $this->erroriImg['errDim']="<div class=\"error_box\">Il file è troppo grande, carica un file di dimensione minore di 4MB. (dimensione del file: '".$this->dimensioneFile."'MB)</div>";
             
             //check formato file
             if($imgFileType != "jpg"  && $imgFileType != "png" && $imgFileType!= "jpeg")
-                $this->erroriImg['errFormato']="<div class=\"msg_box error_box\">Il file deve avere una delle seguenti estensioni: JPG, PNG, JPEG.</div>";
+                $this->erroriImg['errFormato']="<div class=\"error_box\">Il file deve avere una delle seguenti estensioni: JPG, PNG, JPEG.</div>";
 
             if($this->erroriImg['errDim']=='' && $this->erroriImg['errFormato']==''){
                 $temp = explode(".", $_FILES[$input_name]["name"]);
@@ -47,7 +47,7 @@
                     return $this->file_path;
                 } 
                 else
-                    $this->erroriImg['errCaricamentoFile']="<div class=\"msg_box error_box\">C'è stato un errore nel caricamento del file.</div>";
+                    $this->erroriImg['errCaricamentoFile']="<div class=\"error_box\">C'è stato un errore nel caricamento del file.</div>";
             }   
             return false;
         }
