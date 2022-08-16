@@ -65,7 +65,7 @@
         $pNoleggi=$value_f['prezzo_noleggio']*$value_f['N_noleggi'];
         $pAcquisti=$value_f['prezzo_acquisto']*$value_f['N_acquisti'];
 
-        $rigaFilm=str_replace("%idFilm%",$value_f['ID'],$rigaFilm);
+        $rigaFilm=str_replace("%idFilm%","Film".$value_f['ID'],$rigaFilm);
         $rigaFilm=str_replace("%titolo%",$value_f['titolo'],$rigaFilm);
         $rigaFilm=str_replace("%prezzoN%",$value_f['prezzo_noleggio'],$rigaFilm);
         $rigaFilm=str_replace("%prezzoA%",$value_f['prezzo_acquisto'],$rigaFilm);

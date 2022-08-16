@@ -255,10 +255,11 @@ header{
     flex-direction: column;
 }
 
-.card dt{
+.card dt:not(.posizione){
     height: 70%;
     margin-bottom: 0.2em;
-    overflow: hidden;}
+    overflow: hidden;
+}
 
 .copertina{
     height:100%;
@@ -852,7 +853,7 @@ dt{
         display: none;
     }
 
-    .card dt{
+    .card dt:not(.posizione){
         overflow:unset;
     }
 }
@@ -890,7 +891,7 @@ dt{
     }
     .copertina{height: unset;}
 
-    .card dt{
+    .card dt:not(.posizione){
         flex: 1 0 0;
         overflow:unset;
         height: 100%;
@@ -965,7 +966,7 @@ dt{
         font-size: 1.2em;
     }
 
-    .card dt{
+    .card dt:not(.posizione){
         overflow:unset;
     }
     .nascosto2{display: none;}
@@ -1057,7 +1058,7 @@ dt{
         display: inline;
     }
 
-    .card dt{
+    .card dt:not(.posizione){
         height: auto;
     }
 

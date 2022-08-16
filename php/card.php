@@ -95,7 +95,7 @@
         }
         public function aggiungiBaseClassificata(){
             $cardB=Card::aggiungiBase();
-            $cardB=str_replace('%classifica%',"<div class='posizione'>$this->pos</div>",$cardB);
+            $cardB=str_replace('%classifica%',"<dt class='posizione'>$this->pos</dt>",$cardB);
             return $cardB;
 
         }

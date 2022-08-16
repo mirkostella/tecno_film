@@ -38,7 +38,7 @@
         $pathCopertina=$_FILES['copertinaFilm']['name'];
 
     foreach($generi as $valore){
-        $nuovaVoce='<div class="genereFilm"><input type="checkbox" id="'.$valore['nome_genere'].'" name="generi[]" value="'.$valore['nome_genere'].'" class="checkmark" %'.$valore['nome_genere'].'%><label for="'.$valore['nome_genere'].'">'.$valore['nome_genere'].'</label></div>';
+        $nuovaVoce='<div class="genereFilm"><input type="checkbox" id="'.$valore['nome_genere'].'" name="generi[]" value="'.$valore['nome_genere'].'" class="checkmark"><label for="'.$valore['nome_genere'].'">'.$valore['nome_genere'].'</label></div>';
         $listaGeneri=$listaGeneri.$nuovaVoce;
     }  
     $pagina=str_replace('%listaGeneri%',$listaGeneri,$pagina);
