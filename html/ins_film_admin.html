@@ -5,9 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta name="author" content="Mirko Elton Sonia Ruth"/>
-    <meta name="description" content=""/>
-    <meta name="keywords" content=""/>
-    <title>Admin-Tecno film</title>
+    <meta name="description" content="Pagina di inserimento di un nuovo film"/>
+    <meta name="keywords" content="film,aggiungi film,tecno film"/>
+    <title>Aggiungi film-Tecno film</title>
     <link rel="stylesheet" type="text/css" href="../css/stile.css"/>
 </head>
 <body id="inizioPagina">
@@ -31,7 +31,7 @@
             <div class="immagineFilm">
                 <label for="copertinaFilm">Immagine di Copertina</label>
                 %errCopertina%
-                <input type="file" name="copertinaFilm" id="copertinaFilm" value="%copertina%" require accept=".png, .jpg, .jpeg">
+                <input type="file" name="copertinaFilm" id="copertinaFilm" value="%copertina%" required="required" accept=".png, .jpg, .jpeg">
                 <div class="altImmagineFilm">
                     <label for="altImg">Alt immagine di copertina</label>
                     <input type="text" name="descrizione" id="altImg" value="%altCopertina%" required="required">  
@@ -77,12 +77,13 @@
                 %errTrama%
                 <textarea name="tramaFilm" id="trama" cols="30" rows="10" required="required">%trama%</textarea> 
             </div>
-            <input type="submit" name="inserisciFilm" value="Inserisci" class="btn">
+            <input type="submit" id="invio" name="inserisciFilm" value="Inserisci" class="btn">
             %esitoTransazione%
            </form>
             <!-- fine contenuto -->
         </div> 
         <!-- fine impaginazione -->
-    </div>   
+    </div>
+<script type="text/javascript" src="../js/script.js"></script>    
 </body>
 </html>

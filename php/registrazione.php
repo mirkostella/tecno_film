@@ -217,6 +217,7 @@
 	$pagina=str_replace('%msg_reg%', '', $pagina);
 
 	$connessione->chiudiConnessione();
+
 	echo $pagina;
 ?>
 

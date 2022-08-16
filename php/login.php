@@ -21,7 +21,7 @@
     if(!$connessione->apriConnessione()){
         $pagina = str_replace('%errore_conn%',"<div class=\"error_box\">ERRORE DI CONNESSIONE AL DATABASE</div>", $pagina);
     }
-
+    
     $struttura = new Struttura();
     $struttura->aggiungiHeader($connessione, $pagina);
     $struttura->aggiungiAccount($pagina);
