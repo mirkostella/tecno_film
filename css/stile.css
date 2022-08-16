@@ -175,7 +175,7 @@ header{
     background-color: #fce4e4;
     border: 1px solid #fcc2c3;
     color: #cc0033;
-    margin-top: 1em;
+    margin-bottom: 1em;
 }
 
 .success_box{
@@ -571,7 +571,7 @@ header{
     margin-bottom: 1em;
 }
 .reg_log #invia{ 
-    margin-bottom: 0;
+    margin-bottom: 1em;
 }
 .reg_log img{
     display: block;
@@ -661,6 +661,11 @@ summary{display: none;}
 #formFilm div:not(div.genereFilm){
     margin:1em 0;
 }
+
+#formFilm .error_box{
+    text-align: center;
+}
+
 #formFilm input[class="btn"]{
     margin: auto;
     width: 30%;
@@ -669,6 +674,11 @@ summary{display: none;}
     width: 60%;
     margin: auto;
 }
+
+#formFilm legend{
+    margin: auto;
+}
+
 .titoloFilm{
     text-align: center;
 }

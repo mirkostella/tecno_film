@@ -7,14 +7,14 @@
     }
 
     function check_email($email){
-        if(preg_match('/^([\w\-\+\.]+)\@([\w\-\+\.]+)\.([\w\-\+\.]+)$/', $email))
+        if(preg_match('/^(([^{}<>()\[\]\.,;:\s@\"\'\+#&\*$]+(\.[^{}<>()\[\]\.,;:\s@\"\'\+#&\*$]+)*))@(([^{}<>()[\]\.,;:\s@\"\'\+#&\*$]+\.)+(it|com|net|org))$/', $email))
             return true;
         else
             return false;
     }
 
     function check_nome($nome){
-        if(preg_match('/^([\p{L}\s]*)$/u', $nome)){
+        if(preg_match('/^[a-zA-Z]/', $nome) && strlen($nome)>=2){
             return true;
         }
         return false;
@@ -22,15 +22,10 @@
 
     function check_password($password)
     {
-        $number = preg_match('@[0-9]@', $password);
-        $uppercase = preg_match('@[A-Z]@', $password);
-        $lowercase = preg_match('@[a-z]@', $password);
-        
-        if(strlen($password) < 8 || !$number || !$uppercase || !$lowercase) {
-            return false;
-        } 
-        else
+        if(preg_match('/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/', $password))
             return true;
+        else
+            return false;
     }
 
     function check_dataNascita($dataNascita){
@@ -45,7 +40,7 @@
 
     //controlli inserimento film
     function check_titolo($titolo){
-        if(strlen($titolo)>50)
+        if(strlen($titolo) < 2)
             return false;
         else
             return true;

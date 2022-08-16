@@ -18,8 +18,8 @@
     $pagina=file_get_contents('../html/pagina_film.html');
 
     if($_SESSION['loggato'] == true && $_SESSION['admin'] == true){
-        header('location: login.php');
-        exit();
+        $_SESSION['loggato']=false;
+        $_SESSION['admin']=false;
     }
 
     $connessione = new Connessione();

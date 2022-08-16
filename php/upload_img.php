@@ -31,12 +31,12 @@
             $imgFileType = strtolower(pathinfo($uploaded_file, PATHINFO_EXTENSION));
             $this->dimensioneFile=round($_FILES[$input_name]["size"]/(pow(2,20)),2);
             //check file size
-            if($_FILES[$input_name]["size"] > 4000000)
-                $this->erroriImg['errDim']="<div class=\"error_box\">Il file è troppo grande, carica un file di dimensione minore di 4MB. (dimensione del file: '".$this->dimensioneFile."'MB)</div>";
+            if($_FILES[$input_name]["size"] > 5000000)
+                $this->erroriImg['errDim']="<div class=\"error_box\">Il file è troppo grande, carica un file di dimensione minore di 5MB. (dimensione del file: '".$this->dimensioneFile."'MB)</div>";
             
             //check formato file
             if($imgFileType != "jpg"  && $imgFileType != "png" && $imgFileType!= "jpeg")
-                $this->erroriImg['errFormato']="<div class=\"error_box\">Il file deve avere una delle seguenti estensioni: JPG, PNG, JPEG.</div>";
+                $this->erroriImg['errFormato']="<div class=\"error_box\">Formato immagine non valido! Il file deve avere uno dei seguenti formati: JPG, PNG, JPEG</div>";
 
             if($this->erroriImg['errDim']=='' && $this->erroriImg['errFormato']==''){
                 $temp = explode(".", $_FILES[$input_name]["name"]);

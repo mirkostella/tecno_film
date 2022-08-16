@@ -51,6 +51,7 @@ function controlloSoloLettere(stringa){
     stringa=stringa.trim();
     return RegExp(stringa,/^[a-zA-Z]/).test();
 }
+
 function controlloMaggiorenne(data){
     var dataAttuale=new Date();
     var dataNascita=new Date(data);
@@ -100,12 +101,12 @@ function controlloImmagine(elementoFile,messaggio){
     if(immagine){
         //messaggio errore formato immagine
         if(!controlloFormatoImmagine(immagine.name)){
-            mostraMessaggio(elementoFile,"Formato immagine non valido! I formati accettati sono png,jpeg,jpg");
+            mostraMessaggio(elementoFile,"Formato immagine non valido! Il file deve avere uno dei seguenti formati: JPG, PNG, JPEG");
             ok=false;
         }
         //messaggio errore dimensione immagine
         if(!controlloDimensioneImmagine(immagine.size)){
-            mostraMessaggio(elementoFile,"Dimensione immagine non valida!La dimensione deve essere inferiore a 5MB");
+            mostraMessaggio(elementoFile,"Il file è troppo grande, carica un file di dimensione minore di 5MB");
             ok=false;
         }
     }
@@ -144,11 +145,11 @@ function controlloPrezzoAcquistoNoleggio(elementoAcquisto,elementoNoleggio){
     eliminaMessaggiSuccessivi(elementoAcquisto); 
     eliminaMessaggiSuccessivi(elementoNoleggio);
     if(elementoNoleggio.value>=elementoAcquisto.value){
-        mostraMessaggio(elementoNoleggio,"Il prezzo di noleggio non puo' essere maggiore o uguale del prezzo di acquisto");
+        mostraMessaggio(elementoNoleggio,"Il prezzo di noleggio deve essere minore del prezzo di acquisto");
         ok=false;
     }
     if(elementoAcquisto.value<=elementoNoleggio.value){
-        mostraMessaggio(elementoAcquisto,"Il prezzo di acquisto non puo' essere minore o uguale del prezzo di noleggio");
+        mostraMessaggio(elementoAcquisto,"Il prezzo di acquisto deve essere maggiore del prezzo di noleggio");
         ok=false;
     }
     return ok;
@@ -234,9 +235,10 @@ function init_login(){
         //controllo che quando viene premuto il pulsante di invio non ci siano errori.. se ci sono errori non invio il form
         var btn_invio=document.getElementById("invia");
         btn_invio.addEventListener("click",e => {
+            eliminaMessaggiSuccessivi(e.target);
             if(!controlloPresenzaErr(controlliLogin))
                 e.preventDefault();
-                mostraMessaggio(e.target,"Sono presenti dei campi non validi");
+                mostraMessaggio(e.target,"Le credenziali non sono corrette");
         })
         var elePassword=document.getElementById("password");
         var btn_mostra=document.getElementById("mostraPassword");
@@ -249,13 +251,13 @@ function init_login(){
 function init_registrazione(){
     if(document.getElementById("registrazione")){
         var controlliRegistrazione={};
-        controlliRegistrazione['nome']=[[controlloLunghezzaStringa,"Il nome deve essere lungo almeno 3 caratteri"]];
-        controlliRegistrazione['cognome']=[[controlloLunghezzaStringa,"Il cognome deve essere lungo almeno 3 caratteri"]];
-        controlliRegistrazione['data']=[[controlloMaggiorenne,"Bisogna avere almeno 18 anni per registrarsi"]];
+        controlliRegistrazione['nome']=[[controlloLunghezzaStringa,"Il nome deve essere lungo almeno 2 caratteri ed essere composto solo da caratteri alfanumerici"]];
+        controlliRegistrazione['cognome']=[[controlloLunghezzaStringa,"Il cognome deve essere lungo almeno 2 caratteri ed essere composto solo da caratteri alfanumerici"]];
+        controlliRegistrazione['data']=[[controlloMaggiorenne,"L'età minima per poter registrarsi al sito è 18 anni."]];
         controlliRegistrazione['sesso']=[[controlloSesso,"Selezionare il sesso"]];
         controlliRegistrazione['email']=[[controlloEmail,"L'email inserita non é valida<br>Sono accettate email con domini .it .com .net .org"]];
-        controlliRegistrazione['username']=[[controlloLunghezzaStringa,"L'username deve essere lungo almeno 3 caratteri"]];
-        controlliRegistrazione['password']=[[controlloPassword,"La password inserita non é valida"]];
+        controlliRegistrazione['username']=[[controlloLunghezzaStringa,"L'username deve essere lungo almeno 2 caratteri"]];
+        controlliRegistrazione['password']=[[controlloPassword,"La password deve essere lunga almeno 8 caratteri, contenere almeno una lettera maiuscola, una minuscola e un numero."]];
 
         //controlli a piú parametri
         var password=document.getElementById('password');
@@ -301,7 +303,7 @@ function init_registrazione(){
             eliminaMessaggiSuccessivi(e.target);
             if(!controlloPresenzaErr(controlliRegistrazione) | !controlloImmagine(immagineProfiloHTML,"Immagine profilo mancante")){
                 e.preventDefault();
-                mostraMessaggio(e.target,"Sono presenti dei campi non validi");
+                mostraMessaggio(e.target,"Errore nell'inserimento dei dati: sono presenti dei campi non validi");
             }
         })
     }
@@ -320,7 +322,7 @@ function init_amministratore_login(){
             eliminaMessaggiSuccessivi(e.target);
             if(!controlloPresenzaErr(controlliAmministratoreLogin)){
                 e.preventDefault();
-                mostraMessaggio(e.target,"Sono presenti dei campi non validi");
+                mostraMessaggio(e.target,"Le credenziali non sono corrette");
             }
         })
     }
@@ -357,7 +359,7 @@ function init_amministratore_ins_film(){
             if(controlloVuoto(dataHTML,"Selezionare una data"))
                 eliminaMessaggiSuccessivi(dataHTML);});
         durataHTML.addEventListener("focusout",e=>{
-            if(controlloVuoto(durataHTML,"Durata film non valida"))
+            if(controlloVuoto(durataHTML,"La durata deve essere maggiore di 00:00"))
                 eliminaMessaggiSuccessivi(durataHTML);
         });
         pAcquisto.addEventListener("focusout",e=>{
@@ -374,12 +376,12 @@ function init_amministratore_ins_film(){
             var ok=true;
             if(!controlloCheckboxSelezionata(generiHTML,generi) | !controlloLunghezzaCampo(titolo) | !controlloLunghezzaCampo(alt,15) | 
                 !controlloPrezzoAcquistoNoleggio(pAcquisto,pNoleggio) | !controlloLunghezzaCampo(trama,50) | 
-                !controlloImmagine(copertina,"Immagine di copertina mancante") | controlloVuoto(dataHTML,"Selezionare una data") | controlloVuoto(durataHTML,"Durata film non valida"))      
+                !controlloImmagine(copertina,"Immagine di copertina mancante") | controlloVuoto(dataHTML,"Selezionare una data") | controlloVuoto(durataHTML,"La durata deve essere maggiore di 00:00"))      
                 ok=false;
 
             if(!ok){
                 e.preventDefault();
-                mostraMessaggio(e.target,"Sono presenti dei campi non validi");  
+                mostraMessaggio(e.target,"Inserimento film fallito: sono presenti dei campi non validi");  
             }
            
         })

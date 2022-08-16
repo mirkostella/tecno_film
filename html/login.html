@@ -26,17 +26,19 @@
             <form action="login.php" method="POST" class="reg_log" id="login">
                 <fieldset>
                     <legend>Login</legend>
-                    %errore_credenziali%
                     <fieldset id="datiAccount">
                         <legend>Dati login</legend>
                         <label for="email">Email:</label>
-                        <input type="text" name="email" id="email" placeholder="Inserisci email" required="required" class="soloBordoBottom" value="%email%">  
+                        <input type="text" name="email" id="email" placeholder="Inserisci email" required="required" class="soloBordoBottom" value="%email%">
+                        %error_email%  
                         <label for="password">Password:</label>
                         <input type="password" name="password" id="password" placeholder="Inserisci password" required="required" class="soloBordoBottom" value="%password%">
+                        %error_psw%
                         <input type="button" id="mostraPassword" value="vedi" class="btnVediPassword">
                     </fieldset>
                     <input type="hidden" name="idFilm" value="%idFilm%">
                     <input type="submit" name="invia" id="invia" value="Accedi" class="btn btnAzione">
+                    %errore_credenziali%
                     <span>Non possiedi ancora un account?</span><a href="registrazione.php">Registrati</a><br>
                     <span>Sei un Admin?</span><a href="login_admin.php">Accedi qui</a>
 

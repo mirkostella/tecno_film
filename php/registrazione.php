@@ -65,7 +65,7 @@
 		//controlli input
 
 		if(!check_nome($nome)){
-			$pagina=str_replace('%error_nome%', "<div class=\"error_box\">Il nome deve essere lungo almeno 2 caratteri ed essere composto solo da caratteri alfabetici.</div>", $pagina);
+			$pagina=str_replace('%error_nome%', "<div class=\"error_box\">Il nome deve essere lungo almeno 2 caratteri ed essere composto solo da caratteri alfanumerici.</div>", $pagina);
 			$no_error=false;
 		}
 		else
@@ -73,21 +73,21 @@
 
 	
 		if(!check_nome($cognome)){
-			$pagina=str_replace('%error_cognome%', "<div class=\"error_box\">Il cognome deve essere lungo almeno 2 caratteri ed essere composto solo da caratteri alfabetici.</div>", $pagina);
+			$pagina=str_replace('%error_cognome%', "<div class=\"error_box\">Il cognome deve essere lungo almeno 2 caratteri ed essere composto solo da caratteri alfanumerici.</div>", $pagina);
 			$no_error=false;
 		}
 		else
 			$pagina=str_replace('%error_cognome%', '', $pagina);
 
 		if(!check_dataNascita($data_nascita)){
-			$pagina=str_replace('%error_data%', "<div class=\"error_box\">L'età minima per poter utilizzare questo sito è 18 anni.</div>", $pagina);
+			$pagina=str_replace('%error_data%', "<div class=\"error_box\">L'età minima per poter registrarsi al sito è 18 anni.</div>", $pagina);
 			$no_error=false;
 		}
 		else
 			$pagina=str_replace('%error_data%', '', $pagina);
 
 		if(!check_email($email)){
-			$pagina=str_replace('%error_email%', "<div class=\"error_box\">L'email inserita non è valida. Esempio: mariorossi@email.com</div>", $pagina);
+			$pagina=str_replace('%error_email%', "<div class=\"error_box\">L'email inserita non é valida<br>Sono accettate email con domini .it .com .net .org</div>", $pagina);
 			$no_error=false;
 		}
 		else
@@ -104,12 +104,19 @@
 			$pagina=str_replace('%error_email_usata%', '', $pagina);
 
 
+		if(strlen($username) >=2 ){
+			$pagina=str_replace('%error_username%', '', $pagina);
+		}
+		else
+			$pagina=str_replace('%error_username%', "<div class=\"error_box\">L'username deve essere lungo almeno 2 caratteri</div>", $pagina);
+			$no_error=false;
+
 		if($connessione->interrogaDB($query_user)){
-			$pagina=str_replace('%error_username%', "<div class=\"error_box\">Questo username è già in uso. Scegline un altro</div>", $pagina);
+			$pagina=str_replace('%error_username_usato%', "<div class=\"error_box\">Questo username è già in uso. Scegline un altro</div>", $pagina);
 			$no_error=false;
 		}
 		else
-			$pagina=str_replace('%error_username%', '', $pagina);
+			$pagina=str_replace('%error_username_usato%', '', $pagina);
 
 
 		if($psw!=$conf_psw){
@@ -129,14 +136,18 @@
 		if($no_error){
 			$gestisci_img = new GestioneImg();
 
+			if(!isset($_FILES['immagineProfilo'])){
+				$pagina = str_replace('%error_foto%', "<div class=\"error_box\">Immagine profilo mancante. </div>", $pagina);
+			}
+
 			if(isset($_FILES['immagineProfilo']) && is_uploaded_file($_FILES['immagineProfilo']['tmp_name'])){
 				if(!$upload_result=$gestisci_img->caricaImmagine("Utenti/", "immagineProfilo")){
 					//stampo gli errori
-						$pagina = str_replace('%error_foto%',$gestisci_img->getErroreDimensione().$gestisci_img->getErroreFormato().$gestisci_img->getErroreCaricamento(), $pagina);
-						$no_error=false;
-					}
-					else
-						$file_path=$upload_result;
+					$pagina = str_replace('%error_foto%',$gestisci_img->getErroreDimensione().$gestisci_img->getErroreFormato().$gestisci_img->getErroreCaricamento(), $pagina);
+					$no_error=false;
+				}
+				else
+					$file_path=$upload_result;
 			}
 
 			if(($file_path !== "../img/Utenti/") && $upload_result){
@@ -166,7 +177,7 @@
 			$query_check="SELECT * FROM utente WHERE email = '".$email."'";
 
 			if(!$connessione->interrogaDB($query_check)){
-				$pagina = str_replace('%error_reg%', "<div class=\"error_box\">Errore nell'inserimento dei dati</div>", $pagina);
+				$pagina = str_replace('%error_reg%', "<div class=\"error_box\">Errore nell'inserimento dei dati: sono presenti dei campi non validi</div>", $pagina);
 			}
 			else{
 				$pagina = str_replace('%msg_reg%', "<div class=\"success_box\">Registrazione avvenuta! Verrai indirizzato al login</div>", $pagina);
@@ -210,6 +221,7 @@
 	$pagina=str_replace('%error_email%', '', $pagina);
 	$pagina=str_replace('%error_email_usata%', '', $pagina);
 	$pagina=str_replace('%error_username%', '', $pagina);
+	$pagina=str_replace('%error_username_usato%', '', $pagina);
 	$pagina=str_replace('%error_pwd%', '', $pagina);
 	$pagina=str_replace('%error_confPwd%', '', $pagina);
 	$pagina=str_replace('%error_foto%', '', $pagina);

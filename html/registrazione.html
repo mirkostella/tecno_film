@@ -30,15 +30,15 @@
                     <legend>Registrazione</legend>
                     <fieldset id="datiAnagrafici">
                         <legend>Dati anagrafici</legend>
-                        %error_nome%
                         <label for="nome">Nome:</label>
                         <input type="text" name="nome" id="nome" placeholder="Inserisci nome" value="%nome%"required="required" class="soloBordoBottom">
-                        %error_cognome%
+                        %error_nome%
                         <label for="cognome">Cognome:</label>
                         <input type="text" name="cognome" id="cognome" placeholder="Inserisci cognome" value="%cognome%" required="required" class="soloBordoBottom">
-                        %error_data%
+                        %error_cognome%
                         <label for="data">Data di nascita:</label>
                         <input type="date" name="data" id="data"  required="required" value="%dataN%" class="soloBordoBottom">
+                        %error_data%
                         <label for="sesso">Sesso:</label>
                         <select name="sesso" id="sesso">
                             <option value="nonSelezionato" selected="selected">Seleziona</option>
@@ -50,25 +50,26 @@
 
                     <fieldset id="datiAccount">
                         <legend>Dati account</legend>
-                        %error_email%
-                        %error_email_usata%
                         <label for="email">Email:</label>
                         <input type="text" name="email" id="email" placeholder="Inserisci email"  value="%email%" required="required" class="soloBordoBottom">
-                        %error_username%
+                        %error_email%
+                        %error_email_usata%
                         <label for="username">Username:</label>
                         <input type="text" name="username" id="username" placeholder="Inserisci username" value="%username%" required="required" class="soloBordoBottom">
-                        %error_pwd%
+                        %error_username%
+                        %error_username_usato%
                         <label for="password">Password:</label>
                         <input type="password" name="password" id="password" placeholder="Inserisci password" value="%psw%" required="required" class="soloBordoBottom">
                         <input type="button" id="mostraPassword" value="vedi" class="btnVediPassword">
-                        %error_confPwd%
+                        %error_pwd%
                         <label for="confPassword">Conferma password:</label>
                         <input type="password" name="confPassword" id="confPassword" placeholder="Conferma password" value="%conf_psw%" required="required" class="soloBordoBottom">
                         <input type="button" id="mostraPasswordConferma" value="vedi" class="btnVediPassword">
-                        %error_foto%
+                        %error_confPwd%
                         <label for="immagineProfilo">Immagine profilo:</label>
                         <img src="../img/img_componenti/profilo.jpg" alt="anteprima immagine profilo" id="anteprima">
                         <input type="file" id="immagineProfilo" name="immagineProfilo" value="%path%">
+                        %error_foto%
                     </fieldset>
                     <input type="submit" name="invia" id="invia" value="Registrati" class="btn btnAzione">
                     %error_reg%

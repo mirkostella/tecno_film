@@ -10,11 +10,19 @@
     }
 
     $idFilm="";
+    $valoreEmail="";
+    $valorePassword="";
     if(isset($_REQUEST['idFilm']))
         $idFilm=$_REQUEST['idFilm'];
+    if(isset($_REQUEST['email']))
+        $valoreEmail=$_REQUEST['email'];
+    if(isset($_REQUEST['password']))
+        $valorePassword=$_REQUEST['password'];
 
     $pagina = file_get_contents('../html/login.html');
     $pagina = str_replace('%idFilm%',$idFilm,$pagina);
+    $pagina = str_replace('%email%',$valoreEmail,$pagina);
+    $pagina = str_replace('%password%',$valorePassword,$pagina);
 
     $connessione = new Connessione();
 
@@ -40,6 +48,19 @@
             $psw = trim(htmlentities($_POST['password']));
         }
 
+        if(!$query_email= $connessione->interrogaDB("SELECT * FROM utente WHERE email = \"$email\"")){
+            $pagina = str_replace('%error_email%', "<div class=\"error_box\">L'email inserita non è corretta</div>", $pagina);
+        }
+        else{
+            if(!$query_psw= $connessione->interrogaDB("SELECT * FROM utente WHERE email = \"$email\" AND password = \"$psw\"")){
+                $pagina = str_replace('%error_psw%', "<div class=\"error_box\">La password inserita non è corretta</div>", $pagina);  
+            }
+            else{
+                $pagina = str_replace('%error_psw%', "", $pagina);
+                $pagina = str_replace('%error_email%', "", $pagina);
+            }
+        }
+
         if(!$login_array= $connessione->interrogaDB("SELECT * FROM utente WHERE email = \"$email\" AND password = \"$psw\"")){
             $pagina = str_replace('%errore_credenziali%', "<div class=\"error_box\">Le credenziali non sono corrette</div>", $pagina);
         }
@@ -62,6 +83,8 @@
     }
 
     $pagina=str_replace('%errore_conn%', '', $pagina);
+    $pagina=str_replace('%error_email%', '', $pagina);
+    $pagina=str_replace('%error_psw%', '', $pagina);
     $pagina=str_replace('%errore_credenziali%', '', $pagina);
     echo $pagina;
 ?>

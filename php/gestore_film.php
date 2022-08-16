@@ -80,7 +80,7 @@ class GestoreFilm{
     public function controlloErroriForm($connessione){
         $no_error=true;
         if(!check_titolo($this->titolo)){
-            $this->erroriFilm['errTitolo']=$this->erroriFilm['errTitolo'].'<div class="error_box">Il titolo non puó superare i 50 caratteri (spazi inclusi).</div>';
+            $this->erroriFilm['errTitolo']=$this->erroriFilm['errTitolo'].'<div class="error_box">Il titolo deve avere almeno 2 caratteri</div>';
             $no_error=false;
         }
         if($this->presenzaTitolo($connessione)){
@@ -92,7 +92,7 @@ class GestoreFilm{
             $no_error=false;
         }
         if(!check_durata($this->durata)){
-            $this->erroriFilm['errDurata']=$this->erroriFilm['errDurata'].'<div class="error_box">La durata deve essere maggiore di 0.</div>';
+            $this->erroriFilm['errDurata']=$this->erroriFilm['errDurata'].'<div class="error_box">La durata deve essere maggiore di 00:00.</div>';
             $no_error=false;
         }
         if(!check_prezzo($this->prezzoA)){
@@ -103,8 +103,13 @@ class GestoreFilm{
             $this->erroriFilm['errPrezzoN']=$this->erroriFilm['errPrezzoN'].'<div class="error_box">Il prezzo del noleggio deve essere maggiore di 0.</div>';
             $no_error=false;
         }
+        if($this->prezzoA <= $this->prezzoN){
+            $this->erroriFilm['errPrezzoA']=$this->erroriFilm['errPrezzoA'].'<div class="error_box">Il prezzo di acquisto deve essere maggiore del prezzo di noleggio.</div>';
+            $this->erroriFilm['errPrezzoN']=$this->erroriFilm['errPrezzoN'].'<div class="error_box">Il prezzo di noleggio deve essere minore del prezzo di acquisto.</div>';
+            $no_error=false;
+        }
         if(!check_trama($this->trama)){
-            $this->erroriFilm['errTrama']=$this->erroriFilm['errTrama'].'<div class="error_box">Il film deve avere una trama lunga almeno 20 caratteri.</div>';
+            $this->erroriFilm['errTrama']=$this->erroriFilm['errTrama'].'<div class="error_box">Il film deve avere una trama lunga almeno 50 caratteri.</div>';
             $no_error=false;
         }
         if(!check_descrizione($this->descrizione)){
@@ -126,7 +131,7 @@ class GestoreFilm{
         if(isset($_FILES['copertinaFilm']) && is_uploaded_file($_FILES['copertinaFilm']['tmp_name']))
             $path=$gestisci_img->caricaImmagine("img_film/", "copertinaFilm");
         else
-            $this->erroriFilm['errMancanzaImmagine']='<div class="error_box">Immagine mancante</div>';
+            $this->erroriFilm['errMancanzaImmagine']='<div class="error_box">Immagine di copertina mancante</div>';
         if($path)
             $queryFotoCopertina="INSERT INTO foto_film (path, descrizione) VALUES ('".$path."', '".$_POST['descrizione']."')";
         else{
@@ -181,7 +186,7 @@ class GestoreFilm{
             if(!$ok){
                 $this->id=null;
                 //segnaposto esito transazione (fallita)
-                $pagina=str_replace('%esitoTransazione%','<div class="error_box">Inserimento fallito</div>',$pagina);
+                $pagina=str_replace('%esitoTransazione%','<div class="error_box">Inserimento film fallito: sono presenti dei campi non validi</div>',$pagina);
                 return false;
             }
             else{
