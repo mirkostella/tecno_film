@@ -325,6 +325,10 @@ function init_amministratore_login(){
                 mostraMessaggio(e.target,"Le credenziali non sono corrette");
             }
         })
+        
+        var elePassword=document.getElementById("password");
+        var btn_mostra=document.getElementById("mostraPassword");
+        btn_mostra.addEventListener("click",function(){mostraNascondiPassword(elePassword);});
     }
 }    
 

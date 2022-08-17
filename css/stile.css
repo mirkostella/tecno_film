@@ -169,6 +169,14 @@ header{
     background-color: seashell;
 }
 
+.aiuti{
+    position:absolute;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+    clip: rect(1px 1px 1px 1px);
+}
+
 /* messaggi di errore */
 
 .error_box{
@@ -520,11 +528,15 @@ header{
     background-color: crimson;
     color: white;
 }
-#mostraPassword{
-    color:black;
-    display:inline;
-    width:20%;
+
+#mostraPassword, #mostraPasswordConferma {
+	color: black;
+	display: inline;
+	width: fit-content;
+	padding: 0.2em;
+	font-size: 0.8em;
 }
+
 /* ------------------------- pagina registrazione ------------------------- */
 .reg_log{
     width: 60%;
@@ -555,12 +567,14 @@ header{
     margin-bottom: 0;
 }
 .reg_log input{
-    margin-bottom: 1.5em
+    margin-bottom: 1em
 }
 
-.reg_log label{
-    font-weight: bold;
-    font-size: 1.2em;
+.reg_log label {
+	font-weight: bold;
+	font-size: 1.2em;
+	display: inherit;
+	margin-top: 0.5em;
 }
 
 #immagineProfilo{
