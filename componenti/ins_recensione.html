@@ -1,4 +1,4 @@
-<form action="pagina_film.php" id="scriviRecensione" method="post">
+<form action="pagina_film.php" id="scriviRecensione" method="post" role="form">
         <input type="hidden" name="idFilm" value="%id%">
         <label for="testoRecensione">Inserisci la tua recensione:</label>
         %errTesto%
@@ -12,5 +12,5 @@
         <option value="4">4 stelle</option>
         <option value="5">5 stelle</option>
         </select>
-        <input type="submit" name="inviaRecensione" value="Invia recensione" class="btn"/>
+        <input type="submit" name="inviaRecensione" value="Invia recensione" class="btn" aria-label="Inserisci la recensione"/>
 </form>

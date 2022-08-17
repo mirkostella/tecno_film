@@ -4,14 +4,14 @@
     class Struttura{
 
         public function aggiungiHeader($connessione, &$pagina){
+            $componente=file_get_contents("../componenti/header.html");
             $querySuggerimenti="SELECT titolo FROM film";
             $suggerimenti=$connessione->interrogaDB($querySuggerimenti);
-            $componente=file_get_contents("../componenti/header.html");
             $lista="";
             if($suggerimenti){
                 foreach($suggerimenti as $i=>$valore){
                     $titolo=$suggerimenti[$i]["titolo"];
-                    $lista=$lista."<option value=10>ciao</option>";
+                    $lista=$lista."<option>$titolo</option>";
                 }
             }
             $componente=str_replace("%suggerimenti%",$lista,$componente);
@@ -21,8 +21,8 @@
         public function aggiungiAccount(&$pagina){
             if($_SESSION['loggato']==true && $_SESSION['admin']==false){
                 $acc = file_get_contents("../componenti/account.html");
-                $acc=str_replace('<a href="../php/registrazione.php">Registrati</a>', '', $acc);
-                $acc=str_replace('<a href="../php/login.php">Login</a>', '<a href="../php/logout.php">Logout</a>', $acc);
+                $acc=str_replace('<a href="../php/registrazione.php" accesskey="r">Registrati</a>', '', $acc);
+                $acc=str_replace('<a href="../php/login.php" accesskey="l">Login</a>', '<a href="../php/logout.php" accesskey="l">Logout</a>', $acc);
                 $pagina=str_replace('%account%', $acc, $pagina);
             }
             else{

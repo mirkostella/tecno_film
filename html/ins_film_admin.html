@@ -14,15 +14,15 @@
     <header>
         %headerAdmin%
     </header>
-    <nav id="breadcrumb">
+    <nav id="breadcrumb" role="navigation" aria-label="breadcrumb">
         Ti trovi in: <span class="grassetto">Aggiungi film</span>
     </nav>
     <div id="impaginazione">
-        <nav id="menuPrincipale">
+        <nav id="menuPrincipale" role="navigation" aria-label="menuNavigazione">
             %menuAdmin%
         </nav>
-        <div id="contenuto">
-           <form action="ins_film_admin.php" method="post" enctype="multipart/form-data" id="formFilm">
+        <div id="contenuto" role="main">
+           <form action="ins_film_admin.php" method="post" enctype="multipart/form-data" id="formFilm" role="form">
             <div class="titoloFilm">
                 <label for="titolo">Titolo</label>
                 <input type="text" name="titoloFilm" id="titolo" value="%titolo%" required="required">

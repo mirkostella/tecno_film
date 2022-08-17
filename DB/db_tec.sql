@@ -46,12 +46,12 @@ CREATE TABLE `utente` (
 `cognome` varchar(32) NOT NULL,
 `data_nascita` date NOT NULL,
 `sesso` enum('M','F') NOT NULL,
-`stato` enum('Attivo','Avvisato','Bloccato') NOT NULL,
+`stato` enum('Attivo','Bloccato') NOT NULL,
 `ID_foto` INT(10) NOT NULL,
 FOREIGN KEY (`ID_foto`) REFERENCES `foto_utente`(`ID`) ON DELETE CASCADE ON UPDATE CASCADE
 )ENGINE = InnoDB;
 
-INSERT INTO `utente` (`username`,`password`,`email`,`nome`,`cognome`,`data_nascita`,`sesso`,`stato`,`ID_foto`) VALUES ('user','user','user@user','utente','generico','1998/04/12',
+INSERT INTO `utente` (`username`,`password`,`email`,`nome`,`cognome`,`data_nascita`,`sesso`,`stato`,`ID_foto`) VALUES ('user','user','user','utente','generico','1998/04/12',
 'M','Attivo',1);
 
 
@@ -61,12 +61,12 @@ CREATE TABLE `foto_film` (
 `descrizione` text
 )ENGINE = InnoDB;
 
-INSERT INTO `foto_film`(`path`) VALUES 
-('../img/img_film/1647963180.jpg'),
-('../img/img_film/1647963239.jpg'),
-('../img/img_film/1647963469.jpg'),
-('../img/img_film/1648496841.jpg'),
-('../img/img_film/1648496955.png');
+INSERT INTO `foto_film`(`path`, `descrizione`) VALUES 
+('../img/img_film/1647963180.jpg', 'immagine di copertina del film Baby Boss 2'),
+('../img/img_film/1647963239.jpg', 'immagine di copertina del film Clifford'),
+('../img/img_film/1647963469.jpg', 'immagine di copertina del film Masquerade'),
+('../img/img_film/1648496841.jpg', 'immagine di copertina del film Venom'),
+('../img/img_film/1648496955.png', 'immagine di copertina del film Venom, la furia di Carnage');
 
 
 CREATE TABLE `film` (

@@ -24,7 +24,7 @@
     $struttura->aggiungiHeader_admin($pagina);
 
 
-    $struttura->aggiungMenu_admin($pagina,'<li><a href="ins_film_admin.php">Aggiungi film</a></li>',"<li id=\"attivo\">Aggiungi film</li>");
+    $struttura->aggiungMenu_admin($pagina,'<li><a href="ins_film_admin.php" accesskey="a">Aggiungi film</a></li>',"<li id=\"attivo\" accesskey=\"a\">Aggiungi film</li>");
     $queryNomiGeneri="SELECT nome_genere FROM genere ORDER BY nome_genere ASC";
     $generi=$connessione->interrogaDB($queryNomiGeneri);
     $generi_modifica=array();

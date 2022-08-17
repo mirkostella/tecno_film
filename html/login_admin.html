@@ -12,15 +12,15 @@
 </head>
 <body id="inizioPagina">
     <header>
-        <a href="#contenuto" aria-label="salta al contenuto"></a>
+        <a class="aiuti" href="#contenuto" accesskey="v">Vai al contenuto</a>
         <h1 id="logo">Tecno Film</h1>
     </header>
-    <nav id="breadcrumb">
+    <nav id="breadcrumb" role="navigation" aria-label="breadcrumb">
         Ti trovi in: <span class="grassetto">Login Amministrazione</span> 
     </nav>
-        <div id="contenuto_amministratore">
+        <div id="contenuto" role="main">
             %errore_conn%
-            <form action="login_admin.php" method = "post" class="reg_log" id="loginAdmin">
+            <form action="login_admin.php" method = "post" class="reg_log" id="loginAdmin" role="form">
                 <fieldset>
                     <legend>Login Amministratore</legend>
                     <fieldset id="datiAccount">

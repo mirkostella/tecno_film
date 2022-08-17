@@ -14,8 +14,8 @@
     $struttura=new Struttura();
     $struttura->aggiungiHeader($connessione, $pagina);
     $struttura->aggiungiAccount($pagina);
-    $inAttivo="<li><a href=\"../php/classifiche.php\">Classifiche</a></li>";
-    $attivo="<li id=\"attivo\">Classifiche</li>";
+    $inAttivo="<li><a href=\"../php/classifiche.php\" accesskey=\"c\">Classifiche</a></li>";
+    $attivo="<li id=\"attivo\" accesskey=\"c\">Classifiche</li>";
     $struttura->aggiungiMenu($pagina,$inAttivo,$attivo);
     $ncard=5;
 

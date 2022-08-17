@@ -1,7 +1,7 @@
 //################################ CONTROLLI ##################################
 //ritorna l'array con l'email trovata altrimenti null
 function controlloEmail(email){
-    if(email=="user@user")
+    if(email=="user")
         return true;
     return new RegExp(/^(([^{}<>()\[\]\.,;:\s@\"\'\+#&\*$]+(\.[^{}<>()\[\]\.,;:\s@\"\'\+#&\*$]+)*))@(([^{}<>()[\]\.,;:\s@\"\'\+#&\*$]+\.)+(it|com|net|org))$/).exec(email);
 }

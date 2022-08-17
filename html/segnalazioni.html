@@ -14,14 +14,14 @@
     <header>
         %headerAdmin%
     </header>
-    <nav id="breadcrumb">
-        Ti trovi in: <a href="amministratore_loggato.php" xml:lang="en" lang="en">Home</a> &gt; <span class="grassetto">Vista generale</span>
+    <nav id="breadcrumb" role="navigation" aria-label="breadcrumb">
+        Ti trovi in: <a href="amministratore_loggato.php">Riepilogo</a> &gt; <span class="grassetto">Segnalazioni utente: %username%</span>
     </nav>
     <div id="impaginazione">
-        <nav id="menuPrincipale">
+        <nav id="menuPrincipale" role="navigation" aria-label="menuNavigazione">
             %menuAdmin%
         </nav>
-        <div id="contenuto">
+        <div id="contenuto" role="main">
              <h1>Informazioni profilo di %username%</h1>
             <div id="profUtente">
                 <img src="%path%" alt="immagine profilo di %username%">
@@ -36,7 +36,7 @@
                         <h3>Cambia stato utente</h3>
                         <form action="modifica_stato_utente.php" method="get">
                             <label for="attivo">Attivo:</label>
-                            <input type="radio" id="attivo" name="stato" checked="checked" value="Attivo" >
+                            <input type="radio" id="attivo" name="stato" value="Attivo" >
                             <label for="bloccato">Bloccato:</label>
                             <input type="radio" id="bloccato" name="stato" value="Bloccato">
                             <input type="hidden" name="id" value="%idUtente%">

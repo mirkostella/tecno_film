@@ -14,7 +14,6 @@
     $pagina=file_get_contents("../html/segnalazioni.html");
     $struttura = new Struttura();
     $struttura->aggiungiHeader_admin($pagina);
-    $pagina = str_replace("Vista generale", "Panoramica utente: %username%", $pagina);
     $struttura->aggiungMenu_admin($pagina, "", "");
 
     $connessione=new Connessione();

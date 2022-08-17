@@ -14,18 +14,18 @@
     <header>
         %header%
     </header>
-    <nav id="breadcrumb">
+    <nav id="breadcrumb" role="navigation" aria-label="breadcrumb">
         Ti trovi in: <span class="grassetto">Registrazione</span>
     </nav>
     <div id="impaginazione">
-        <nav id="menuPrincipale">
+        <nav id="menuPrincipale" role="navigation" aria-label="menuNavigazione">
             %menu%
         </nav>
-        <div id="contenuto">
+        <div id="contenuto" role="main">
             %error_conn%
             %msg_reg%
             
-            <form action="registrazione.php" method="POST" enctype="multipart/form-data" class="reg_log" id="registrazione">
+            <form action="registrazione.php" method="POST" enctype="multipart/form-data" class="reg_log" id="registrazione" role="form">
                 <fieldset>
                     <legend>Registrazione</legend>
                     <fieldset id="datiAnagrafici">

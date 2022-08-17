@@ -14,16 +14,16 @@
     <header>
         %header%
     </header>
-    <nav id="breadcrumb">
+    <nav id="breadcrumb" role="navigation" aria-label="breadcrumb">
         Ti trovi in: <span class="grassetto">Login</span>
     </nav>
     <div id="impaginazione">
-        <nav id="menuPrincipale">
+        <nav id="menuPrincipale" role="navigation" aria-label="menuNavigazione">
             %menu%
         </nav>
-        <div id="contenuto">
+        <div id="contenuto" role="main">
             %errore_conn%
-            <form action="login.php" method="POST" class="reg_log" id="login">
+            <form action="login.php" method="POST" class="reg_log" id="login" role="form">
                 <fieldset>
                     <legend>Login</legend>
                     <fieldset id="datiAccount">
