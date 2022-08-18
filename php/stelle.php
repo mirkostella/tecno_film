@@ -8,7 +8,7 @@
         for($i=$stelleVuote;$i>0;$i--){
             $stelle=$stelle.'<img src = "../img/img_componenti/stella_vuota.png" class="stella" alt="icona di una stella vuota" aria-hidden="true">';
         }
-        $stelle=$stelle."<div class=\"aiuti\">$numeroStelle stelle</div>";
+        $stelle=$stelle."<span class=\"aiuti\">$numeroStelle stelle</span>";
         return $stelle;
     }
 ?>

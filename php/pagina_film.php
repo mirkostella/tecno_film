@@ -50,7 +50,7 @@
 
     if(isset($_GET['confermaNoleggio'])){
 
-        $queryPresenzaNoleggio="SELECT* FROM noleggio JOIN utente ON(noleggio.ID_utente=utente.ID) JOIN film ON(noleggio.ID_film=film.ID) WHERE utente.ID=".$_SESSION['id']." AND film.ID=".$_GET['idFilm'];
+        $queryPresenzaNoleggio="SELECT* FROM noleggio JOIN utente ON(noleggio.ID_utente=utente.ID) JOIN film ON(noleggio.ID_film=film.ID) WHERE noleggio.scadenza_noleggio > CURRENT_TIMESTAMP AND utente.ID=".$_SESSION['id']." AND film.ID=".$_GET['idFilm'];
 
         if(!$connessione->interrogaDB($queryPresenzaNoleggio)){
             $scadenzaNoleggio=date("Y-m-d H:m:s",mktime(0, 0, 0, date("m"),   date("d")+7,   date("Y")));

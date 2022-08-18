@@ -235,10 +235,13 @@ header{
 /* ------------------------- contenuto ------------------------- */
 
 #contenuto{
-    width: 80%;
     background-color: floralwhite;
     padding:0.6em; 
     position:relative;
+}
+
+#contenuto:not(.senzaMenu){
+    width: 80%;
 }
 
 /* ------------------------- card ------------------------- */

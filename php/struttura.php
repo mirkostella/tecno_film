@@ -55,7 +55,7 @@
         //PRE:sono loggato ed il film non é presente in acquisto/noleggio dell'utente loggato
         public function aggiungiConfermaAcquistoNoleggio($connessione, &$pagina){
             if(isset($_GET['noleggio'])){
-                $queryNoleggio="SELECT ID_utente FROM noleggio WHERE ID_utente=".$_SESSION['id']." and ID_film=".$_GET['idFilm'];
+                $queryNoleggio="SELECT ID_utente FROM noleggio WHERE scadenza_noleggio > CURRENT_TIMESTAMP AND noleggio.ID_utente=".$_SESSION['id']." and noleggio.ID_film=".$_GET['idFilm'];
                 $controlloPresenzaNoleggio=$connessione->interrogaDB($queryNoleggio);
                 if(!$controlloPresenzaNoleggio){
                     $pagina=str_replace('%pulsanteNoleggio%',
@@ -93,7 +93,7 @@
             
             if($_SESSION['loggato']==true && $_SESSION['admin']==false){  
                 $queryAcquisto="SELECT ID_utente FROM acquisto WHERE ID_utente=".$_SESSION['id']." and ID_film=".$idFilm;
-                $queryNoleggio="SELECT ID_utente FROM noleggio WHERE ID_utente=".$_SESSION['id']." and ID_film=".$idFilm;
+                $queryNoleggio="SELECT ID_utente FROM noleggio WHERE scadenza_noleggio > CURRENT_TIMESTAMP AND noleggio.ID_utente=".$_SESSION['id']." and noleggio.ID_film=".$idFilm;
                 $presenzaAcquisto=$connessione->interrogaDB($queryAcquisto);
                 $presenzaNoleggio=$connessione->interrogaDB($queryNoleggio);
 
