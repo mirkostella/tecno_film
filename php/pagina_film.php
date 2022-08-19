@@ -28,9 +28,12 @@
     }
 
     $struttura=new Struttura();
-    $struttura->aggiungiHeader($connessione, $pagina);
-    $struttura->aggiungiAccount($pagina);
+    $struttura->aggiungiBase($connessione, $pagina);
     $struttura->aggiungiMenu($pagina,"","");
+    $pagina=str_replace("%descrizione%","Informazioni e recensioni del film %titolo%", $pagina);
+    $pagina=str_replace("%keywords%","TecnoFilm, %titolo%, %genere%, Acquisto, Noleggio, recensione", $pagina);
+    $pagina=str_replace("%titoloPagina%","TecnoFilm: %titolo%", $pagina);
+    $pagina=str_replace("%breadcrumb%", "<a href=\"../php/index.php\" xml:lang=\"en\" lang=\"en\">Home</a> &gt; <span class=\"grassetto\">%titolo%</span>", $pagina);
 
     if(isset($_GET['confermaAcquisto'])){
         //se é giá stato fatto l'acquisto indirizzo l'utente alla pagina del film
@@ -185,7 +188,7 @@
     $stringaGeneri=$stringaGeneri.$primoGenere;
     foreach($copiaGeneriFilm as &$valore){
         $prossimoGenere=$valore['generiFilm'];
-        $stringaGeneri=$stringaGeneri.' , '.$prossimoGenere;
+        $stringaGeneri=$stringaGeneri.', '.$prossimoGenere;
     }
     $pagina=str_replace('%genere%',$stringaGeneri,$pagina);
     $pagina=str_replace('%prezzoN%',$film->prezzoN,$pagina);

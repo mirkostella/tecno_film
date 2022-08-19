@@ -14,8 +14,12 @@
     }
 
     $struttura=new Struttura();
-    $struttura->aggiungiHeader($connessione, $pagina);
-    $struttura->aggiungiAccount($pagina);
+    $struttura->aggiungiBase($connessione, $pagina);
+    $pagina=str_replace("%descrizione%","Qui trovi il regolamento del sito Tecnofilm", $pagina);
+    $pagina=str_replace("%keywords%","TecnoFilm, Regolamento, Regole, Condizioni, Noleggio, Acquisto, Metodi di pagamento", $pagina);
+    $pagina=str_replace("%titoloPagina%","TecnoFilm: Regolamento", $pagina);
+    $pagina=str_replace("%breadcrumb%","<a href=\"../php/index.php\" xml:lang=\"en\" lang=\"en\">Home</a> &gt; <span class=\"grassetto\">Regolamento</span>", $pagina);
+
     $inAttivo="<li><a href=\"../php/regolamento.php\">Regolamento</a></li>";
     $attivo="<li id=\"attivo\">Regolamento</li>";
     $struttura->aggiungiMenu($pagina,$inAttivo,$attivo);

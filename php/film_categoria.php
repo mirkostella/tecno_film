@@ -16,8 +16,11 @@
     }
 
     $struttura=new Struttura();
-    $struttura->aggiungiHeader($connessione, $pagina);
-    $struttura->aggiungiAccount($pagina);
+    $struttura->aggiungiBase($connessione, $pagina);
+    $pagina=str_replace("%descrizione%","Ecco i film presenti nella categoria %categoriaFilm%", $pagina);
+    $pagina=str_replace("%keywords%","TecnoFilm, %categoriaFilm%, Film", $pagina);
+    $pagina=str_replace("%titoloPagina%","TecnoFilm: %categoriaFilm%", $pagina);
+    $pagina=str_replace("%breadcrumb%","<a href=\"../php/index.php\" xml:lang=\"en\" lang=\"en\">Home</a> &gt; <span class=\"grassetto\">%categoriaFilm%</span>", $pagina);
     $struttura->aggiungiMenu($pagina,'','');
 
     $pagina=str_replace('%categoriaFilm%',$_GET['nomeCategoria'],$pagina);

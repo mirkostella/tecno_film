@@ -621,8 +621,7 @@ header{
 }
 
 /* ------------------------- pagina amministratore ------------------------- */
-#contenuto_amministratore{
-    width: 100%;
+#contenuto .senzaMenu{
     margin-top:0.6em;
     background-color: #fff;
     border: 2px solid var(--colore-bordo-header);
@@ -808,7 +807,7 @@ dt{
 /* ------------------------- media query ------------------------- */
 /* proprietá generiche */
 @media screen and (max-width: 75em) {
-    #contenuto{
+    #contenuto:not(.senzaMenu){
         width: 100%;
     }
     header{
@@ -1030,7 +1029,7 @@ dt{
         font-size: 90%;
     }
 
-    #contenuto{
+    #contenuto:not(.senzaMenu){
         width: 100%;
         background-color: white;
     }

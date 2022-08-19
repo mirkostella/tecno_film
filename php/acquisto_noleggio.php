@@ -13,19 +13,24 @@
     }
 
     $struttura=new Struttura();
-    $struttura->aggiungiHeader($connessione, $pagina);
-    $struttura->aggiungiAccount($pagina);
+    $struttura->aggiungiBase($connessione, $pagina);
     $struttura->aggiungiMenu($pagina,"","");
-
+    $pagina=str_replace("%descrizione%","Se stai acquistando o noleggiando un film, conferma e il gioco è fatto!", $pagina);
+    $pagina=str_replace("%keywords%","TecnoFilm, Conferma, Acquisto, Noleggio, Film", $pagina);
+    $pagina=str_replace("%titoloPagina%","TecnoFilm: Conferma %tipoConferma%", $pagina);
+    
+    $idFilm = $_GET['idFilm'];
     $infoFilm=recuperaInfo($connessione, $_GET['idFilm']);
     $generiFilm=recuperaGeneri($connessione, $_GET['idFilm']);
     $film=new Card($infoFilm,$generiFilm);
-    if(isset($_GET['noleggio']))
-        $pagina=str_replace('%tipoConferma%',"noleggio",$pagina);
-    else
-        $pagina=str_replace('%tipoConferma%',"acquisto",$pagina);
+    
+    $pagina=str_replace("%breadcrumb%", "<a href=\"../php/index.php\" xml:lang=\"en\" lang=\"en\">Home</a> &gt; <a href=\"../php/pagina_film.php?idFilm=".$_GET['idFilm']."\">$film->titolo</a> &gt; <span class=\"grassetto\">Conferma %tipoConferma%</span>", $pagina);
 
-    $pagina=str_replace('%titoloFilmBreadcrumb%',"<a href=\"\" xml:lang=\"en\" lang=\"en\">$film->titolo</a>",$pagina);
+    if(isset($_GET['noleggio']))
+        $pagina=str_replace("%tipoConferma%", "noleggio", $pagina);
+    else
+        $pagina=str_replace("%tipoConferma%", "acquisto", $pagina);
+
     $pagina=str_replace('%titolo%',$film->titolo,$pagina);
     $pagina=str_replace('%path%',$film->copertina,$pagina);
     $pagina=str_replace('%annoUscita%',$film->annoUscita,$pagina);
