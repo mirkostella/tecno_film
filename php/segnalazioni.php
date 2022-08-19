@@ -17,7 +17,7 @@
     $pagina=str_replace("%descrizione%","Se sei un admin, qua trovi il riepilogo dell'utente %username%", $pagina);
     $pagina=str_replace("%keywords%","TecnoFilm, Utente, Profilo, Segnalazioni, Recensioni", $pagina);
     $pagina=str_replace("%titoloPagina%","TecnoFilm-Admin: Segnalazioni", $pagina);
-    $pagina=str_replace("%breadcrumb%","<a href=\"amministratore_loggato.php\">Riepilogo</a> &gt; <span class=\"grassetto\">Segnalazioni utente: %username%</span>", $pagina);
+    $pagina=str_replace("%breadcrumb%","<a href=\"../php/amministratore_loggato.php\">Riepilogo</a> &gt; <span class=\"grassetto\">Segnalazioni utente: %username%</span>", $pagina);
 
     $connessione=new Connessione();
     if(!$connessione->apriConnessione()){

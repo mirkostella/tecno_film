@@ -25,7 +25,7 @@
     $pagina=str_replace("%titoloPagina%","TecnoFilm-Admin: Aggiungi film", $pagina);
     $pagina=str_replace("%breadcrumb%","<span class=\"grassetto\">Aggiungi film</span>", $pagina);
 
-    $pagina=str_replace('<li><a href="ins_film_admin.php" accesskey="a">Aggiungi film</a></li>',"<li id=\"attivo\" accesskey=\"a\">Aggiungi film</li>", $pagina);
+    $pagina=str_replace('<li><a href="../php/ins_film_admin.php" accesskey="a">Aggiungi film</a></li>',"<li id=\"attivo\" accesskey=\"a\">Aggiungi film</li>", $pagina);
 
     $queryNomiGeneri="SELECT nome_genere FROM genere ORDER BY nome_genere ASC";
     $generi=$connessione->interrogaDB($queryNomiGeneri);

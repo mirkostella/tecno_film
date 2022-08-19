@@ -25,7 +25,7 @@
     $pagina=str_replace("%titoloPagina%","TecnoFilm-Admin: Riepilogo", $pagina);
     $pagina=str_replace("%breadcrumb%","<span class=\"grassetto\">Riepilogo</span>", $pagina);
 
-    $pagina=str_replace('<li><a href="amministratore_loggato.php" accesskey="r">Riepilogo</a></li>',"<li id=\"attivo\" accesskey=\"r\">Riepilogo</li>", $pagina);
+    $pagina=str_replace('<li><a href="../php/amministratore_loggato.php" accesskey="r">Riepilogo</a></li>',"<li id=\"attivo\" accesskey=\"r\">Riepilogo</li>", $pagina);
 
     $query_utente="SELECT ID,username, email,stato From utente";
     $risultato=$connessione->interrogaDB($query_utente);
