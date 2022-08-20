@@ -11,7 +11,7 @@
             if($suggerimenti){
                 foreach($suggerimenti as $i=>$valore){
                     $titolo=$suggerimenti[$i]["titolo"];
-                    $lista=$lista."<option value=10>ciao</option>";
+                    $lista=$lista."<option>$titolo</option>";
                 }
             }
             $componente=str_replace("%suggerimenti%",$lista,$componente);

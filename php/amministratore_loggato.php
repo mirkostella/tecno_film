@@ -20,7 +20,7 @@
 
     $struttura = new Struttura();
     $struttura->aggiungiHeader_admin($pagina);
-    $struttura->aggiungMenu_admin($pagina,'<li><a href="amministratore_loggato.php">Vista generale</a></li>',"<li id=\"attivo\">Vista Generale</li>");
+    $struttura->aggiungMenu_admin($pagina,'<li><a href="amministratore_loggato.php" accesskey="r">Riepilogo</a></li>',"<li id=\"attivo\">Riepilogo</li>");
 
     $query_utente="SELECT ID,username, email,stato From utente";
     $risultato=$connessione->interrogaDB($query_utente);

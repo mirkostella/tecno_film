@@ -16,7 +16,7 @@
     $struttura=new Struttura();
     $struttura->aggiungiHeader($connessione, $pagina);
     $struttura->aggiungiAccount($pagina);
-    $inAttivo="<li><a href=\"../php/index.php\" xml:lang=\"en\" lang=\"en\">Home</a></li>";
+    $inAttivo="<li><a href=\"../php/index.php\" xml:lang=\"en\" lang=\"en\" accesskey=\"h\">Home</a></li>";
     $attivo="<li xml:lang=\"en\" lang=\"en\" id=\"attivo\">Home</li>";
     $struttura->aggiungiMenu($pagina,$inAttivo,$attivo);
     $ncard=5;

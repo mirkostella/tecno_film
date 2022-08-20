@@ -393,13 +393,11 @@ function init_amministratore_ins_film(){
     }
 }
 function init_pagina_film(){
-    console.log("ciao");
     if(document.getElementById("recensioni")){  
         var recensioneHTML=document.getElementById("testoRecensione");
         console.log(recensioneHTML);
         recensioneHTML.addEventListener("focusout",e=>{controlloLunghezzaCampo(e.target,50)});
     }
-
 }
 
 //################################ AL CARICAMENTO DELLA PAGINA GENERICA ##################################
