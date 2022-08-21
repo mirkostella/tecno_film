@@ -118,10 +118,13 @@ function controlloImmagine(elementoFile,messaggio){
 
 }
 function controlloLunghezzaCampo(campo,lung=2){
+    var ok=true;
     eliminaMessaggiSuccessivi(campo);
     if(!controlloLunghezzaStringa(campo.value,lung)){
         mostraMessaggio(campo,"Il campo deve essere lungo almeno "+lung+" caratteri");
+        ok=false;
     }
+    return ok;
 }
 //mostra il messaggio di errore se nessuna voce e' selezionata
 function controlloCheckboxSelezionata(elementoCheck,nodeListCheck){
@@ -378,12 +381,15 @@ function init_amministratore_ins_film(){
         btn_invio.addEventListener("click",e=>{
             eliminaMessaggiSuccessivi(btn_invio);
             var ok=true;
+            console.log(ok);
             if(!controlloCheckboxSelezionata(generiHTML,generi) | !controlloLunghezzaCampo(titolo) | !controlloLunghezzaCampo(alt,15) | 
-                !controlloPrezzoAcquistoNoleggio(pAcquisto,pNoleggio) | !controlloLunghezzaCampo(trama,50) | 
-                !controlloImmagine(copertina,"Immagine di copertina mancante") | controlloVuoto(dataHTML,"Selezionare una data") | controlloVuoto(durataHTML,"La durata deve essere maggiore di 00:00"))      
+            !controlloPrezzoAcquistoNoleggio(pAcquisto,pNoleggio) | !controlloLunghezzaCampo(trama,50) | 
+                !controlloImmagine(copertina,"Immagine di copertina mancante") | !controlloVuoto(dataHTML,"Selezionare una data") | !controlloVuoto(durataHTML,"La durata deve essere maggiore di 00:00"))      
                 ok=false;
-
-            if(!ok){
+                
+                if(!ok){
+                    console.log("sono qua");
+                    console.log(ok);
                 e.preventDefault();
                 mostraMessaggio(e.target,"Inserimento film fallito: sono presenti dei campi non validi");  
             }
