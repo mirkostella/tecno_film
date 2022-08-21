@@ -36,6 +36,8 @@
     $pagina=str_replace('%username%',$risultato_info_utente[0]['username'],$pagina);
     $pagina=str_replace('%nomeUtente%',$risultato_info_utente[0]['nome'],$pagina);
     $pagina=str_replace('%cognomeUtente%',$risultato_info_utente[0]['cognome'],$pagina);
+
+    //cambio il formato della data di nascita
     $dataNascita=strtotime($risultato_info_utente[0]['data_nascita']);
     $cambioFormato=date('d/m/Y',$dataNascita);
     $risultato_info_utente[0]['data_nascita']=$cambioFormato;
@@ -51,13 +53,13 @@
     $query_recensione = "SELECT recensione.ID as id,recensione.ID_film as idFilm,recensione.ID_utente as idUtente,
     foto_utente.path as profilo,
     utente.username as username,recensione.data as data,recensione.testo as testo,recensione.valutazione as valutazione
-    
     FROM utente JOIN recensione 
     on (utente.ID=recensione.ID_utente) JOIN foto_utente ON (utente.ID_foto=foto_utente.ID) 
     WHERE ID_utente=$id";
 
     $risultato_recensione=$connessione->interrogaDB($query_recensione);
     $stringaRecensioni="";
+
     if($risultato_recensione){
         foreach($risultato_recensione as $ris){
             $dataRecensione=strtotime($ris['data']);
@@ -66,7 +68,6 @@
             $rec=new RecensioneAdmin($ris);
             $stringaRecensione=$rec->crea($connessione);
             $stringaRecensioni=$stringaRecensioni.$stringaRecensione;
-
         }
     }
     $pagina=str_replace('%recensioni%',$stringaRecensioni,$pagina);

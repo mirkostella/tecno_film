@@ -146,13 +146,25 @@ function controlloPrezzoAcquistoNoleggio(elementoAcquisto,elementoNoleggio){
     var ok=true;
     eliminaMessaggiSuccessivi(elementoAcquisto); 
     eliminaMessaggiSuccessivi(elementoNoleggio);
-    if(elementoNoleggio.valueAsNumber>=elementoAcquisto.valueAsNumber){
-        mostraMessaggio(elementoNoleggio,"Il prezzo di noleggio deve essere minore del prezzo di acquisto");
+    var pAcquisto=elementoAcquisto.valueAsNumber;
+    var pNoleggio=elementoNoleggio.valueAsNumber;
+    if(pAcquisto<=0){
+        mostraMessaggio(elementoAcquisto,"Inserire un valore maggiore di 0");
         ok=false;
     }
-    if(elementoAcquisto.valueAsNumber<=elementoNoleggio.valueAsNumber){
-        mostraMessaggio(elementoAcquisto,"Il prezzo di acquisto deve essere maggiore del prezzo di noleggio");
+    if(pNoleggio<=0){
+        mostraMessaggio(elementoNoleggio,"Inserire un valore maggiore di 0");
         ok=false;
+    }
+    if(pAcquisto>0 && pNoleggio>0){
+        if(elementoNoleggio.valueAsNumber>=elementoAcquisto.valueAsNumber){
+            mostraMessaggio(elementoNoleggio,"Il prezzo di noleggio deve essere minore del prezzo di acquisto");
+            ok=false;
+        }
+        if(elementoAcquisto.valueAsNumber<=elementoNoleggio.valueAsNumber){
+            mostraMessaggio(elementoAcquisto,"Il prezzo di acquisto deve essere maggiore del prezzo di noleggio");
+            ok=false;
+        }
     }
     return ok;
 }
@@ -308,6 +320,10 @@ function init_registrazione(){
                 e.preventDefault();
                 mostraMessaggio(e.target,"Errore nell'inserimento dei dati: sono presenti dei campi non validi");
             }
+            // else{
+            //     e.preventDefault();
+            //     mostraMessaggio(e.target,"I dati sarebbero stati inviati");
+            // }
         })
     }
 }

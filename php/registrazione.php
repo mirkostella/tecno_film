@@ -40,8 +40,9 @@
 	$file_path='';
 	$no_error=true;
 	$upload_result=NULL;
-	
 	if(isset($_POST['invia'])){
+		echo $no_error;
+		echo "sono inviato";
 		if(isset($_POST['nome'])){
 			$nome=test_input($_POST['nome']);
 		}
@@ -139,6 +140,7 @@
 		else
 			$pagina=str_replace('%error_pwd%', '', $pagina);
 		//se gli input vanno bene, carico l'immagine profilo
+		echo $no_error;
 		if($no_error){
 			$gestisci_img = new GestioneImg();
 
@@ -167,7 +169,7 @@
 		}
 
 		//se l'immagine va bene, inserisco tutto nel db
-
+		echo $no_error;
 		if($no_error){
 			if($id_foto != NULL)
 			{
@@ -187,8 +189,9 @@
 			}
 			else{
 				$pagina = str_replace('%msg_reg%', "<div class=\"success_box\">Registrazione avvenuta! Verrai indirizzato al login</div>", $pagina);
-				$connessione->chiudiConnessione();
-				$connessioneAperta=false;
+				if($connessioneAperta)
+					if($connessione->chiudiConnessione())
+						$connessioneAperta=false;
 				header("refresh: 7; url= login.php");
 			}		
 		}
@@ -236,7 +239,8 @@
 	$pagina=str_replace('%msg_reg%', '', $pagina);
 
 	if($connessioneAperta)
-		$connessione->chiudiConnessione();
-
+		if($connessione->chiudiConnessione())
+			$connessioneAperta=false;
+	
 	echo $pagina;
 ?>
