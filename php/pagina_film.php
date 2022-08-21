@@ -159,7 +159,7 @@
         else{
             //accedi per inserire una recensione
             $pagina=str_replace('%messaggioEsitoRecensione%',"",$pagina);
-            $pagina=str_replace('%formRecensione%',"Accedi per inserire una recensione",$pagina);
+            $pagina=str_replace('%formRecensione%',"<p>Per inserire una recensione devi essere loggato. <a href=\"../php/login.php\">Accedi qui</a></p>",$pagina);
         }          
     }
 

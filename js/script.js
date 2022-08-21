@@ -118,10 +118,13 @@ function controlloImmagine(elementoFile,messaggio){
 
 }
 function controlloLunghezzaCampo(campo,lung=2){
+    var ok=true;
     eliminaMessaggiSuccessivi(campo);
     if(!controlloLunghezzaStringa(campo.value,lung)){
         mostraMessaggio(campo,"Il campo deve essere lungo almeno "+lung+" caratteri");
+        ok=false;
     }
+    return ok;
 }
 //mostra il messaggio di errore se nessuna voce e' selezionata
 function controlloCheckboxSelezionata(elementoCheck,nodeListCheck){
@@ -133,7 +136,6 @@ function controlloCheckboxSelezionata(elementoCheck,nodeListCheck){
             generiSelezionati.push(genere);
         }
     }
-    console.log(generiSelezionati);
     if(generiSelezionati.length==0){
         mostraMessaggio(elementoCheck,"Selezionare almeno un genere");   
         ok=false;
@@ -144,11 +146,11 @@ function controlloPrezzoAcquistoNoleggio(elementoAcquisto,elementoNoleggio){
     var ok=true;
     eliminaMessaggiSuccessivi(elementoAcquisto); 
     eliminaMessaggiSuccessivi(elementoNoleggio);
-    if(elementoNoleggio.value>=elementoAcquisto.value){
+    if(elementoNoleggio.valueAsNumber>=elementoAcquisto.valueAsNumber){
         mostraMessaggio(elementoNoleggio,"Il prezzo di noleggio deve essere minore del prezzo di acquisto");
         ok=false;
     }
-    if(elementoAcquisto.value<=elementoNoleggio.value){
+    if(elementoAcquisto.valueAsNumber<=elementoNoleggio.valueAsNumber){
         mostraMessaggio(elementoAcquisto,"Il prezzo di acquisto deve essere maggiore del prezzo di noleggio");
         ok=false;
     }
@@ -236,9 +238,10 @@ function init_login(){
         var btn_invio=document.getElementById("invia");
         btn_invio.addEventListener("click",e => {
             eliminaMessaggiSuccessivi(e.target);
-            if(!controlloPresenzaErr(controlliLogin))
+            if(!controlloPresenzaErr(controlliLogin)){
                 e.preventDefault();
                 mostraMessaggio(e.target,"Le credenziali non sono corrette");
+            }
         })
         var elePassword=document.getElementById("password");
         var btn_mostra=document.getElementById("mostraPassword");
@@ -368,8 +371,6 @@ function init_amministratore_ins_film(){
         });
         pAcquisto.addEventListener("focusout",e=>{
             controlloPrezzoAcquistoNoleggio(pAcquisto,pNoleggio);
-            console.log(pAcquisto.value);
-            console.log(pNoleggio.value);
         });
         pNoleggio.addEventListener("focusout",e=>{
             controlloPrezzoAcquistoNoleggio(pAcquisto,pNoleggio);
@@ -379,11 +380,11 @@ function init_amministratore_ins_film(){
             eliminaMessaggiSuccessivi(btn_invio);
             var ok=true;
             if(!controlloCheckboxSelezionata(generiHTML,generi) | !controlloLunghezzaCampo(titolo) | !controlloLunghezzaCampo(alt,15) | 
-                !controlloPrezzoAcquistoNoleggio(pAcquisto,pNoleggio) | !controlloLunghezzaCampo(trama,50) | 
-                !controlloImmagine(copertina,"Immagine di copertina mancante") | controlloVuoto(dataHTML,"Selezionare una data") | controlloVuoto(durataHTML,"La durata deve essere maggiore di 00:00"))      
+            !controlloPrezzoAcquistoNoleggio(pAcquisto,pNoleggio) | !controlloLunghezzaCampo(trama,50) | 
+                !controlloImmagine(copertina,"Immagine di copertina mancante") | !controlloVuoto(dataHTML,"Selezionare una data") | !controlloVuoto(durataHTML,"La durata deve essere maggiore di 00:00"))      
                 ok=false;
-
-            if(!ok){
+                
+                if(!ok){
                 e.preventDefault();
                 mostraMessaggio(e.target,"Inserimento film fallito: sono presenti dei campi non validi");  
             }
@@ -393,13 +394,10 @@ function init_amministratore_ins_film(){
     }
 }
 function init_pagina_film(){
-    console.log("ciao");
     if(document.getElementById("recensioni")){  
         var recensioneHTML=document.getElementById("testoRecensione");
-        console.log(recensioneHTML);
         recensioneHTML.addEventListener("focusout",e=>{controlloLunghezzaCampo(e.target,50)});
     }
-
 }
 
 //################################ AL CARICAMENTO DELLA PAGINA GENERICA ##################################

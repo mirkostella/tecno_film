@@ -36,6 +36,9 @@
     $pagina=str_replace('%username%',$risultato_info_utente[0]['username'],$pagina);
     $pagina=str_replace('%nomeUtente%',$risultato_info_utente[0]['nome'],$pagina);
     $pagina=str_replace('%cognomeUtente%',$risultato_info_utente[0]['cognome'],$pagina);
+    $dataNascita=strtotime($risultato_info_utente[0]['data_nascita']);
+    $cambioFormato=date('d/m/Y',$dataNascita);
+    $risultato_info_utente[0]['data_nascita']=$cambioFormato;
     $pagina=str_replace('%dataUtente%',$risultato_info_utente[0]['data_nascita'],$pagina);
     $pagina=str_replace('%emailUtente%',$risultato_info_utente[0]['email'],$pagina);
     $pagina=str_replace('%sessoUtente%',$risultato_info_utente[0]['sesso'],$pagina);
@@ -55,11 +58,16 @@
 
     $risultato_recensione=$connessione->interrogaDB($query_recensione);
     $stringaRecensioni="";
-    foreach($risultato_recensione as $ris){
-        $rec=new RecensioneAdmin($ris);
-        $stringaRecensione=$rec->crea($connessione);
-        $stringaRecensioni=$stringaRecensioni.$stringaRecensione;
+    if($risultato_recensione){
+        foreach($risultato_recensione as $ris){
+            $dataRecensione=strtotime($ris['data']);
+            $cambioFormato=date('d/m/Y H:i:s',$dataRecensione);
+            $ris['data']=$cambioFormato;
+            $rec=new RecensioneAdmin($ris);
+            $stringaRecensione=$rec->crea($connessione);
+            $stringaRecensioni=$stringaRecensioni.$stringaRecensione;
 
+        }
     }
     $pagina=str_replace('%recensioni%',$stringaRecensioni,$pagina);
     $pagina=str_replace('%idUtente%',$id,$pagina);

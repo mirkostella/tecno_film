@@ -9,12 +9,15 @@
 	$pagina=file_get_contents("../html/registrazione.html");
 
 	$connessione=new Connessione();
+	$connessioneAperta=false;
 	if(!$connessione->apriConnessione()){
 		$pagina=str_replace('%error_conn%', "<div class=\"error_box\">ERRORE DI CONNESSIONE AL DATABASE</div>", $pagina);
 		$no_error=false;
 	}
-	else
+	else{
 		$pagina=str_replace('%error_conn%', '', $pagina);
+		$connessioneAperta=true;
+	}
 
 	$struttura=new Struttura();
 	$struttura->aggiungiBase($connessione, $pagina);
@@ -109,9 +112,10 @@
 		if(strlen($username) >=2 ){
 			$pagina=str_replace('%error_username%', '', $pagina);
 		}
-		else
+		else{
 			$pagina=str_replace('%error_username%', "<div class=\"error_box\">L'username deve essere lungo almeno 2 caratteri</div>", $pagina);
 			$no_error=false;
+		}
 
 		if($connessione->interrogaDB($query_user)){
 			$pagina=str_replace('%error_username_usato%', "<div class=\"error_box\">Questo username è già in uso. Scegline un altro</div>", $pagina);
@@ -184,6 +188,7 @@
 			else{
 				$pagina = str_replace('%msg_reg%', "<div class=\"success_box\">Registrazione avvenuta! Verrai indirizzato al login</div>", $pagina);
 				$connessione->chiudiConnessione();
+				$connessioneAperta=false;
 				header("refresh: 7; url= login.php");
 			}		
 		}
@@ -230,8 +235,8 @@
 	$pagina=str_replace('%error_reg%', '', $pagina);
 	$pagina=str_replace('%msg_reg%', '', $pagina);
 
-	$connessione->chiudiConnessione();
+	if($connessioneAperta)
+		$connessione->chiudiConnessione();
 
 	echo $pagina;
 ?>
-
