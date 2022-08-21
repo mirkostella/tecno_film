@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xml:lang="it" lang="it">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="author" content="Mirko Elton Sonia Ruth"/>
+    <meta name="description" content="%descrizione%"/>
+    <meta name="keywords" content="%keywords%"/>
+    <title>%titoloPagina%</title>
+    <link rel="stylesheet" type="text/css" href="../css/stile.css"/>
+    <link rel="icon" type="image/png" href="../img/icon.png"/>
+</head>
+<body id="inizioPagina">
+    <header>
+        <h1 id="logo" class="flexEsteso">Tecno Film</h1>
+        <a class="aiuti" href="#contenuto" accesskey="v">Vai al contenuto</a>
+        <div id="account">
+            <a href="../php/logout_admin.php" accesskey="l">Logout</a>
+            <a href="#menuPrincipale" id="menuHam" accesskey="m">Menu</a>
+        </div>
+    </header>
+    <nav id="breadcrumb" role="navigation" aria-label="breadcrumb">
+        Ti trovi in: %breadcrumb%
+    </nav>
+    <div id="impaginazione">
+        <nav id="menuPrincipale" role="navigation" aria-label="menuNavigazione">
+            <ul>
+                <li><a href="../php/amministratore_loggato.php" accesskey="r">Riepilogo</a></li>
+                <li><a href="../php/ins_film_admin.php" accesskey="a">Aggiungi film</a></li>
+            </ul>
+        </nav>

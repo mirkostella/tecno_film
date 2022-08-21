@@ -11,8 +11,6 @@
     }
 
     $pagina=file_get_contents("../html/ins_film_admin.html");
-    $header=file_get_contents('../componenti/header_admin_log.html');
-    $menu=file_get_contents('../componenti/menu_admin_log.html');
 
     $connessione=new Connessione();
     if(!$connessione->apriConnessione()){
@@ -21,10 +19,14 @@
 
     $struttura = new Struttura();
 
-    $struttura->aggiungiHeader_admin($pagina);
+    $struttura->aggiungiBaseAdmin($pagina);
+    $pagina=str_replace("%descrizione%","Se sei un admin, qua trovi un form per inserire nuovi film", $pagina);
+    $pagina=str_replace("%keywords%","TecnoFilm, Film, Copertina, Trama, Generi, Nuovi", $pagina);
+    $pagina=str_replace("%titoloPagina%","TecnoFilm-Admin: Aggiungi film", $pagina);
+    $pagina=str_replace("%breadcrumb%","<span class=\"grassetto\">Aggiungi film</span>", $pagina);
 
+    $pagina=str_replace('<li><a href="../php/ins_film_admin.php" accesskey="a">Aggiungi film</a></li>',"<li id=\"attivo\" accesskey=\"a\">Aggiungi film</li>", $pagina);
 
-    $struttura->aggiungMenu_admin($pagina,'<li><a href="ins_film_admin.php" accesskey="a">Aggiungi film</a></li>',"<li id=\"attivo\">Aggiungi film</li>");
     $queryNomiGeneri="SELECT nome_genere FROM genere ORDER BY nome_genere ASC";
     $generi=$connessione->interrogaDB($queryNomiGeneri);
     $generi_modifica=array();

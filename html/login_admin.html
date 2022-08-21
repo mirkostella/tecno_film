@@ -6,21 +6,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta name="author" content="Mirko Elton Sonia Ruth"/>
     <meta name="description" content="Pagina di login per un amministratore di Tecno Film"/>
-    <meta name="keywords" content="tecno film,login,login amministratore"/>
-    <title>Login Admin-Tecno film</title>
+    <meta name="keywords" content="TecnoFilm, login, login amministratore"/>
+    <title>TecnoFilm-Admin: Login</title>
     <link rel="stylesheet" type="text/css" href="../css/stile.css"/>
+    <link rel="icon" type="image/png" href="../img/icon.png"/>
 </head>
 <body id="inizioPagina">
     <header>
-        <a href="#contenuto" aria-label="salta al contenuto"></a>
+        <a class="aiuti" href="#contenuto" accesskey="v">Vai al contenuto</a>
         <h1 id="logo">Tecno Film</h1>
     </header>
-    <nav id="breadcrumb">
+    <nav id="breadcrumb" role="navigation" aria-label="breadcrumb">
         Ti trovi in: <span class="grassetto">Login Amministrazione</span> 
     </nav>
-        <div id="contenuto_amministratore">
+        <div id="contenuto" class="senzaMenu" role="main">
             %errore_conn%
-            <form action="login_admin.php" method = "post" class="reg_log" id="loginAdmin">
+            <form action="login_admin.php" method = "post" class="reg_log" id="loginAdmin" role="form">
                 <fieldset>
                     <legend>Login Amministratore</legend>
                     <fieldset id="datiAccount">

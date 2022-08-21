@@ -6,9 +6,7 @@
 /* ------------------------- variabili globali ------------------------- */
 :root{
     --colore-btn:crimson;
-    /* --colore-bordo-btn-hover:#ba3838; */
     --colore-btn-hover:rgb(246, 65, 101);
-    /* --colore-bordo-header:#e0e0e0; */
     --colore-cerca-titolo:white;
     --colore-voce-menu-hover:#d8d8d8;
     --colore-bordo-card:black;
@@ -20,7 +18,7 @@
 html,body{
     max-width: 1200px;
     margin:auto;
-    background-color: peachpuff;
+    background-color: darksalmon;
     font-family: 'Times New Roman', Times, serif;
 }
 
@@ -103,7 +101,7 @@ fieldset{
 /* intestazione */
 header{
     width: 100%;
-    background-color: seashell;
+    background-color: floralwhite;
     display: flex;
     flex-flow: row nowrap;
     padding: 1em 2em;
@@ -166,7 +164,7 @@ header{
     font-size: 1.2em;
     padding:0.5em 2.2em;
     margin-top:0.4em;
-    background-color: seashell;
+    background-color: floralwhite;
 }
 
 .aiuti{
@@ -203,13 +201,13 @@ header{
 }
 
 #menuPrincipale #attivo{
-    background-color: rgb(251, 205, 152);
-    color:crimson;
+    background-color: lightblue;
+    color:black;
     padding: 1em 0;
 }
 
 #menuPrincipale{
-    background-color: seashell;
+    background-color: floralwhite;
     font-size: 1.2em;
     font-weight: bold;
     margin-right: 0.6em;
@@ -237,10 +235,13 @@ header{
 /* ------------------------- contenuto ------------------------- */
 
 #contenuto{
-    width: 80%;
-    background-color: seashell;
+    background-color: floralwhite;
     padding:0.6em; 
     position:relative;
+}
+
+#contenuto:not(.senzaMenu){
+    width: 80%;
 }
 
 /* ------------------------- card ------------------------- */
@@ -620,8 +621,7 @@ header{
 }
 
 /* ------------------------- pagina amministratore ------------------------- */
-#contenuto_amministratore{
-    width: 100%;
+#contenuto .senzaMenu{
     margin-top:0.6em;
     background-color: #fff;
     border: 2px solid var(--colore-bordo-header);
@@ -807,7 +807,7 @@ dt{
 /* ------------------------- media query ------------------------- */
 /* proprietá generiche */
 @media screen and (max-width: 75em) {
-    #contenuto{
+    #contenuto:not(.senzaMenu){
         width: 100%;
     }
     header{
@@ -900,7 +900,7 @@ dt{
         width: 50%;
         margin-right: 0;
         margin-left:0;
-        background-color: #fff;
+        background-color: inherit;
         border:none;
     }
     .copertina{height: unset;}
@@ -1029,7 +1029,7 @@ dt{
         font-size: 90%;
     }
 
-    #contenuto{
+    #contenuto:not(.senzaMenu){
         width: 100%;
         background-color: white;
     }

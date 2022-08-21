@@ -9,34 +9,37 @@
         exit();
     }
 
-    $idFilm="";
-    $valoreEmail="";
-    $valorePassword="";
-    if(isset($_REQUEST['idFilm']))
-        $idFilm=$_REQUEST['idFilm'];
-    if(isset($_REQUEST['email']))
-        $valoreEmail=$_REQUEST['email'];
-    if(isset($_REQUEST['password']))
-        $valorePassword=$_REQUEST['password'];
-
     $pagina = file_get_contents('../html/login.html');
-    $pagina = str_replace('%idFilm%',$idFilm,$pagina);
-    $pagina = str_replace('%email%',$valoreEmail,$pagina);
-    $pagina = str_replace('%password%',$valorePassword,$pagina);
-
+    
     $connessione = new Connessione();
-
+    
     if(!$connessione->apriConnessione()){
         $pagina = str_replace('%errore_conn%',"<div class=\"error_box\">ERRORE DI CONNESSIONE AL DATABASE</div>", $pagina);
     }
     
     $struttura = new Struttura();
-    $struttura->aggiungiHeader($connessione, $pagina);
-    $struttura->aggiungiAccount($pagina);
-    $pagina=str_replace('<a href="../php/login.php">Login</a>', '', $pagina);
-    $inAttivo=file_get_contents("../componenti/menu.html");
-    $attivo=file_get_contents("../componenti/menu.html");
-    $struttura->aggiungiMenu($pagina,$inAttivo,$attivo);
+    $struttura->aggiungiBase($connessione, $pagina);
+    $pagina=str_replace('<a href="../php/login.php" accesskey="l">Login</a>', '', $pagina);
+    $struttura->aggiungiMenu($pagina,"","");
+    $pagina=str_replace("%descrizione%","Login del sito TecnoFilm. Loggati e potrai noleggiare e acquistare film", $pagina);
+    $pagina=str_replace("%keywords%","TecnoFilm, Login", $pagina);
+    $pagina=str_replace("%titoloPagina%","TecnoFilm: Login", $pagina);
+    $pagina=str_replace("%breadcrumb%","<span class=\"grassetto\">Login</span>", $pagina);
+    
+    $idFilm="";
+    $valoreEmail="";
+    $valorePassword="";
+    if(isset($_REQUEST['idFilm']))
+    $idFilm=$_REQUEST['idFilm'];
+    if(isset($_REQUEST['email']))
+    $valoreEmail=$_REQUEST['email'];
+    if(isset($_REQUEST['password']))
+    $valorePassword=$_REQUEST['password'];
+    
+    $pagina = str_replace('%idFilm%',$idFilm,$pagina);
+    $pagina = str_replace('%email%',$valoreEmail,$pagina);
+    $pagina = str_replace('%password%',$valorePassword,$pagina);
+
     $email = NULL;
     $psw = NULL;
 

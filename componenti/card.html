@@ -2,7 +2,7 @@
 <div class ="card">
 	%classifica%
 	<dt>
-		<form action="pagina_film.php" method="get" class="copertina">
+		<form action="pagina_film.php" method="get" class="copertina" aria-hidden="true">
 			<input type="hidden" value="%id%" name="idFilm">
 			<input type="image" src="%path%" alt="%desc%" tabindex="-1">
 		</form>
@@ -10,7 +10,7 @@
 	<dd class="dettagli">
 		<form action="pagina_film.php" method="get" class="titolo">
 			<input type="hidden" value="%id%" name="idFilm">
-			<input  type="submit" value="%titolo%" title="vai alla pagina di %titolo% ">
+			<input  type="submit" value="%titolo%" aria-label="%titolo%: vai alla pagina del film">
 		</form>
 		<span class="genere">%gen%</span>
 		<div class="valutazionePrezzo">

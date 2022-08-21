@@ -14,8 +14,11 @@
     }
 
     $struttura=new Struttura();
-    $struttura->aggiungiHeader($connessione, $pagina);
-    $struttura->aggiungiAccount($pagina);
+    $struttura->aggiungiBase($connessione, $pagina);
+    $pagina=str_replace("%descrizione%","Una breve descrizione di chi ha creato il sito e chi ci lavora", $pagina);
+    $pagina=str_replace("%keywords%","TecnoFilm, Progetto, Chi siamo", $pagina);
+    $pagina=str_replace("%titoloPagina%","TecnoFilm: Chi siamo", $pagina);
+    $pagina=str_replace("%breadcrumb%","<a href = \"../php/index.php\" xml:lang=\"en\" lang=\"en\">Home</a> &gt; <span class=\"grassetto\">Chi siamo</span>", $pagina);
     $inAttivo="<li><a href=\"../php/chi_siamo.php\">Chi siamo</a></li>";
     $attivo="<li id=\"attivo\">Chi siamo</li>";
     $struttura->aggiungiMenu($pagina,$inAttivo,$attivo);

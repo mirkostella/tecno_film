@@ -17,12 +17,14 @@
 		$pagina=str_replace('%error_conn%', '', $pagina);
 
 	$struttura=new Struttura();
-	$struttura->aggiungiHeader($connessione, $pagina);
-	$struttura->aggiungiAccount($pagina);
+	$struttura->aggiungiBase($connessione, $pagina);
+    $pagina=str_replace("%descrizione%","Form di registrazione per registrarsi a TecnoFilm", $pagina);
+    $pagina=str_replace("%keywords%","TecnoFilm, Registrazione", $pagina);
+    $pagina=str_replace("%titoloPagina%","TecnoFilm: Registrazione", $pagina);
+    $pagina=str_replace("%breadcrumb%","<span class=\"grassetto\">Registrati</span>", $pagina);
+
 	$pagina=str_replace('<a href="../php/registrazione.php">Registrati</a>', '', $pagina);
-	$inAttivo=file_get_contents("../componenti/menu.html");
-	$attivo=file_get_contents("../componenti/menu.html");
-    $struttura->aggiungiMenu($pagina,$inAttivo,$attivo);
+    $struttura->aggiungiMenu($pagina,"","");
 	$nome='';
 	$cognome='';
 	$data_nascita='';

@@ -19,8 +19,13 @@
     }
 
     $struttura = new Struttura();
-    $struttura->aggiungiHeader_admin($pagina);
-    $struttura->aggiungMenu_admin($pagina,'<li><a href="amministratore_loggato.php" accesskey="r">Riepilogo</a></li>',"<li id=\"attivo\">Riepilogo</li>");
+    $struttura->aggiungiBaseAdmin($pagina);
+    $pagina=str_replace("%descrizione%","Se sei un admin, qua trovi un riepilogo degli utenti e un riepilogo del numero di acquisti e noleggi per film, con relativi incassi", $pagina);
+    $pagina=str_replace("%keywords%","TecnoFilm, Riepilogo, Utenti, Segnalazioni, Film, Noleggi, Acquist, Prezzo, Incassi", $pagina);
+    $pagina=str_replace("%titoloPagina%","TecnoFilm-Admin: Riepilogo", $pagina);
+    $pagina=str_replace("%breadcrumb%","<span class=\"grassetto\">Riepilogo</span>", $pagina);
+
+    $pagina=str_replace('<li><a href="../php/amministratore_loggato.php" accesskey="r">Riepilogo</a></li>',"<li id=\"attivo\" accesskey=\"r\">Riepilogo</li>", $pagina);
 
     $query_utente="SELECT ID,username, email,stato From utente";
     $risultato=$connessione->interrogaDB($query_utente);

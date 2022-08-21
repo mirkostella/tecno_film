@@ -3,10 +3,10 @@
 
     class Struttura{
 
-        public function aggiungiHeader($connessione, &$pagina){
+        public function aggiungiBase($connessione, &$pagina){
+            $componente=file_get_contents("../componenti/base.html");
             $querySuggerimenti="SELECT titolo FROM film";
             $suggerimenti=$connessione->interrogaDB($querySuggerimenti);
-            $componente=file_get_contents("../componenti/header.html");
             $lista="";
             if($suggerimenti){
                 foreach($suggerimenti as $i=>$valore){
@@ -15,47 +15,34 @@
                 }
             }
             $componente=str_replace("%suggerimenti%",$lista,$componente);
-            $pagina=str_replace("%header%",$componente,$pagina);
-        }
-        
-        public function aggiungiAccount(&$pagina){
+
             if($_SESSION['loggato']==true && $_SESSION['admin']==false){
-                $acc = file_get_contents("../componenti/account.html");
-                $acc=str_replace('<a href="../php/registrazione.php">Registrati</a>', '', $acc);
-                $acc=str_replace('<a href="../php/login.php">Login</a>', '<a href="../php/logout.php">Logout</a>', $acc);
-                $pagina=str_replace('%account%', $acc, $pagina);
+                $componente=str_replace('<a href="../php/registrazione.php" accesskey="r">Registrati</a>', '', $componente);
+                $componente=str_replace('<a href="../php/login.php" accesskey="l">Login</a>', '<a href="../php/logout.php" accesskey="l">Logout</a>', $componente);
             }
-            else{
-                $acc = file_get_contents("../componenti/account.html");
-                $pagina=str_replace("%account%",$acc, $pagina);
-            }
+
+            $pagina=str_replace("%base%",$componente,$pagina);
         }
-         public function aggiungiMenu(&$pagina,$InAttivo,$attivo){
+
+        public function aggiungiMenu(&$pagina,$InAttivo,$attivo){
             $menu=file_get_contents("../componenti/menu.html");
 
             if($_SESSION['loggato']==false || $_SESSION['admin']==true){
                 $menu=str_replace('<li><a href="../php/raccolta_personale.php">I miei film</a></li>', '', $menu);
             }
-            
             $menu=str_replace($InAttivo,$attivo,$menu); 
             $pagina=str_replace('%menu%',$menu,$pagina);
         }
-      public function aggiungMenu_admin(&$pagina,$InAttivo,$attivo)
-        {
-            $menu = file_get_contents("../componenti/menu_admin_log.html");
-            $menu=str_replace($InAttivo,$attivo,$menu); 
-            $pagina=str_replace("%menuAdmin%", $menu, $pagina);
-        }
 
-        public function aggiungiHeader_admin(&$pagina){
-            $header = file_get_contents("../componenti/header_admin_log.html");
-            $pagina = str_replace("%headerAdmin%", $header, $pagina);
+        public function aggiungiBaseAdmin(&$pagina){
+            $base = file_get_contents("../componenti/base_admin.html");
+            $pagina = str_replace("%base%", $base, $pagina);
         }
         
         //PRE:sono loggato ed il film non é presente in acquisto/noleggio dell'utente loggato
         public function aggiungiConfermaAcquistoNoleggio($connessione, &$pagina){
             if(isset($_GET['noleggio'])){
-                $queryNoleggio="SELECT ID_utente FROM noleggio WHERE ID_utente=".$_SESSION['id']." and ID_film=".$_GET['idFilm'];
+                $queryNoleggio="SELECT ID_utente FROM noleggio WHERE scadenza_noleggio > CURRENT_TIMESTAMP AND noleggio.ID_utente=".$_SESSION['id']." and noleggio.ID_film=".$_GET['idFilm'];
                 $controlloPresenzaNoleggio=$connessione->interrogaDB($queryNoleggio);
                 if(!$controlloPresenzaNoleggio){
                     $pagina=str_replace('%pulsanteNoleggio%',
@@ -93,7 +80,7 @@
             
             if($_SESSION['loggato']==true && $_SESSION['admin']==false){  
                 $queryAcquisto="SELECT ID_utente FROM acquisto WHERE ID_utente=".$_SESSION['id']." and ID_film=".$idFilm;
-                $queryNoleggio="SELECT ID_utente FROM noleggio WHERE ID_utente=".$_SESSION['id']." and ID_film=".$idFilm;
+                $queryNoleggio="SELECT ID_utente FROM noleggio WHERE scadenza_noleggio > CURRENT_TIMESTAMP AND noleggio.ID_utente=".$_SESSION['id']." and noleggio.ID_film=".$idFilm;
                 $presenzaAcquisto=$connessione->interrogaDB($queryAcquisto);
                 $presenzaNoleggio=$connessione->interrogaDB($queryNoleggio);
 

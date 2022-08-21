@@ -64,16 +64,12 @@
         if(!$listaCard)
             return false;
         else{
-            //$pulsanteVediAltro=file_get_contents('../componenti/vediAltro.html');
             $categoriaCard=file_get_contents('../componenti/categoria_index.html');
             $categoriaCard=str_replace('%listaCard%',$listaCard,$categoriaCard);
             if(isset($_GET['nomeCategoria']))
                 $categoriaCard=str_replace('%categoria%',"",$categoriaCard);
             else
                 $categoriaCard=str_replace('%categoria%',"<h2 id=\"nuove\">Nuove uscite</h2>",$categoriaCard);
-            //$pulsanteVediAltro=str_replace('%nomeCategoria%',"Nuove Uscite",$pulsanteVediAltro);
-            //$categoriaCard=str_replace('%vediAltro%',$pulsanteVediAltro,$categoriaCard);
-            //$categoriaCard=str_replace('%collegamento%',"film_categoria.php",$categoriaCard);
             return $categoriaCard;
         }
     }
@@ -137,18 +133,36 @@
         }
     }
 
-    function recuperaRaccoltaPersonale($connessione, &$raccoltaCardNoleggi,&$raccoltaCardAcquisti){
+    function recuperaRaccoltaPersonale($connessione, &$raccoltaCardAcquisti, &$raccoltaCardNoleggi, &$raccoltaCardNoleggiScaduti){
         //acquisti dell'utente
         $queryCardAcquisti="SELECT film.ID as id,titolo,copertina,TIME_TO_SEC(durata) as durata,
         path as copertina,descrizione FROM film JOIN appartenenzaNoDoppioni
     ON(film.ID=appartenenzaNoDoppioni.ID_film) JOIN genere ON (appartenenzaNoDoppioni.ID_genere=genere.ID) JOIN foto_film ON(film.copertina=foto_film.ID) JOIN acquisto ON (film.ID=acquisto.ID_film) WHERE acquisto.ID_utente=".$_SESSION['id'];
         $queryCardNoleggi="SELECT film.ID as id,titolo,copertina,TIME_TO_SEC(durata) as durata,
         path as copertina,descrizione,scadenza_noleggio FROM film JOIN appartenenzaNoDoppioni 
-        ON(film.ID=appartenenzaNoDoppioni.ID_film) JOIN genere ON (appartenenzaNoDoppioni.ID_genere=genere.ID) JOIN foto_film ON(film.copertina=foto_film.ID) JOIN noleggio ON (film.ID=noleggio.ID_film) WHERE noleggio.ID_utente=".$_SESSION['id'] ;
+        ON(film.ID=appartenenzaNoDoppioni.ID_film) JOIN genere ON (appartenenzaNoDoppioni.ID_genere=genere.ID) JOIN foto_film ON(film.copertina=foto_film.ID) JOIN noleggio ON (film.ID=noleggio.ID_film) WHERE noleggio.scadenza_noleggio > CURRENT_TIMESTAMP AND noleggio.ID_utente=".$_SESSION['id'] ;
+        $queryCardNoleggiScaduti="SELECT film.ID as id,titolo,copertina,TIME_TO_SEC(durata) as durata,
+        path as copertina,descrizione,scadenza_noleggio FROM film JOIN appartenenzaNoDoppioni 
+        ON(film.ID=appartenenzaNoDoppioni.ID_film) JOIN genere ON (appartenenzaNoDoppioni.ID_genere=genere.ID) JOIN foto_film ON(film.copertina=foto_film.ID) JOIN noleggio ON (film.ID=noleggio.ID_film) WHERE noleggio.scadenza_noleggio < CURRENT_TIMESTAMP AND noleggio.ID_utente=".$_SESSION['id'];
+
         $risAcquisti=$connessione->interrogaDB($queryCardAcquisti);
         $risNoleggi=$connessione->interrogaDB($queryCardNoleggi);
-        $listaNoleggi=creaListaCardPersonale($connessione, $risNoleggi);
+        $risNoleggiScaduti=$connessione->interrogaDB($queryCardNoleggiScaduti);
+
         $listaAcquisti=creaListaCardPersonale($connessione, $risAcquisti);
+        $listaNoleggi=creaListaCardPersonale($connessione, $risNoleggi);
+        $listaNoleggiScaduti=creaListaCardPersonale($connessione, $risNoleggiScaduti);
+
+        if($listaAcquisti){
+            $raccoltaCardAcquisti=file_get_contents('../componenti/categoria_index.html');
+            $raccoltaCardAcquisti=str_replace('%listaCard%',$listaAcquisti,$raccoltaCardAcquisti);
+            $raccoltaCardAcquisti=str_replace('%spazio%',"",$raccoltaCardAcquisti);
+            $raccoltaCardAcquisti=str_replace('%categoria%',"",$raccoltaCardAcquisti);
+            $raccoltaCardAcquisti=str_replace('%nomeSubmit%',"raccoltaPersonale",$raccoltaCardAcquisti);
+            $raccoltaCardAcquisti=str_replace('%prezzo%',"",$raccoltaCardAcquisti);
+            $raccoltaCardAcquisti=str_replace('%valutazione%',"",$raccoltaCardAcquisti);
+            $raccoltaCardAcquisti=str_replace('%vediAltro%',"",$raccoltaCardAcquisti);
+        }
 
         if($listaNoleggi){
             $raccoltaCardNoleggi=file_get_contents('../componenti/categoria_index.html');
@@ -160,15 +174,16 @@
             $raccoltaCardNoleggi=str_replace('%valutazione%',"",$raccoltaCardNoleggi);
             $raccoltaCardNoleggi=str_replace('%vediAltro%',"",$raccoltaCardNoleggi);
         }
-        if($listaAcquisti){
-            $raccoltaCardAcquisti=file_get_contents('../componenti/categoria_index.html');
-            $raccoltaCardAcquisti=str_replace('%listaCard%',$listaAcquisti,$raccoltaCardAcquisti);
-            $raccoltaCardAcquisti=str_replace('%spazio%',"",$raccoltaCardAcquisti);
-            $raccoltaCardAcquisti=str_replace('%categoria%',"",$raccoltaCardAcquisti);
-            $raccoltaCardAcquisti=str_replace('%nomeSubmit%',"raccoltaPersonale",$raccoltaCardAcquisti);
-            $raccoltaCardAcquisti=str_replace('%prezzo%',"",$raccoltaCardAcquisti);
-            $raccoltaCardAcquisti=str_replace('%valutazione%',"",$raccoltaCardAcquisti);
-            $raccoltaCardAcquisti=str_replace('%vediAltro%',"",$raccoltaCardAcquisti);
+
+        if($listaNoleggiScaduti){
+            $raccoltaCardNoleggiScaduti=file_get_contents('../componenti/categoria_index.html');
+            $raccoltaCardNoleggiScaduti=str_replace('%listaCard%',$listaNoleggiScaduti,$raccoltaCardNoleggiScaduti);
+            $raccoltaCardNoleggiScaduti=str_replace('%spazio%',"",$raccoltaCardNoleggiScaduti);
+            $raccoltaCardNoleggiScaduti=str_replace('%categoria%',"",$raccoltaCardNoleggiScaduti);
+            $raccoltaCardNoleggiScaduti=str_replace('%nomeSubmit%',"raccoltaPersonale",$raccoltaCardNoleggiScaduti);
+            $raccoltaCardNoleggiScaduti=str_replace('%prezzo%',"",$raccoltaCardNoleggiScaduti);
+            $raccoltaCardNoleggiScaduti=str_replace('%valutazione%',"",$raccoltaCardNoleggiScaduti);
+            $raccoltaCardNoleggiScaduti=str_replace('%vediAltro%',"",$raccoltaCardNoleggiScaduti);
         }
     }
 

@@ -1,12 +1,12 @@
 <tr>
-    <th scope="row" id="%idUtente%" headers="us">%username%</th>
-    <td data-title="Email" headers="em %idUtente%">%email%</td>
-    <td data-title="Stato" headers="st %idUtente%">%stato%</td>
-    <td data-title="Segnalazioni" headers="ns %idUtente%">%nSegnalazioni%</td>
-    <td data-title="Vedi segnalazioni" headers="s %idUtente%">
+    <th scope="row" id="%idUtente%">%username%</th>
+    <td data-title="Email">%email%</td>
+    <td data-title="Stato">%stato%</td>
+    <td data-title="Segnalazioni">%nSegnalazioni%</td>
+    <td data-title="Vedi segnalazioni">
         <form action="segnalazioni.php" method="get" class="segnalazione">
             <input type="hidden" name="id" value="%idUtente%">
-            <input type="submit" value="vedi">
+            <input type="submit" value="vedi" aria-label="vedi le segnalazioni dell'utente %username%">
         </form>
     </td>
 </tr>
