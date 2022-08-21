@@ -136,7 +136,6 @@ function controlloCheckboxSelezionata(elementoCheck,nodeListCheck){
             generiSelezionati.push(genere);
         }
     }
-    console.log(generiSelezionati);
     if(generiSelezionati.length==0){
         mostraMessaggio(elementoCheck,"Selezionare almeno un genere");   
         ok=false;
@@ -147,13 +146,25 @@ function controlloPrezzoAcquistoNoleggio(elementoAcquisto,elementoNoleggio){
     var ok=true;
     eliminaMessaggiSuccessivi(elementoAcquisto); 
     eliminaMessaggiSuccessivi(elementoNoleggio);
-    if(elementoNoleggio.value>=elementoAcquisto.value){
-        mostraMessaggio(elementoNoleggio,"Il prezzo di noleggio deve essere minore del prezzo di acquisto");
+    var pAcquisto=elementoAcquisto.valueAsNumber;
+    var pNoleggio=elementoNoleggio.valueAsNumber;
+    if(pAcquisto<=0){
+        mostraMessaggio(elementoAcquisto,"Inserire un valore maggiore di 0");
         ok=false;
     }
-    if(elementoAcquisto.value<=elementoNoleggio.value){
-        mostraMessaggio(elementoAcquisto,"Il prezzo di acquisto deve essere maggiore del prezzo di noleggio");
+    if(pNoleggio<=0){
+        mostraMessaggio(elementoNoleggio,"Inserire un valore maggiore di 0");
         ok=false;
+    }
+    if(pAcquisto>0 && pNoleggio>0){
+        if(elementoNoleggio.valueAsNumber>=elementoAcquisto.valueAsNumber){
+            mostraMessaggio(elementoNoleggio,"Il prezzo di noleggio deve essere minore del prezzo di acquisto");
+            ok=false;
+        }
+        if(elementoAcquisto.valueAsNumber<=elementoNoleggio.valueAsNumber){
+            mostraMessaggio(elementoAcquisto,"Il prezzo di acquisto deve essere maggiore del prezzo di noleggio");
+            ok=false;
+        }
     }
     return ok;
 }
@@ -239,9 +250,10 @@ function init_login(){
         var btn_invio=document.getElementById("invia");
         btn_invio.addEventListener("click",e => {
             eliminaMessaggiSuccessivi(e.target);
-            if(!controlloPresenzaErr(controlliLogin))
+            if(!controlloPresenzaErr(controlliLogin)){
                 e.preventDefault();
                 mostraMessaggio(e.target,"Le credenziali non sono corrette");
+            }
         })
         var elePassword=document.getElementById("password");
         var btn_mostra=document.getElementById("mostraPassword");
@@ -308,6 +320,10 @@ function init_registrazione(){
                 e.preventDefault();
                 mostraMessaggio(e.target,"Errore nell'inserimento dei dati: sono presenti dei campi non validi");
             }
+            // else{
+            //     e.preventDefault();
+            //     mostraMessaggio(e.target,"I dati sarebbero stati inviati");
+            // }
         })
     }
 }
@@ -371,8 +387,6 @@ function init_amministratore_ins_film(){
         });
         pAcquisto.addEventListener("focusout",e=>{
             controlloPrezzoAcquistoNoleggio(pAcquisto,pNoleggio);
-            console.log(pAcquisto.value);
-            console.log(pNoleggio.value);
         });
         pNoleggio.addEventListener("focusout",e=>{
             controlloPrezzoAcquistoNoleggio(pAcquisto,pNoleggio);
@@ -381,15 +395,12 @@ function init_amministratore_ins_film(){
         btn_invio.addEventListener("click",e=>{
             eliminaMessaggiSuccessivi(btn_invio);
             var ok=true;
-            console.log(ok);
             if(!controlloCheckboxSelezionata(generiHTML,generi) | !controlloLunghezzaCampo(titolo) | !controlloLunghezzaCampo(alt,15) | 
             !controlloPrezzoAcquistoNoleggio(pAcquisto,pNoleggio) | !controlloLunghezzaCampo(trama,50) | 
                 !controlloImmagine(copertina,"Immagine di copertina mancante") | !controlloVuoto(dataHTML,"Selezionare una data") | !controlloVuoto(durataHTML,"La durata deve essere maggiore di 00:00"))      
                 ok=false;
                 
                 if(!ok){
-                    console.log("sono qua");
-                    console.log(ok);
                 e.preventDefault();
                 mostraMessaggio(e.target,"Inserimento film fallito: sono presenti dei campi non validi");  
             }
@@ -401,7 +412,6 @@ function init_amministratore_ins_film(){
 function init_pagina_film(){
     if(document.getElementById("recensioni")){  
         var recensioneHTML=document.getElementById("testoRecensione");
-        console.log(recensioneHTML);
         recensioneHTML.addEventListener("focusout",e=>{controlloLunghezzaCampo(e.target,50)});
     }
 }
