@@ -17,7 +17,6 @@ DROP TABLE IF EXISTS utile;
 DROP TABLE IF EXISTS foto_film;
 DROP TABLE IF EXISTS foto_utente;
 
-DROP VIEW IF EXISTS appartenenzaNoDoppioni;
 DROP VIEW IF EXISTS nvoti;
 DROP VIEW IF EXISTS n_acquisti;
 DROP VIEW IF EXISTS n_noleggi;
@@ -119,9 +118,8 @@ FOREIGN KEY (`copertina`) REFERENCES `foto_film`(`ID`) ON DELETE CASCADE ON UPDA
 )ENGINE = InnoDB;
 
 INSERT INTO `film` (`titolo`, `copertina`, `trama`, `durata`, `data_uscita`, `prezzo_acquisto`, `prezzo_noleggio`) VALUES
-
-('Baby Boss 2', '1', "Baby Boss 2, diretto da Tom McGrath, è ambiente diversi anni dopo il primo film, quando Tim e Ted sono ormai adulti. Racconta la storia della famiglia di Tim, ormai CEO di un Fondo speculativo e sposato con Carol, da cui ha avuto due figlie, il genio Tabitha di 7 anni e la piccola Tina, l'ultima arrivata. Vivono in periferia e sembrano una comune famiglia, ma in verità Tabhita frequenta il Centro Acorn per Bambini Dotati ed è la migliore del corso. La bambina segue da tutta la vita un modello, suo zio Ted, un uomo sagace e molto intelligente. Suo padre, però, è preoccupato per lei e crede che Tabitha non stia vivendo a pieno la sua infanzia, perché troppo impegnata a comportarsi come una bambina geniale.
-Ma accade qualcosa di inaspettato in famiglia: la piccola Tina rivela di essere un'agente segreto del BabyCorp in incognito. È stata inviata in missione per scoprire se la scuola di Tabitha e soprattutto il suo fondatore, il Dr. Edwin Armstrong, nascondano qualche oscuro segreto. La famiglia dei Templeton si ritrova ancora una volta riunita e pronta a scoprire quali sono le priorità all'interno di un nucleo familiare.", '01:30:00', '2021/10/07', '12.99', '3.99'),
+('Baby Boss 2', '1', 'Baby Boss 2, diretto da Tom McGrath, è ambiente diversi anni dopo il primo film, quando Tim e Ted sono ormai adulti. Racconta la storia della famiglia di Tim, ormai CEO di un Fondo speculativo e sposato con Carol, da cui ha avuto due figlie, il genio Tabitha di 7 anni e la piccola Tina, ultima arrivata. Vivono in periferia e sembrano una comune famiglia, ma in verità Tabhita frequenta il Centro Acorn per Bambini Dotati ed è la migliore del corso. La bambina segue da tutta la vita un modello, suo zio Ted, un uomo sagace e molto intelligente. Suo padre, però, è preoccupato per lei e crede che Tabitha non stia vivendo a pieno la sua infanzia, perché troppo impegnata a comportarsi come una bambina geniale.
+Ma accade qualcosa di inaspettato in famiglia: la piccola Tina rivela di essere un agente segreto del BabyCorp in incognito. È stata inviata in missione per scoprire se la scuola di Tabitha e soprattutto il suo fondatore, il Dr. Edwin Armstrong, nascondano qualche oscuro segreto. La famiglia dei Templeton si ritrova ancora una volta riunita e pronta a scoprire quali sono le priorità di un nucleo familiare.', '01:30:00', '2021/10/07', '12.99', '3.99'),
 
 ('Clifford', '2', "Clifford: Il Grande Cane Rosso, diretto da Walt Becker, racconta la storia di un cucciolo di cane di colore rosso, che viene regalato a una bambina, Emily Elizabeth, per il suo compleanno da un uomo anziano molto eccentrico. Quando la bimba chiede quanto diventerà grande il cucciolo, l'uomo le risponde che tutto dipende da quanto affetto lei gli darà. Emily, però, non immagina che sia letteralmente così e il giorno dopo, quando si sveglia, si rende conto che Clifford, questo il nome del cucciolo, è cresciuto a tal punto da essere diventato un cane fuori misura.
 Ora Clifford è ancora un cucciolo, ma è altro più di 3 metri e con le sue enormi dimensioni getta il piccolo appartamento di New York, in cui vive Emily, nel completo caos. A occuparsi di questo gigantesco problema sono la sua padroncina e suo zio Casey, che dovranno risolvere la situazione prima che la madre di Emily torni a casa. Per Emily e Casey inizia così una grande avventura - in tutti i sensi - in giro per la Grande Mela insieme al gigantesco cucciolo rosso.", '01:30:00', '2021/12/02', '12.99', '3.99'),
@@ -362,8 +360,6 @@ INSERT INTO `utile` (`ID_utente`, `ID_recensione`) VALUES
 ('1', '18'),
 ('1', '16'),
 ('2', '3');
-
-CREATE VIEW `appartenenzaNoDoppioni` AS SELECT `ID_film`, `ID_genere` FROM `appartenenza` JOIN `genere` ON (appartenenza.ID_genere=genere.ID) GROUP BY `ID_film`; 
 
 CREATE VIEW `nvoti` AS SELECT `recensione`.`ID_film` AS `ID_film`,count(*) AS `n_voti` FROM`recensione` GROUP BY`recensione`.`ID_film`;
 

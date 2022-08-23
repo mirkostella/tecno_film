@@ -6,7 +6,7 @@
     require_once("struttura.php");
 
     if($_SESSION['admin']==false){
-        header('location: login_admin.php');
+        header('location: ../php/login_admin.php');
         exit();
     }
 

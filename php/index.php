@@ -37,8 +37,8 @@
     }
 
     
-    if(isset($_SESSION['loggato']) && $_SESSION['loggato']==true){
-        $risultatoCard=recuperaSceltiPerTe($connessione, $ncard);
+    if($_SESSION['loggato']==true && $_SESSION['admin']==false){
+        $risultatoCard=recuperaSceltiPerTe($connessione);
         if($risultatoCard){
             $pagina=str_replace('%sceltiPerTe%',$risultatoCard,$pagina);
             $pagina=str_replace('%hrSceltiPerTe%',"<hr>",$pagina);
