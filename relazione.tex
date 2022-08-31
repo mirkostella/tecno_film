@@ -2,8 +2,10 @@
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage[italian]{babel}
-\author{Mirko Stella \and Sonia Franco \and Ruth Genevieve Bousapnamene \and Elton Ibra}
-\title{Tecno Film}
+\usepackage{hyperref}
+\hypersetup{hidelinks}
+\author{Mirko Stella 1201184 \and Sonia Franco 1224437 \and Ruth Genevieve Bousapnamene 1192088 \and Elton Ibra 1234931}
+\title{\Huge \textbf {Tecno Film}}
 \date{20 Agosto 2022}
 \begin{document}
 \maketitle
@@ -23,56 +25,176 @@ Segnaposto indirizzo
 
 \textit{password}:admin
 
+\textbf{Indirizzo mail di riferimento}:
+
+mirko.stella@studenti.unipd.it
+
 \tableofcontents
 \newpage
 \section{Introduzione}
-    Tecno Film \`e un sito che si occupa di organizzare i film presenti al suo interno offrendo la possibililt\`a di 
-    noleggiarli o acquistarli.
+Tecno Film \`e un sito che si occupa di esporre in modo organizzato i film presenti al suo interno ed offre la possibililt\`a di noleggiarli o acquistarli agli utenti registrati.
 
-    L'idea \`e nata da un gruppo di studenti dell'Universit\`a di Padova appassionati di film che ha voluto usare questa 
-    passione per fare il progetto di 
-    Tecnologie Web del terzo anno del corso di Informatica.
+L'idea \`e nata da un gruppo di studenti dell'Universit\`a di Padova appassionati di film che ha voluto usare questa 
+passione per fare il progetto di Tecnologie Web del terzo anno del corso di Informatica.
 
-\section{Tipologie di utenti}
-\subsection{Utente generico (non registrato)}
-    L'utente non registrato non avendo ancora fornito le proprie credenziali durante la fase di registrazione non dispone 
-    ancora di un account su Tecno Film quindi le funzionalit\`a che gli vengono offerte sono meno rispetto all'utente registrato.
-    Un utente non registrato pu\`o:
-\begin{itemize}
-    \item{Visualizzare la Homepage del sito}
-    \item{Visualizzare la pagina Classifiche}
-    \item{Visualizzare la pagina Regolamento}
-    \item{Visualizzare la pagina Chi siamo}
-    \item{Visualizzare la pagina con i dettagli e le recensioni di un determinato film}
-    \item{Eseguire la procedura di registrazione}
-    \item{Eseguire ricerche in base al nome del film cercato}
-\end{itemize}
-\subsection{Utente registrato}
-    L'utente registrato ha completato la procedura di registrazione e dispone di un proprio account su Tecno Film
-    Un utente registrato pu\`o:
-\begin{itemize}
-    \item{Fare tutto quello che pu\`o fare un utente generico}
-    \item{Visualizzare la pagina I miei film}
-    \item{Eseguire il login}
-    \item{Eseguire il logout}
-    \item{Inserire una recensione su un determinato film}
-    \item{Eliminare la propria recensione da un determinato film}
-    \item{Mettere Utile ad una recensione di un altro utente}
-    \item{Segnalare la recensione di un altro utente}
-    \item{Acquistare film}
-    \item{Noleggiare film}
-\end{itemize}
+Viene offerta un'area dedicata agli amministratori separata dal resto del sito in quanto specifica per l'amministrazione.
+    \section{Tipologie di utenti}
+    Tecno Film \`e rivolto ad utenti maggiorenni data la presenza di contenuti che potrebbero non essere adatti a tutte le et\`a per il linguaggio
+    o per le scene che potrebbero presentarsi durante la visione di un film.
+\`E pertanto consigliata la presenza di un adulto durante la visione di determinati film.   
+\subsection{Utente generico}
+\textbf{Tra gli utenti generici si considerano gli utenti che non sono registrati o che non sono loggati.}
+
+Un utente generico pu\`o:
+
+    \noindent\textbf{Visualizzare le pagine}:
+        \begin{itemize}
+            \item Homepage
+            \item Classifiche
+            \item Regolamento
+            \item Chi siamo
+            \item Pagine film
+        \end{itemize}
+    \textbf{Eseguire le operazioni}:
+        \begin{itemize}
+            \item Registrazione
+            \item Login (se registrato)
+            \item Ricerca dei film per nome
+        \end{itemize}
+\subsection{Utente loggato}
+    Un account pu\`o trovarsi nello stato Attivo o Bloccato.
+    \subsubsection{Loggato con account Attivo}
+    Un utente loggato con account Attivo pu\`o:
+
+    \noindent\textbf{Visualizzare le pagine}:
+    \begin{itemize}
+        \item Tutte le pagine che pu\`o visualizzare un utente generico
+        \item I miei film
+    \end{itemize}
+    \textbf{Eseguire le operazioni}:
+    \begin{itemize}
+        \item Logout
+        \item Acquisto di uno o pi\`u film
+        \item Noleggio di uno o pi\`u film
+        \item Inserimento di una recensione per film
+        \item Eliminazione delle proprie recensioni
+        \item Valutazione delle recensioni degli altri utenti come Utili
+        \item Segnalazione delle recensioni degli altri utenti
+    \end{itemize}
+
+    \subsubsection{Loggato con account Bloccato}
+    Un utente loggato con account Bloccato pu\`o:
+
+    \noindent\textbf{Visualizzare le pagine}:
+    \begin{itemize}
+        \item Tutte le pagine che pu\`o visualizzare un utente con account Attivo
+    \end{itemize}
+    \textbf{Eseguire le operazioni}:
+    \begin{itemize}
+        \item Logout
+        \item Acquisto di uno o pi\`u film
+        \item Noleggio di uno o pi\`u film
+    \end{itemize}
 \subsection{Amministratore}
-    Un amministratore si occupa della gestione dei film e degli utenti presenti all'interno di Tecno Film.
-    Un amministratore pu\`o:
+    Un amministratore si occupa della gestione dei film e degli utenti e pu\`o tenere sotto controllo gli incassi derivati
+    dall'acquisto o dal noleggio dei film.
+    Un amministratore loggato pu\`o:
+
+\noindent\textbf{Visualizzare le pagine}:
 \begin{itemize}
-    \item{}
+    \item Riepilogo
+    \item Aggiungi film
+    \item Segnalazioni utente
+\end{itemize}
+\textbf{Eseguire le operazioni}:
+\begin{itemize}
+    \item Logout
+    \item Aggiunta di nuovi film 
+    \item Eliminazione delle recensioni degli utenti
+    \item Modifica dello stato degli utenti
 \end{itemize}
 \section{Struttura delle pagine}
 \subsection{HTML}
+La struttura delle pagine \`e stata scritta in HTML5 mantenendo la sintassi XHTML in modo che le pagine possano risultare valide anche per i browser che non
+lo supportano.
+Viene utilizzato il modello a tre pannelli composto da header,menu e contenuto in modo da garantire all'utente una modalit\`a di navigazione
+gi\`a conosciuta.
+
+La validit\`a di ciascuna pagina \`e stata testata utilizzando il codice HTML generato dagli script PHP tramite il tool \href{https://validator.w3.org/}{Markup Validation Service} fornito da W3C.
+
+Nella cartella componenti si trovano i file .html che vengono usati per comporre le parti comuni tra pi\`u pagine e quelle
+che si ripetono pi\`u volte all'interno della stessa pagina ma richiedono una personalizzazione in base al loro contenuto.
+\subsubsection{Utente}
+Le pagine utente contengono un segnaposto \%base\% seguito dal contenuto della pagina.Per ogni pagina il segnaposto \%base\% viene sostituito 
+dal corrispondente script php con il codice presente nel file ../componenti/base.html.
+I segnaposto relativi alle keywords,descrizione e titolo di ogni pagina vengono anch'essi sostituiti tramite php.
+\subsubsection{Amministratore}
+La pagina di login non contiene il segnaposto \%base\% perch\`e non \`e presente il men\`u. Tutte le altre pagine utilizzano il codice presente
+in ../componenti/base\_admin.html per sostituire il segnaposto \%base\%.
+
 \subsection{CSS}
+Viene utilizzato CSS3 che permette l'utilizzo di flex-box per gestire gli elementi.
+Flex-box viene utilizzato per disporre gli elementi che costituiscono l'header e per disporre il menu e il contenuto delle pagine.
+\`E stato usato anche per disporre le card dei film e per i dettagli contenuti al loro interno.
+
+In tutto il file .css dove possibile sono state usate unit\`a di misura relative dato che non \`e possibile avere un perfetto controllo dell'
+output utilizzando unit\`a di misura assolute.
+
+Per rendere il sito responsive e quindi adattarsi a schermi di dimensioni differenti sono stati introdotti dei breakpoint
+facendo uso delle media query.
+I breakpoint stabiliti sono: 75em,60em,35em.
+
+Le regole applicate fino a 75em rendono raggiungibile il menu (situato a fine pagina) tramite un link all'interno dell'header.
+Adottando questo metodo non sono state necessarie regole per rendere visibile il contenuto di un possibile menu ad hamburger.
+\textbf{Stampa}
+Per la quantit\`a limitata di pagine il file .css comprende anche le regole di stampa(media print).
+Queste regole hanno lo scopo di eliminare gli elementi interattivi (ad esempio i pulsanti,caselle di ricerca,menu) e di minimizzare l'uso 
+del colore (ad esempio non vengono stampate le immagini di copertina).
+Per quanto riguarda le interruzioni di pagina sono state inserite delle regole che impediscono la separazione delle informazioni dei film tra una 
+pagina e l'altra.
+Per le pagine di login e di registrazione non sono state previste regole di stampa.
 \subsection{PHP}
+Il rendering delle pagine viene fatto lato server sostituendo i segnaposto presenti nelle pagine HTML
+con il contenuto opportuno.
+
+I segnaposto hanno la forma \%segnaposto\%.
+
+Per gestire la connessione al database \`e stato creato il file connessione.php.
+Il file contiene le funzioni per aprire e chiudere la connessione e i metodi che servono per interrogare il database.
+La connessione viene aperta una sola volta all'inizio dello script corrispondente alla pagina del sito e chiusa alla fine quando non \`e pi\`u necessaria.
+Alle funzioni che vengono chiamate dallo script e che richiedono una connessione (che deve essere aperta),questa viene passata come parametro.
+
+Per gestire la variabile superglobale \$\_SESSION \`e stato creato il file sessione.php.
+La variabile \$\_SESSION viene usata per fare i controlli sul tipo e sullo stato (loggato o non loggato) di un utente e per tenere traccia del suo ID.
+Il sito non prevede la possibilit\`a di essere loggati sia come utente che come amministratore contemporaneamente.
+
+\textbf{Form}
+
+Sono stati previsti dei controlli sui dati inseriti dall'utente tramite le form e in caso di input non validi vengono
+mostrati i relativi messaggi di errore.
+Inoltre \`e prima di eseguire le query viene fatta la pulizia dell'input che consiste nell'eliminazione degli spazi vuoti
+prima e dopo l'input e nella sostituzione di possibili caratteri html in entit\`a html.
+
 \subsection{JS}
+Javascript viene utilizzato per controllare i campi delle form,segnalare gli errori ed assistere l'utente durante la fase di inserimento dei dati.
+Viene utilizzato lato client per gestire l'invio dei dati delle form in modo da limitare le interrogazioni al server.
+Infatti se una form contiene dei valori non validi la richiesta al server viene bloccata.
+Nel caso in cui Javascript sia disabilitato le richieste al server vengono inoltrate in ogni caso e i messaggi di errore vengono visualizzati nella pagina di risposta.
+
+Le pagine in cui sono stati inseriti gli script sono:
+
+\noindent \textbf{Utente:}
+\begin{itemize}
+    \item login.html
+    \item registrazione.html
+\end{itemize}
+\textbf{Amministratore:}
+\begin{itemize}
+    \item ins\_film\_admin.html
+\end{itemize}
+
+
+
 \section{Accessibilit\`a}
 \section{Database}
 \section{Note}

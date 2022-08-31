@@ -52,6 +52,9 @@ class Connessione{
     public function inizioTransazione(){
         $this->conn->autocommit(false);
     }
+
+    //usato per rendere le operazioni atomiche (in caso di fallimento di una query tra inizio e fine transazione viene fatto il rollback e ripristinato il database
+    //allo stato di inizio transazione)
     public function fineTransazione($statoTransazione){
         if($statoTransazione)
             $this->conn->commit();
