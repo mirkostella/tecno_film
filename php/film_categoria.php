@@ -31,7 +31,7 @@
         $risultatoCard=recuperaNuoveUscite($connessione, $limite);
         $query_n_film="SELECT COUNT(*) as numero FROM film WHERE year(film.data_uscita) > (year(CURRENT_TIMESTAMP)-1)";
         $num_max_film=$connessione->interrogaDB($query_n_film);
-        if($limite <= $num_max_film[0]['numero']){
+        if($limite < $num_max_film[0]['numero']){
             $pulsanteVedialtro=pulsanteVediAltro('Nuove Uscite','film_categoria.php', $limite+5);
             $pagina=str_replace('%vedialtro%', $pulsanteVedialtro, $pagina);
         }
@@ -49,12 +49,12 @@
     foreach($generi as $valore){
         if($_GET['nomeCategoria']==$valore){
             $risultatoCard=recuperaPerGenere($connessione, $limite, $valore);
-            $query_n_film="SELECT COUNT(*) as numero FROM film JOIN appartenenza ON(film.ID=appartenenza.ID_film) JOIN genere ON (appartenenza.ID_genere=genere.ID) WHERE nome_genere='.$valore.'";
+            $query_n_film="SELECT COUNT(*) as numero FROM film JOIN appartenenza ON(film.ID=appartenenza.ID_film) JOIN genere ON (appartenenza.ID_genere=genere.ID) WHERE nome_genere=\"$valore\"";
             $num_max_film=$connessione->interrogaDB($query_n_film);
             if($risultatoCard){
-                if($limite <= $num_max_film[0]['numero']){
-                $pulsanteVedialtro=pulsanteVediAltro($valore,'film_categoria.php', $limite+5);
-                $pagina=str_replace('%vedialtro%', $pulsanteVedialtro, $pagina);
+                if($limite < $num_max_film[0]['numero']){
+                    $pulsanteVedialtro=pulsanteVediAltro($valore,'film_categoria.php', $limite+5);
+                    $pagina=str_replace('%vedialtro%', $pulsanteVedialtro, $pagina);
                 }
                 else
                     $pagina=str_replace('%vedialtro%', '', $pagina);

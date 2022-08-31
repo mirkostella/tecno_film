@@ -6,7 +6,7 @@
     require_once("struttura.php");
 
     if($_SESSION['admin']==false){
-        header('location: login_admin.php');
+        header('location: ../php/login_admin.php');
         exit();
     }
 
@@ -52,6 +52,7 @@
         }
         else
             $generiScelti=$_POST['generi'];
+
         $datiNuovoFilm=array(     
             'titolo'=>trim($_POST['titoloFilm']),
             'trama'=>trim($_POST['tramaFilm']),
@@ -89,6 +90,7 @@
             $pagina=str_replace('%trama%', $datiNuovoFilm['trama'], $pagina);
         }
     }
+
     $pagina=str_replace('%titolo%', "", $pagina);
     $pagina=str_replace('%copertina%', "", $pagina);
     $pagina=str_replace('%altCopertina%', "", $pagina);

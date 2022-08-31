@@ -39,5 +39,6 @@
     }
 
     $connessione->chiudiConnessione();
+
     echo $pagina;
 ?>

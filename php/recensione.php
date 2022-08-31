@@ -39,8 +39,8 @@ abstract class Recensione{
         if($array['testo']=="")
             $err['errTesto']="Campo testo obbligatorio";
         else{
-            if(strlen($array['testo'])<50 || strlen($array['testo'])>500){
-                $err['errTesto']="Il testo deve essere lungo tra i 50 e i 100 caratteri";
+            if(strlen($array['testo'])<3 || strlen($array['testo'])>100){
+                $err['errTesto']="Il testo deve essere lungo tra i 3 e i 100 caratteri";
             }
         }
         if($array['valutazione']==""){

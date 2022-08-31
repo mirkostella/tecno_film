@@ -31,7 +31,7 @@
     $struttura->aggiungiBase($connessione, $pagina);
     $struttura->aggiungiMenu($pagina,"","");
     $pagina=str_replace("%descrizione%","Informazioni e recensioni del film %titolo%", $pagina);
-    $pagina=str_replace("%keywords%","TecnoFilm, %titolo%, %genere%, Acquisto, Noleggio, recensione", $pagina);
+    $pagina=str_replace("%keywords%","%titolo%, TecnoFilm, %genere%, Acquisto, Noleggio, recensione", $pagina);
     $pagina=str_replace("%titoloPagina%","TecnoFilm: %titolo%", $pagina);
     $pagina=str_replace("%breadcrumb%", "<a href=\"../php/index.php\" xml:lang=\"en\" lang=\"en\">Home</a> &gt; <span class=\"grassetto\">%titolo%</span>", $pagina);
 
@@ -88,35 +88,36 @@
     $valutazioneNuovaRecensione=""; 
     if(isset($_POST['inviaRecensione']) && !$gestore->controlloPresenzaRecensioneUtente($connessione)){
         if($_SESSION['admin']==false){
-        $testo=test_input($_POST['testoRecensione']);
-        $valutazione=trim($_POST['valutazioneRecensione']);
-        $data=date('Y/m/d H:i:s',time());
-        $queryDati="SELECT username, path FROM utente JOIN foto_utente ON (utente.ID_foto=foto_utente.ID) WHERE utente.ID = '".$_SESSION['id']."'";
-        $ris=$connessione->interrogaDB($queryDati);
-        $datiRecensione=array(
-            'idFilm'=>$idFilm,
-            'idUtente'=>$_SESSION['id'],
-            'username' => $ris[0]['username'],
-            'profilo'=> $ris[0]['path'],
-            'data'=>$data,
-            'testo'=>$testo,
-            'valutazione'=>$valutazione
-    );
+            $testo=test_input($_POST['testoRecensione']);
+            $valutazione=trim($_POST['valutazioneRecensione']);
+            $data=date('Y/m/d H:i:s',time());
+            $queryDati="SELECT username, path FROM utente JOIN foto_utente ON (utente.ID_foto=foto_utente.ID) WHERE utente.ID = '".$_SESSION['id']."'";
+            $ris=$connessione->interrogaDB($queryDati);
+            $datiRecensione=array(
+                'idFilm'=>$idFilm,
+                'idUtente'=>$_SESSION['id'],
+                'username' => $ris[0]['username'],
+                'profilo'=> $ris[0]['path'],
+                'data'=>$data,
+                'testo'=>$testo,
+                'valutazione'=>$valutazione
+            );
 
-    $nuovaRecensione=new RecensioneUtente($datiRecensione);
-    $errTesto=$nuovaRecensione->getMessaggioErrori()['errTesto'];
-    $errValutazione=$nuovaRecensione->getMessaggioErrori()['errValutazione'];
-    $testoNuovaRecensione=$nuovaRecensione->getTesto();
-    $valutazioneNuovaRecensione=$nuovaRecensione->getValutazione();
+            $nuovaRecensione=new RecensioneUtente($datiRecensione);
+            $errTesto=$nuovaRecensione->getMessaggioErrori()['errTesto'];
+            $errValutazione=$nuovaRecensione->getMessaggioErrori()['errValutazione'];
+            $testoNuovaRecensione=$nuovaRecensione->getTesto();
+            $valutazioneNuovaRecensione=$nuovaRecensione->getValutazione();
 
     //se la recensione non viene inserita ripristino i campi della form
-    if($gestore->gestisciInserisciRecensione($connessione, $nuovaRecensione,$pagina))
-        $pagina=str_replace('%formRecensione%',"",$pagina);
-        }
-        else
-            header('location: login.php');
+            if($gestore->gestisciInserisciRecensione($connessione, $nuovaRecensione,$pagina)){
+                $pagina=str_replace('%formRecensione%',"",$pagina);
+            }
+            else
+                header('location: ../php/login.php');
 
-    }
+        }
+    }   
 
 
     if(isset($_GET['utile']))
@@ -159,7 +160,7 @@
         else{
             //accedi per inserire una recensione
             $pagina=str_replace('%messaggioEsitoRecensione%',"",$pagina);
-            $pagina=str_replace('%formRecensione%',"Accedi per inserire una recensione",$pagina);
+            $pagina=str_replace('%formRecensione%',"<p>Per inserire una recensione devi essere loggato. <a href=\"../php/login.php\">Accedi qui</a></p>",$pagina);
         }          
     }
 
@@ -180,6 +181,7 @@
     $pagina=str_replace('%idFilm%',$film->id,$pagina);
     $pagina=str_replace('%titolo%',$film->titolo,$pagina);
     $pagina=str_replace('%path%',$film->copertina,$pagina);
+    $pagina=str_replace('%desc%',$film->descrizione,$pagina);
     $pagina=str_replace('%annoUscita%',$film->annoUscita,$pagina);
     $pagina=str_replace('%durata%',$film->durata,$pagina);
     $stringaGeneri='';
@@ -200,7 +202,7 @@
     $pagina=str_replace('%listaRecensioni%',$stringaRecensioni,$pagina);
     $pagina=str_replace('%filtro%',$stringaFiltroRecensioni,$pagina); 
 
-    $pagina=str_replace('%esitoAcquistoNoleggio%',"",$pagina); 
+    $pagina=str_replace('%esitoAcquistoNoleggio%',"",$pagina);
 
     $connessione->chiudiConnessione();
     echo $pagina;  

@@ -33,6 +33,7 @@
 
     $pagina=str_replace('%titolo%',$film->titolo,$pagina);
     $pagina=str_replace('%path%',$film->copertina,$pagina);
+    $pagina=str_replace('%desc%',$film->descrizione,$pagina);
     $pagina=str_replace('%annoUscita%',$film->annoUscita,$pagina);
     $pagina=str_replace('%durata%',$film->durata,$pagina);
     $stringaGeneri='';

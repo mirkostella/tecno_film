@@ -5,7 +5,7 @@
 
     //se la sessione è già aperta come utente normale, mi porta direttamente alla home
     if($_SESSION['loggato'] == true && $_SESSION['admin'] == false){
-        header('location: index.php');
+        header('location: ../php/index.php');
         exit();
     }
 
@@ -30,11 +30,11 @@
     $valoreEmail="";
     $valorePassword="";
     if(isset($_REQUEST['idFilm']))
-    $idFilm=$_REQUEST['idFilm'];
+        $idFilm=$_REQUEST['idFilm'];
     if(isset($_REQUEST['email']))
-    $valoreEmail=$_REQUEST['email'];
+        $valoreEmail=$_REQUEST['email'];
     if(isset($_REQUEST['password']))
-    $valorePassword=$_REQUEST['password'];
+        $valorePassword=$_REQUEST['password'];
     
     $pagina = str_replace('%idFilm%',$idFilm,$pagina);
     $pagina = str_replace('%email%',$valoreEmail,$pagina);
@@ -73,11 +73,11 @@
             $_SESSION['admin']=false;
             $connessione->chiudiConnessione();
             if($idFilm){
-                header('location: pagina_film.php?idFilm='.$idFilm);
+                header('location: ../php/pagina_film.php?idFilm='.$idFilm);
                 exit();
             }
             else{
-                header('location: index.php');
+                header('location: ../php/index.php');
                 exit();
             }      
         }

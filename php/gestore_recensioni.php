@@ -156,24 +156,26 @@ class GestoreRecensioni{
 
     //true se recensione inserita false altrimenti
     public function gestisciInserisciRecensione($connessione, $nuovaRecensione,&$pagina){
-        if(!$nuovaRecensione->getNumErrori()){
-            $idNuovaRecensione=$nuovaRecensione->aggiungiDB($connessione)['ID'];
-            if($idNuovaRecensione){
-                $nuovaRecensione->setID($idNuovaRecensione);
-                $pagina=str_replace('%messaggioEsitoRecensione%','<div class="success_box">Recensione inserita correttamente!</div>',$pagina);
-                array_push($this->listaRecensioni,$nuovaRecensione);
-            
-                return true;
-            }           
+        if($_SESSION['loggato']==true && $_SESSION['admin']==false){
+            if(!$nuovaRecensione->getNumErrori()){
+                $idNuovaRecensione=$nuovaRecensione->aggiungiDB($connessione)['ID'];
+                if($idNuovaRecensione){
+                    $nuovaRecensione->setID($idNuovaRecensione);
+                    $pagina=str_replace('%messaggioEsitoRecensione%','<div class="success_box">Recensione inserita correttamente!</div>',$pagina);
+                    array_push($this->listaRecensioni,$nuovaRecensione);
+                
+                    return true;
+                }           
+                else{
+                    $pagina=str_replace('%messaggioEsitoRecensione%','<div class="error_box">Recensione non inserita:per favore riprova piú tardi </div>',$pagina);
+                    return false;
+                }
+            }
+            //sono presenti errori nella compilazione della nuova recensione e stampo i messaggi di errore
             else{
-                $pagina=str_replace('%messaggioEsitoRecensione%','<div class="error_box">Recensione non inserita:per favore riprova piú tardi </div>',$pagina);
+                $pagina=str_replace('%messaggioEsitoRecensione%','<div class="error_box">Inserimento non avvenuto</div>',$pagina);
                 return false;
             }
-        }
-        //sono presenti errori nella compilazione della nuova recensione e stampo i messaggi di errore
-        else{
-            $pagina=str_replace('%messaggioEsitoRecensione%','<div class="error_box">Inserimento non avvenuto</div>',$pagina);
-            return false;
         }
 
     }

@@ -340,6 +340,10 @@ header{
     background-size: cover;
 }
 
+p{
+    margin-inline: 1em;
+}
+
 /* -------------------------------------------------- */
 
 #menuProposte{
@@ -462,6 +466,10 @@ header{
     transition: ease-in-out 0s;
     
 } 
+#recensioni h3{
+    margin-left: 0.8em;
+}
+
 #recensioni  li{
     display: block;
     list-style-type: none;
@@ -477,6 +485,11 @@ header{
     text-align: center;
     margin:2em 0;
 }
+
+#filtroRecensioni{
+    margin-left: 1em;
+}
+
 #filtroRecensioni select,#filtroRecensioni input{
     display: inline-block;
     margin:0.8em 0.8em 0 0;
@@ -488,6 +501,7 @@ header{
     padding:1em;
     padding-bottom:0;
     margin-bottom:1em;
+    margin-inline: 1em;
     position: relative;
 }
 .recensioneUtente dt{

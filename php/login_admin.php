@@ -6,7 +6,7 @@
     
     //se la sessione è già aperta come admin mi porta direttamente alla home dell'admin
     if($_SESSION['loggato'] == true && $_SESSION['admin']==true){
-        header('location: amministratore_loggato.php');
+        header('location: ../php/amministratore_loggato.php');
         exit();
     }
 
@@ -55,7 +55,7 @@
                 $_SESSION['admin']=true;
 
                 $connessione->chiudiConnessione();
-                header('location: amministratore_loggato.php');
+                header('location: ../php/amministratore_loggato.php');
                 exit();
             }
             $connessione->chiudiConnessione();

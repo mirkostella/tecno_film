@@ -412,7 +412,7 @@ function init_amministratore_ins_film(){
 function init_pagina_film(){
     if(document.getElementById("recensioni")){  
         var recensioneHTML=document.getElementById("testoRecensione");
-        recensioneHTML.addEventListener("focusout",e=>{controlloLunghezzaCampo(e.target,50)});
+        recensioneHTML.addEventListener("focusout",e=>{controlloLunghezzaCampo(e.target, 3)});
     }
 }
 
