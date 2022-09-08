@@ -6,6 +6,7 @@
     require_once ('struttura.php');
     require_once ('card.php');
     require_once ('info_film.php');
+    require_once ('lingua.php');
 
 
     $pagina=file_get_contents("../html/film_categoria.html");
@@ -17,13 +18,16 @@
 
     $struttura=new Struttura();
     $struttura->aggiungiBase($connessione, $pagina);
-    $pagina=str_replace("%descrizione%","Ecco i film presenti nella categoria %categoriaFilm%", $pagina);
-    $pagina=str_replace("%keywords%","TecnoFilm, %categoriaFilm%, Film", $pagina);
+    $pagina=str_replace("%descrizione%","Ecco i film presenti nella categoria %categoriaFilmNoLang%", $pagina);
+    $pagina=str_replace("%keywords%","TecnoFilm, %categoriaFilmNoLang%, Film", $pagina);
     $pagina=str_replace("%titoloPagina%","TecnoFilm: %categoriaFilm%", $pagina);
     $pagina=str_replace("%breadcrumb%","<a href=\"../php/index.php\" xml:lang=\"en\" lang=\"en\">Home</a> &gt; <span class=\"grassetto\">%categoriaFilm%</span>", $pagina);
     $struttura->aggiungiMenu($pagina,'','');
 
-    $pagina=str_replace('%categoriaFilm%',$_GET['nomeCategoria'],$pagina);
+    // $nomeCategoriaLang=aggiungiSpanLang($_GET['nomeCategoria']);
+    $nomeCategoriaNoLang=eliminaDelimitatoriLingua($_GET['nomeCategoria']);
+    $pagina=str_replace('%categoriaFilm%',$nomeCategoriaNoLang,$pagina);
+    $pagina=str_replace('%categoriaFilmNoLang%',$nomeCategoriaNoLang,$pagina);
     $limite = $_GET['limite'];
     $risultatoCard=NULL;
 

@@ -1,5 +1,6 @@
 <?php
     require_once ('sessione.php');
+    require_once ('lingua.php');
 
     class Struttura{
 
@@ -11,14 +12,15 @@
             if($suggerimenti){
                 foreach($suggerimenti as $i=>$valore){
                     $titolo=$suggerimenti[$i]["titolo"];
-                    $lista=$lista."<option>$titolo</option>";
+                    $titoloLang=aggiungiSpanLang($titolo);
+                    $lista=$lista."<option>$titoloLang</option>";
                 }
             }
             $componente=str_replace("%suggerimenti%",$lista,$componente);
 
             if($_SESSION['loggato']==true && $_SESSION['admin']==false){
                 $componente=str_replace('<a href="../php/registrazione.php" accesskey="r">Registrati</a>', '', $componente);
-                $componente=str_replace('<a href="../php/login.php" accesskey="l">Login</a>', '<a href="../php/logout.php" accesskey="l">Logout</a>', $componente);
+                $componente=str_replace('<a href="../php/login.php" accesskey="l" xml:lang="en" lang="en">Login</a>', '<a href="../php/logout.php" accesskey="l" xml:lang="en" lang="en">Logout</a>', $componente);
             }
 
             $pagina=str_replace("%base%",$componente,$pagina);

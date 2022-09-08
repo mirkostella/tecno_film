@@ -247,11 +247,11 @@ INSERT INTO `genere` (`nome_genere`) VALUES
 ('Drammatico'),
 ('Commedia'),
 ('Animazione'),
-('Horror'),
+('^Horror^'),
 ('Storico'),
-('Thriller'),
+('^Thriller^'),
 ('Romantico'),
-('Fantasy'),
+('^Fantasy^'),
 ('Biografico');
 
 

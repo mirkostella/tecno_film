@@ -170,6 +170,16 @@ function controlloPrezzoAcquistoNoleggio(elementoAcquisto,elementoNoleggio){
 }
 
 //################################ UTILITA' ##################################
+//inserisce il pulsante dopo elemento
+function aggiungiMostra(elemento,id){
+    var vediP = document.createElement("input");
+        vediP.type = "button";
+        vediP.id=id;
+        vediP.value = "Mostra";
+        vediP.classList = "btnVediPassword";
+        elemento.insertAdjacentElement("afterend", vediP);
+        return vediP;
+}
 function mostraNascondiPassword(elemento){
     if(elemento.type=="password")
         elemento.type="text";
@@ -256,8 +266,7 @@ function init_login(){
             }
         })
         var elePassword=document.getElementById("password");
-        var btn_mostra=document.getElementById("mostraPassword");
-        btn_mostra.addEventListener("click",function(){mostraNascondiPassword(elePassword);});
+        aggiungiMostra(elePassword,"mostraPassword").addEventListener("click",function(){mostraNascondiPassword(elePassword);});
     }
 }
 
@@ -296,10 +305,10 @@ function init_registrazione(){
             else
                 eliminaMessaggiSuccessivi(confermaPassword);
         });
-        var btn_mostra=document.getElementById("mostraPassword");
-        btn_mostra.addEventListener("click",function(){mostraNascondiPassword(password);});
-        var btn_mostra_conferma=document.getElementById("mostraPasswordConferma");
-        btn_mostra_conferma.addEventListener("click",function(){mostraNascondiPassword(confermaPassword);});
+
+        aggiungiMostra(password,"mostraPassword").addEventListener("click",function(){mostraNascondiPassword(password);});
+
+        aggiungiMostra(confermaPassword,"mostraPasswordConferma").addEventListener("click",function(){mostraNascondiPassword(confermaPassword);});
 
         aggiungiControlliFocusOut(controlliRegistrazione);
         //controllo immagine profilo (quando il valore dell'input file cambia)
@@ -346,8 +355,7 @@ function init_amministratore_login(){
         })
         
         var elePassword=document.getElementById("password");
-        var btn_mostra=document.getElementById("mostraPassword");
-        btn_mostra.addEventListener("click",function(){mostraNascondiPassword(elePassword);});
+        aggiungiMostra(elePassword,"mostraPassword").addEventListener("click",function(){mostraNascondiPassword(elePassword);});
     }
 }    
 
@@ -366,8 +374,6 @@ function init_amministratore_ins_film(){
         var pNoleggio=document.getElementById("prezzoNoleggio");
         var trama=document.getElementById("trama");
         var btn_invio=document.getElementById("invio");
-        pAcquisto.value=0;
-        pNoleggio.value=0;
         //controlli
         titolo.addEventListener("focusout",e=>{controlloLunghezzaCampo(e.target)});
         copertina.addEventListener("change",e=>{

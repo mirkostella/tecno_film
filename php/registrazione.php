@@ -26,7 +26,7 @@
     $pagina=str_replace("%titoloPagina%","TecnoFilm: Registrazione", $pagina);
     $pagina=str_replace("%breadcrumb%","<span class=\"grassetto\">Registrati</span>", $pagina);
 
-	$pagina=str_replace('<a href="../php/registrazione.php">Registrati</a>', '', $pagina);
+	$pagina=str_replace('<a href="../php/registrazione.php" accesskey="r">Registrati</a>', '', $pagina);
     $struttura->aggiungiMenu($pagina,"","");
 	$nome='';
 	$cognome='';
@@ -41,31 +41,29 @@
 	$no_error=true;
 	$upload_result=NULL;
 	if(isset($_POST['invia'])){
-		echo $no_error;
-		echo "sono inviato";
 		if(isset($_POST['nome'])){
-			$nome=test_input($_POST['nome']);
+			$nome=$connessione->pulisciStringaSQL(test_input($_POST['nome']));
 		}
 		if(isset($_POST['cognome'])){
-			$cognome=test_input($_POST['cognome']);
+			$cognome=$connessione->pulisciStringaSQL(test_input($_POST['cognome']));
 		}
 		if(isset($_POST['data'])){
-			$data_nascita=test_input($_POST['data']);
+			$data_nascita=$connessione->pulisciStringaSQL(test_input($_POST['data']));
 		}
 		if(isset($_POST['sesso'])){
-			$sesso=test_input($_POST['sesso']);
+			$sesso=$connessione->pulisciStringaSQL(test_input($_POST['sesso']));
 		}
 		if(isset($_POST['email'])){
-			$email=test_input($_POST['email']);
+			$email=$connessione->pulisciStringaSQL(test_input($_POST['email']));
 		}
 		if(isset($_POST['username'])){
-			$username=test_input($_POST['username']);
+			$username=$connessione->pulisciStringaSQL(test_input($_POST['username']));
 		}
 		if(isset($_POST['password'])){
-			$psw=test_input($_POST['password']);
+			$psw=$connessione->pulisciStringaSQL(test_input($_POST['password']));
 		}
 		if(isset($_POST['confPassword'])){
-			$conf_psw=test_input($_POST['confPassword']);
+			$conf_psw=$connessione->pulisciStringaSQL(test_input($_POST['confPassword']));
 		}	
 	
 		//controlli input
@@ -140,7 +138,7 @@
 		else
 			$pagina=str_replace('%error_pwd%', '', $pagina);
 		//se gli input vanno bene, carico l'immagine profilo
-		echo $no_error;
+
 		if($no_error){
 			$gestisci_img = new GestioneImg();
 
@@ -169,7 +167,7 @@
 		}
 
 		//se l'immagine va bene, inserisco tutto nel db
-		echo $no_error;
+
 		if($no_error){
 			if($id_foto != NULL)
 			{

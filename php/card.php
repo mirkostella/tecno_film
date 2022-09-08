@@ -1,7 +1,7 @@
 <?php
     require_once('stelle.php');
     require_once('info_film.php');
-
+    require_once('lingua.php'); 
     class CardBase{
         public $id;
         public $copertina;
@@ -18,19 +18,24 @@
             $this->genere=$generi;
         }
         public function aggiungiBase(){
+            $titoloLang=aggiungiSpanLang($this->titolo);
+            $titolo=eliminaDelimitatoriLingua($this->titolo);
+            $descrizione=eliminaDelimitatoriLingua($this->descrizione);
             $cardB=file_get_contents("../componenti/card.html");
             $cardB=str_replace('%id%',$this->id,$cardB);
             $cardB=str_replace('%path%',$this->copertina,$cardB);
-            $cardB=str_replace('%desc%',$this->descrizione,$cardB);
+            $cardB=str_replace('%desc%',$descrizione,$cardB);
             //preparo la lista dei generi
             $listaGeneri='';
             foreach($this->genere as $valore){
                 $stringaGenere=$valore['generiFilm']." ";
                 $listaGeneri=$listaGeneri.$stringaGenere;
+                $listaGeneri=aggiungiSpanLang($listaGeneri);
             }
             $listaGeneri=$listaGeneri." ";    
             $cardB=str_replace('%gen%',$listaGeneri,$cardB);
-            $cardB=str_replace("%titolo%",$this->titolo,$cardB);
+            $cardB=str_replace("%titolo%",$titoloLang,$cardB);
+            $cardB=str_replace("%valoreTitolo%",$titolo,$cardB);
             return $cardB;  
         }
         

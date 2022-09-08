@@ -63,6 +63,10 @@ class Connessione{
 
         $this->conn->autocommit(true);
     }
+
+    public function pulisciStringaSQL($stringa){
+        return $this->conn->real_escape_string($stringa);
+    }
     //fine della classe Connessione
 }
 ?>

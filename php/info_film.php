@@ -1,6 +1,7 @@
 <?php
     require_once ('sessione.php');
     require_once ('card.php');
+    require_once ('lingua.php');
     
     //recupera le informazioni per costruire una card di un film in base all'id
     function recuperaInfo($connessione, $id){
@@ -91,6 +92,7 @@
     }
 
     function recuperaPerGenere($connessione, $limite, $genere){
+        $genereLang=aggiungiSpanLang($genere);
         $queryCard="SELECT film.ID as id,titolo,nome_genere as genere,copertina,trama,TIME_TO_SEC(durata) as durata,data_uscita as annoUscita,prezzo_acquisto as prezzoA,prezzo_noleggio as prezzoN,
         path as copertina,descrizione,AVG(valutazione) as valutazione FROM film JOIN appartenenza 
         ON(film.ID=appartenenza.ID_film) JOIN genere ON (appartenenza.ID_genere=genere.ID) JOIN foto_film ON(film.copertina=foto_film.ID) LEFT JOIN recensione ON (film.ID=recensione.ID_film) 
@@ -106,7 +108,7 @@
             if(isset($_GET['nomeCategoria']))
                 $categoriaCard=str_replace('%categoria%',"",$categoriaCard);
             else
-                $categoriaCard=str_replace('%categoria%',"<h2 id=\"$genere\">".$genere."</h2>",$categoriaCard);
+                $categoriaCard=str_replace('%categoria%',"<h2 id=\"$genere\">".$genereLang."</h2>",$categoriaCard);
             $pulsanteVediAltro=str_replace('%nomeCategoria%',".$genere.",$pulsanteVediAltro);
             $categoriaCard=str_replace('%vediAltro%',$pulsanteVediAltro,$categoriaCard);
             $categoriaCard=str_replace('%collegamento%',"film_categoria.php",$categoriaCard);

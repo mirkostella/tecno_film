@@ -19,7 +19,7 @@
     
     $struttura = new Struttura();
     $struttura->aggiungiBase($connessione, $pagina);
-    $pagina=str_replace('<a href="../php/login.php" accesskey="l">Login</a>', '', $pagina);
+    $pagina=str_replace('<a href="../php/login.php" accesskey="l" xml:lang="en" lang="en">Login</a>', '', $pagina);
     $struttura->aggiungiMenu($pagina,"","");
     $pagina=str_replace("%descrizione%","Login del sito TecnoFilm. Loggati e potrai noleggiare e acquistare film", $pagina);
     $pagina=str_replace("%keywords%","TecnoFilm, Login", $pagina);
@@ -45,10 +45,10 @@
 
     if(isset($_POST['invia'])){
         if(isset($_POST['email'])){
-            $email = trim(htmlentities($_POST['email']));
+            $email = $connessione->pulisciStringaSQL(trim(htmlentities($_POST['email'])));
         }
         if(isset($_POST['password'])){
-            $psw = trim(htmlentities($_POST['password']));
+            $psw = $connessione->pulisciStringaSQL(trim(htmlentities($_POST['password'])));
         }
 
         if(!$query_email= $connessione->interrogaDB("SELECT * FROM utente WHERE email = \"$email\"")){

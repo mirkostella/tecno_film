@@ -10,6 +10,7 @@
     require_once ('info_film.php');
     require_once ('info_utente.php');
     require_once ('controlli_form.php');
+    require_once ('lingua.php');
 
     date_default_timezone_set("Europe/Rome");
     $data=date("Y-m-d H:m:s");
@@ -30,10 +31,10 @@
     $struttura=new Struttura();
     $struttura->aggiungiBase($connessione, $pagina);
     $struttura->aggiungiMenu($pagina,"","");
-    $pagina=str_replace("%descrizione%","Informazioni e recensioni del film %titolo%", $pagina);
-    $pagina=str_replace("%keywords%","%titolo%, TecnoFilm, %genere%, Acquisto, Noleggio, recensione", $pagina);
-    $pagina=str_replace("%titoloPagina%","TecnoFilm: %titolo%", $pagina);
-    $pagina=str_replace("%breadcrumb%", "<a href=\"../php/index.php\" xml:lang=\"en\" lang=\"en\">Home</a> &gt; <span class=\"grassetto\">%titolo%</span>", $pagina);
+    $pagina=str_replace("%descrizione%","Informazioni e recensioni del film %titoloNoLang%", $pagina);
+    $pagina=str_replace("%keywords%","%titoloNoLang%, TecnoFilm, %genereNoLang%, Acquisto, Noleggio, recensione", $pagina);
+    $pagina=str_replace("%titoloPagina%","TecnoFilm: %titoloLang%", $pagina);
+    $pagina=str_replace("%breadcrumb%", "<a href=\"../php/index.php\" xml:lang=\"en\" lang=\"en\">Home</a> &gt; <span class=\"grassetto\">%titoloLang%</span>", $pagina);
 
     if(isset($_GET['confermaAcquisto'])){
         //se é giá stato fatto l'acquisto indirizzo l'utente alla pagina del film
@@ -178,10 +179,15 @@
     $infoGeneriFilm=recuperaGeneri($connessione, $idFilm);
 
     $film=new Card($infoFilm,$infoGeneriFilm);
+
     $pagina=str_replace('%idFilm%',$film->id,$pagina);
-    $pagina=str_replace('%titolo%',$film->titolo,$pagina);
+    $titoloLang=aggiungiSpanLang($film->titolo);
+    $titoloNoLang=eliminaDelimitatoriLingua($film->titolo);
+    $pagina=str_replace('%titoloLang%',$titoloLang,$pagina);
+    $pagina=str_replace('%titoloNoLang%',$titoloNoLang,$pagina);
     $pagina=str_replace('%path%',$film->copertina,$pagina);
-    $pagina=str_replace('%desc%',$film->descrizione,$pagina);
+    $descrizione=eliminaDelimitatoriLingua($film->descrizione);
+    $pagina=str_replace('%desc%',$descrizione,$pagina);
     $pagina=str_replace('%annoUscita%',$film->annoUscita,$pagina);
     $pagina=str_replace('%durata%',$film->durata,$pagina);
     $stringaGeneri='';
@@ -192,10 +198,14 @@
         $prossimoGenere=$valore['generiFilm'];
         $stringaGeneri=$stringaGeneri.', '.$prossimoGenere;
     }
-    $pagina=str_replace('%genere%',$stringaGeneri,$pagina);
+    $stringaGeneriLang=aggiungiSpanLang($stringaGeneri);
+    $stringaGeneriNoLang=eliminaDelimitatoriLingua($stringaGeneri);
+    $pagina=str_replace('%genere%',$stringaGeneriLang,$pagina);
+    $pagina=str_replace('%genereNoLang%',$stringaGeneriNoLang,$pagina);
     $pagina=str_replace('%prezzoN%',$film->prezzoN,$pagina);
     $pagina=str_replace('%prezzoA%',$film->prezzoA,$pagina);
-    $pagina=str_replace('%trama%',$film->trama,$pagina);
+    $tramaLang=aggiungiSpanLang($film->trama);
+    $pagina=str_replace('%trama%',$tramaLang,$pagina);
     $pagina=str_replace('%valutazione%',creaStelle($film->valutazione),$pagina);
 
     $pagina=str_replace('%idFilm%',$idFilm,$pagina); 

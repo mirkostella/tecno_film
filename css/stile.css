@@ -296,7 +296,7 @@ header{
     font-weight: bold;
 }
 
-.titolo input[type="submit"]{
+.titolo button[type="submit"]{
     text-align: left;
     white-space: nowrap;
     border:none;
@@ -306,7 +306,7 @@ header{
     font-weight: bold;
 }
 
-.titolo input[type="submit"]:hover{
+.titolo button[type="submit"]:hover{
     color:black;
     cursor: pointer;
 }
@@ -741,21 +741,14 @@ summary{display: none;}
 }
 
 div.genereFilm{
-    display: inline-block;
-    white-space: nowrap;
-    height: 25%;
+    display:block;
+    width: 50%;
+    white-space:wrap;
+    margin-bottom:1em;
 }
 .genereFilm label{
     margin-left: 0.5em;
     display: inline-block;
-}
-#formFilm div.ordinamento{
-    padding: 0 5%;
-    text-align: left;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    height: 20%;
 }
 
 div.genereFilm{
@@ -773,7 +766,7 @@ div.genereFilm{
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    height: 20%;
+    
     
     }
 
@@ -812,11 +805,14 @@ dt{
     flex-flow: column wrap;
     margin-top: 1em;
     margin-left:1em;
-
+    
 }
 #infoUtente span{
     display: inline-block;
     margin-bottom:1em;
+}
+#menuProposte li{
+    margin-bottom: 2em;
 }
 /* ------------------------- media query ------------------------- */
 /* proprietá generiche */
@@ -880,7 +876,7 @@ dt{
     .tbl tfoot tr td:nth-child(2){
         display: none;
     }
-
+    
     .card dt:not(.posizione){
         overflow:unset;
     }
@@ -991,7 +987,16 @@ dt{
     }
     .card{
         width: 100%;
-        font-size: 1.2em;
+        font-size: 0.8em;
+    }
+    .titolo button[type="submit"]{
+        font-size: 1.3em;
+    }
+    h2{
+        font-size: 1.7em;
+    }
+    h1{
+        font-size: 2.2em;
     }
 
     .card dt:not(.posizione){
@@ -999,7 +1004,7 @@ dt{
     }
     .nascosto2{display: none;}
     .centrale{width: 40%;}
-    #menuProposte li{display: block;margin-bottom: 1em;}
+    #menuProposte li{display: block;}
     .valutaCommento{text-align:center;}
 }
 
@@ -1103,7 +1108,7 @@ dt{
         height: auto;
     }
     
-    .titolo input[type="submit"]{
+    .titolo button[type="submit"]{
         color:#000;
     }
 

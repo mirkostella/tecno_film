@@ -4,6 +4,7 @@
     require_once ('card.php');
     require_once ('sessione.php');
     require_once ('info_film.php');
+    require_once ('lingua.php');
     
     $pagina=file_get_contents('../html/acquisto_noleggio.html');
 
@@ -23,15 +24,15 @@
     $infoFilm=recuperaInfo($connessione, $_GET['idFilm']);
     $generiFilm=recuperaGeneri($connessione, $_GET['idFilm']);
     $film=new Card($infoFilm,$generiFilm);
-    
-    $pagina=str_replace("%breadcrumb%", "<a href=\"../php/index.php\" xml:lang=\"en\" lang=\"en\">Home</a> &gt; <a href=\"../php/pagina_film.php?idFilm=".$_GET['idFilm']."\">$film->titolo</a> &gt; <span class=\"grassetto\">Conferma %tipoConferma%</span>", $pagina);
+    $titoloLang=aggiungiSpanLang($film->titolo);
+    $pagina=str_replace("%breadcrumb%", "<a href=\"../php/index.php\" xml:lang=\"en\" lang=\"en\">Home</a> &gt; <a href=\"../php/pagina_film.php?idFilm=".$_GET['idFilm']."\">".$titoloLang."</a> &gt; <span class=\"grassetto\">Conferma %tipoConferma%</span>", $pagina);
 
     if(isset($_GET['noleggio']))
         $pagina=str_replace("%tipoConferma%", "noleggio", $pagina);
     else
         $pagina=str_replace("%tipoConferma%", "acquisto", $pagina);
 
-    $pagina=str_replace('%titolo%',$film->titolo,$pagina);
+    $pagina=str_replace('%titoloLang%',$titoloLang,$pagina);
     $pagina=str_replace('%path%',$film->copertina,$pagina);
     $pagina=str_replace('%desc%',$film->descrizione,$pagina);
     $pagina=str_replace('%annoUscita%',$film->annoUscita,$pagina);
@@ -44,7 +45,8 @@
         $prossimoGenere=$valore['generiFilm'];
         $stringaGeneri=$stringaGeneri.' , '.$prossimoGenere;
     }
-    $pagina=str_replace('%genere%',$stringaGeneri,$pagina);
+    $stringaGeneriLang=aggiungiSpanLang($stringaGeneri);
+    $pagina=str_replace('%genereLang%',$stringaGeneriLang,$pagina);
     $struttura->aggiungiConfermaAcquistoNoleggio($connessione, $pagina);
     $pagina=str_replace('%prezzoN%',$film->prezzoN,$pagina);
     $pagina=str_replace('%prezzoA%',$film->prezzoA,$pagina);

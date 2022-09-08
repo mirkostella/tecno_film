@@ -5,7 +5,8 @@
     require_once ('connessione.php');
     require_once ('struttura.php');
     require_once ('info_film.php');
-
+    require_once ('lingua.php');
+    
     $pagina=file_get_contents("../html/index.html");
 
     $connessione = new Connessione();
@@ -65,7 +66,9 @@
     $listaCollegamenti="";
     $listaSegnaposti="";
     foreach($generi as $valore){
-        $nuovoCollegamento='<li><a href="#'.$valore.'">'.$valore.'</a></li>';
+        $valoreLang=aggiungiSpanLang($valore);
+        $valore=eliminaDelimitatoriLingua($valore);
+        $nuovoCollegamento='<li><a href="#'.$valore.'">'.$valoreLang.'</a></li>';
         $SegnapostiGenere='%hr'.$valore.'%'.'%'.$valore.'%'.'%vediAltro'.$valore.'%';
         $listaCollegamenti=$listaCollegamenti.$nuovoCollegamento;
         $listaSegnaposti=$listaSegnaposti.$SegnapostiGenere;
@@ -75,17 +78,19 @@
     $pagina=str_replace('%listaCollegamenti%',$listaCollegamenti,$pagina);
     foreach($generi as $valore){
         $risultatoCard=recuperaPerGenere($connessione, $ncard, $valore);
+        $valoreNoDel=eliminaDelimitatoriLingua($valore);
         if($risultatoCard){
-        $pagina=str_replace('%'.$valore.'%',$risultatoCard,$pagina);
-        $pagina=str_replace('%hr'.$valore.'%',"<hr>",$pagina);
+        $risultatoCard=eliminaDelimitatoriLingua($risultatoCard);
+        $pagina=str_replace('%'.$valoreNoDel.'%',$risultatoCard,$pagina);
+        $pagina=str_replace('%hr'.$valoreNoDel.'%',"<hr>",$pagina);
         $pulsanteVedialtro=pulsanteVediAltro($valore,'film_categoria.php', $ncard+5);
-        $pagina=str_replace('%vediAltro'.$valore.'%',$pulsanteVedialtro ,$pagina);
+        $pagina=str_replace('%vediAltro'.$valoreNoDel.'%',$pulsanteVedialtro ,$pagina);
         }
         else{
-        $pagina=str_replace('%'.$valore.'%',"",$pagina);
-        $pagina=str_replace('%hr'.$valore.'%',"",$pagina);
-        $pagina=str_replace('<li><a href="#'.$valore.'">'.$valore.'</a></li>',"",$pagina);
-        $pagina=str_replace('%vediAltro'.$valore.'%',"",$pagina);
+        $pagina=str_replace('%'.$valoreNoDel.'%',"",$pagina);
+        $pagina=str_replace('%hr'.$valoreNoDel.'%',"",$pagina);
+        $pagina=str_replace('<li><a href="#'.$valoreNoDel.'">'.$valoreNoDel.'</a></li>',"",$pagina);
+        $pagina=str_replace('%vediAltro'.$valoreNoDel.'%',"",$pagina);
         }
     }      
 

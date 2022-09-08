@@ -21,17 +21,18 @@
     $pagina = str_replace('%email%',$valoreEmail,$pagina);
     $pagina = str_replace('%password%',$valorePassword,$pagina);
 
-
+    
+    $connessione = new Connessione();
+    $connessioneAperta=$connessione->apriConnessione();
     if(isset($_POST['invia'])){
         if(isset($_POST['email'])){
-            $email = trim(htmlentities($_POST['email']));
+            $email = $connessione->pulisciStringaSQL(trim(htmlentities($_POST['email'])));
         }
         if(isset($_POST['password'])){
-            $psw = trim(htmlentities($_POST['password']));
+            $psw = $connessione->pulisciStringaSQL(trim(htmlentities($_POST['password'])));
         }
 
-        $connessione = new Connessione();
-        if($connessione->apriConnessione()){
+        if($connessioneAperta){
 
             if(!$query_email= $connessione->interrogaDB("SELECT * FROM admin WHERE email = \"$email\"")){
                 $pagina = str_replace('%error_email%', "<div class=\"error_box\">L'email inserita non è corretta</div>", $pagina);
