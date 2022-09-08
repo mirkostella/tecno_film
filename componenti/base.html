@@ -15,7 +15,7 @@
     <header>
         <h1 id="logo">TecnoFilm</h1>
         <a class="aiuti" href="#contenuto" accesskey="v">Vai al contenuto</a>
-        <form action="../php/search_results.php" method = "GET" id="ricerca" role="search">
+        <form action="../php/search_results.php" method = "GET" id="ricerca" role="searchbox">
             <input type="hidden" value="">
             <datalist id="suggerimenti">
                 %suggerimenti%    
@@ -29,10 +29,10 @@
             <a href="#menuPrincipale" id="menuHam" accesskey="m">Menu</a>
         </div>
     </header>
-    <nav id="breadcrumb" role="navigation" aria-label="breadcrumb">
+    <nav id="breadcrumb" aria-label="breadcrumb">
         Ti trovi in: %breadcrumb%
     </nav>
     <div id="impaginazione">
-        <nav id="menuPrincipale" role="navigation" aria-label="menuNavigazione">
+        <nav id="menuPrincipale" aria-label="menuNavigazione">
             %menu%
         </nav>

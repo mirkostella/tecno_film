@@ -2,79 +2,487 @@
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage[italian]{babel}
-\author{Mirko Stella \and Sonia Franco \and Ruth Genevieve Bousapnamene \and Elton Ibra}
-\title{Tecno Film}
-\date{20 Agosto 2022}
+\usepackage{hyperref}
+\hypersetup{hidelinks}
+\title{\Huge \textbf {TecnoFilm}}
+\date{}
 \begin{document}
 \maketitle
-\textbf{Indirizzo del sito}:
 
+\vfill
+\paragraph*{Componenti del gruppo:}
+\begin{itemize}
+    \item Mirko Stella - 1201184 
+    \item Sonia Franco - 1224437
+    \item Ruth Genevieve Bousapnamene - 1192088  
+    \item Elton Ibra - 1234931
+\end{itemize}
+
+\paragraph*{Indirizzo del sito:}
 Segnaposto indirizzo
 
-\textbf{Login utente}:
-
-\textit{email}:user 
-
-\textit{password}:user
+\paragraph*{Login utente:}
+\begin{enumerate}
+    \item [] \textit{email}: user 
+    \item [] \textit{password}: user
+\end{enumerate}
  
-\textbf{Login amministratore}:
+\paragraph*{Login amministratore:}
+\begin{enumerate}
+    \item [] \textit{email}: admin 
+    \item [] \textit{password}: admin
+\end{enumerate}
 
-\textit{email}:admin 
+\paragraph*{Indirizzo mail di riferimento:}
 
-\textit{password}:admin
+mirko.stella@studenti.unipd.it
+
+\vfill
+
+\newpage
 
 \tableofcontents
+
 \newpage
 \section{Introduzione}
-    Tecno Film \`e un sito che si occupa di organizzare i film presenti al suo interno offrendo la possibililt\`a di 
-    noleggiarli o acquistarli.
-
-    L'idea \`e nata da un gruppo di studenti dell'Universit\`a di Padova appassionati di film che ha voluto usare questa 
-    passione per fare il progetto di 
-    Tecnologie Web del terzo anno del corso di Informatica.
+TecnoFilm è un sito web ideato per offire ai suoi utenti un servizio di acquisto e noleggio di film.
+L'idea è nata da un gruppo di quattro studenti del corso di laurea in Informatica dell'università di Padova per la realizzazione di un progetto didattico del corso Tecnologie Web.
+La passione per i film e la passione per l'informatica hanno portato alla realizzazione di TecnoFilm.
 
 \section{Tipologie di utenti}
-\subsection{Utente generico (non registrato)}
-    L'utente non registrato non avendo ancora fornito le proprie credenziali durante la fase di registrazione non dispone 
-    ancora di un account su Tecno Film quindi le funzionalit\`a che gli vengono offerte sono meno rispetto all'utente registrato.
-    Un utente non registrato pu\`o:
-\begin{itemize}
-    \item{Visualizzare la Homepage del sito}
-    \item{Visualizzare la pagina Classifiche}
-    \item{Visualizzare la pagina Regolamento}
-    \item{Visualizzare la pagina Chi siamo}
-    \item{Visualizzare la pagina con i dettagli e le recensioni di un determinato film}
-    \item{Eseguire la procedura di registrazione}
-    \item{Eseguire ricerche in base al nome del film cercato}
-\end{itemize}
-\subsection{Utente registrato}
-    L'utente registrato ha completato la procedura di registrazione e dispone di un proprio account su Tecno Film
-    Un utente registrato pu\`o:
-\begin{itemize}
-    \item{Fare tutto quello che pu\`o fare un utente generico}
-    \item{Visualizzare la pagina I miei film}
-    \item{Eseguire il login}
-    \item{Eseguire il logout}
-    \item{Inserire una recensione su un determinato film}
-    \item{Eliminare la propria recensione da un determinato film}
-    \item{Mettere Utile ad una recensione di un altro utente}
-    \item{Segnalare la recensione di un altro utente}
-    \item{Acquistare film}
-    \item{Noleggiare film}
-\end{itemize}
+Data la possibilità di contenuti non adatti ai minori durante la visione di alcune pellicole, TecnoFilm permette l'iscrizione esclusivamente a persone maggiorenni.
+\subsection{Utente generico}
+\textbf{Tra gli utenti generici si considerano gli utenti che non sono registrati o che non sono loggati.}
+
+\noindent Un utente generico può:
+    \paragraph*{Visualizzare le pagine:}
+        \begin{itemize}
+            \item[-] Homepage
+            \item[-] Classifiche
+            \item[-] Regolamento
+            \item[-] Chi siamo
+            \item[-] Pagine film
+        \end{itemize}
+    \paragraph*{Eseguire le operazioni:}
+        \begin{itemize}
+            \item[-] Registrazione
+            \item[-] Login (se già registrato)
+            \item[-] Ricerca dei film per nome
+        \end{itemize}
+
+\subsection{Utente loggato}
+    Un account può trovarsi nello stato Attivo o Bloccato.
+    
+    \subsubsection{Loggato con account Bloccato}
+    Un utente loggato con account Bloccato può:
+    
+    \paragraph*{Visualizzare le pagine:}
+    \begin{itemize}
+        \item[-] Tutte le pagine che può visualizzare un utente generico
+        \item[-] I miei film
+    \end{itemize}
+
+    \paragraph*{Eseguire le operazioni:}
+    \begin{itemize}
+        \item[-] Logout
+        \item[-] Ricerca del film per nome
+        \item[-] Acquisto di uno o più film
+        \item[-] Noleggio di uno o più film
+    \end{itemize}
+
+    \subsubsection{Loggato con account Attivo}
+    Un utente loggato con account Attivo può:
+
+    \paragraph*{Visualizzare le pagine:}
+    \begin{itemize}
+        \item[-] Tutte le pagine che può visualizzare un utente loggato con account Bloccato
+    \end{itemize}
+
+    \paragraph*{Eseguire le operazioni:}
+    \begin{itemize}
+        \item[-] Tutte le operazioni che può eseguire un utente loggato con account Bloccato
+        \item[-] Inserimento di una recensione per film
+        \item[-] Eliminazione delle proprie recensioni
+        \item[-] Valutazione delle recensioni degli altri utenti
+        \item[-] Segnalazione delle recensioni degli altri utenti
+    \end{itemize}
+
 \subsection{Amministratore}
-    Un amministratore si occupa della gestione dei film e degli utenti presenti all'interno di Tecno Film.
-    Un amministratore pu\`o:
+Un amministratore dispone di una form di login diversa dagli utenti.
+Un amministratore si occupa della gestione dei film e e degli utenti.
+Un amministratore che ha effettuato correttemente l'accesso può:
+
+\paragraph*{Visualizzare le pagine:}
 \begin{itemize}
-    \item{}
+    \item[-] Riepilogo
+    \item[-] Aggiungi film
+    \item[-] Segnalazioni utente
 \end{itemize}
-\section{Struttura delle pagine}
-\subsection{HTML}
-\subsection{CSS}
-\subsection{PHP}
-\subsection{JS}
-\section{Accessibilit\`a}
-\section{Database}
-\section{Note}
+
+\paragraph*{Eseguire le operazioni:}
+\begin{itemize}
+    \item[-] Logout
+    \item[-] Aggiunta di nuovi film 
+    \item[-] Eliminazione delle recensioni degli utenti
+    \item[-] Modifica dello stato degli utenti
+\end{itemize}
+
+\section{SEO}
+Per avere migliori risultati con SEO, innanzitutto si è eseguito un controllo sulla validità del codice HTML e CSS.\\
+Si sono considerati due tipi di ricerca più probabili:
+\begin{itemize}
+    \item [-] L'utente conosce il nome del sito e vuole accedervi
+    \item [-] L'utente conosce il titolo del film che vuole acquistare o noleggiare
+\end{itemize}
+Per il primo tipo di ricerca il nome del sito è posto come logo in ogni pagina tramite un tag <h1>, oltre che nel tag <title> e nelle keywords di tutte le pagine.
+
+Per il secondo tipo di ricerca, il titolo di un film è presente nella propria pagina film sia nel tag <title> che nelle keywords, ma soprattutto con un tag <h1> all'inizio del contenuto.
+
+Per le keywords sono state utilizzate altre parole che rimandano ai contenuti e allo scopo dell pagine, come per esempio: Acquisto, Noleggio, Nuove Uscite.
+
+\section{Struttura}
+
+\subsection{Pagine Utente}
+
+\subsubsection{Header}
+
+Nell'header sono presenti:
+\begin{itemize}
+    \item [-] Logo: è identificato tramite un tag \textit{<h1>}
+    \item [-] Barra di ricerca: consente all'utente di ricercare i film per nome
+    \item [-] Link per la Registrazione
+    \item [-] Link per la login/logout
+\end{itemize}
+
+\subsubsection{Breadcrumb}
+Per evitare il disorientamento dell'utente e aiutarlo nella navigazione, è stata aggiunta una breadcrumb per ogni pagina tramite il tag semantico \textit{<nav>}.
+
+\subsubsection{Menù}
+Il menù è identificato anch'esso dal tag semantico \textit{<nav
+>} e le opzioni sono elencate come \textit{unordered list}.
+
+Il sito non presenta un'elevata ampiezza. Il menù è composto da:
+
+\begin{itemize}
+    \item[-] Home
+    \item[-] Classifiche
+    \item[-] Regolamento
+    \item[-] Chi siamo
+    \item[-] I miei film (questa opzione compare solo se si è loggati) 
+\end{itemize}
+
+Per evitare link circolari, se ci si trova in una delle pagine del menù, il link viene disattivato e reso riconoscibile dagli altri.
+
+\subsubsection{Contenuto}
+
+Com'è organizzato il contenuto per ogni pagina?
+
+\begin{itemize}
+    \item \textbf{Home}:
+    
+    Nella Home viene proposta una panoramica della raccolta di film presente nel sito.
+
+    Vengono mostrate le categorie \textit{Nuove Uscite}, \textit{Scelti per te} (questa categoria solo se si è loggati), e una categoria per genere.
+    Per ogni categoria vengono elencati cinque film. Per vedere altri film di quella categoria è possibile premere il pulsante \textit{Vedi altro}.
+
+    Premento sul titolo o sulla copertina di un film si viene reindirizzati alla pagina di quel film.
+
+    \item \textbf{Classifiche}
+    
+    Strutturata allo stesso modo della pagina \textit{Home}, cambiano le categorie.
+
+    Le categorie sono: \textit{Top 5 della settimana}, \textit{Top 10 più visti}, \textit{Top 10 più votati}.
+
+    Anche in questo caso, premento sul titolo o sulla copertina di un film si viene reindirizzati alla pagina di quel film.
+
+    \item \textbf{I miei film}
+    
+    La pagina è disponibile solo per gli utenti loggati.
+
+    La pagina offre all'utente un riepilogo dei film acquistati, e dei film noleggiati. Nel caso dei film noleggiati, si fa una suddivisione tra i noleggi scaduti e non.
+
+    \item \textbf{Regolamento}
+
+    Come si può intuire dal nome, è un reminder delle condizioni di acquisto e di noleggio, e del comportamento a cui bisogna attenersi.
+
+    \item \textbf{Chi siamo}
+    
+    Si tratta di una breve presentazione.
+
+    \item \textbf{Pagina film}
+    
+    Esiste una pagina di questo tipo per ogni film presente nel database.
+
+    Si tratta di una pagina con tutte le informazioni del film: titolo, copertina, data di uscita, durata, genere, trama.
+
+    In questa pagina, gli utenti loggati e attivi possono lasciare una recensione o valutare utile/segnalare quelle degli altri utenti.
+    Si è prevista la possibilità di lasciare una sola recensione per film.
+
+    Da questa pagina è possibile acquistare o noleggiare il film.
+    
+    \item \textbf{Registrazione} e \textbf{Login}
+    
+    La pagina di registrazione permette di iscriversi alla community. La pagina di login permette di accedervi.
+
+\end{itemize}
+
+Sono presenti alte pagine di servizio:
+
+\begin{itemize}
+    \item \textbf{Conferma Acquisto/Noleggio}
+
+    A questa pagina ci si può arrivare solo dopo aver fatto richiesta di acquisto o noleggio nella pagina del film.
+    Viene richiesta un'ulteriore conferma.
+
+    \item \textbf{Search Results}
+
+    Se si effettua una ricerca tramite la barra di ricerca dell'header, si viene reindirizzati a questa pagina.
+    Se vengono trovati riultati, questi verranno motrati come un elenco.
+
+\end{itemize}
+
+\subsection{Pagine Amministratore}
+
+\subsubsection{Header}
+
+Nell'header delle pagine amministratore sono presenti:
+\begin{itemize}
+    \item [-] Logo: è identificato tramite un tag \textit{<h1>}
+    \item [-] Link per la Registrazione
+    \item [-] Link per la login/logout
+\end{itemize}
+
+\subsubsection{Breadcrumb}
+Anche per le pagine amministratore è stata aggiunta una breadcrumb per ogni pagina tramite il tag semantico \textit{<nav>}.
+
+\subsubsection{Menù}
+Anche in questo caso il menù è identificato anch'esso dal tag semantico \textit{<nav>} e le opzioni sono elencate come \textit{unordered list}.
+
+Il menù dell'amministratore è composto da:
+
+\begin{itemize}
+    \item[-] Riepilogo
+    \item[-] Aggiungi film
+\end{itemize}
+
+Anche in questo caso, per evitare link circolari, se ci si trova in una delle pagine del menù, il link viene disattivato e reso riconoscibile dagli altri.
+
+\subsubsection{Contenuto}
+
+Com'è organizzato il contenuto delle pagine amministratore?
+
+\begin{itemize}
+    \item \textbf{Riepilogo}
+    
+    É una pagina che funge da riepilogo per l'amminitratore.
+    Sono presenti due tabelle: una tabella per gli utenti e una per i film.
+
+    Tramite la tabella degli utenti è possibile avere una panoramica delle segnalazioni, e dello stato.
+    
+    Tramite la tabella dei film è possibile vedere gli incassi totali, e gli incassi parziali per film.
+
+    \item \textbf{Aggiungi film}
+    
+    É la pagina tramite cui un amministratore può inserire un nuovo film nel db. I controlli sulla form vengono eseguiti sia tramite \textit{php} che tramite \textit{javascript}.
+
+    \item \textbf{Segnalazioni utente}
+    
+    Esiste una pagina di questo tipo per ogni utente registrato.
+    
+    Si tratta di un riepilogo delle informazioni dell'utente e di un elenco delle recensioni effettuate.
+
+    Tramite questa pagina l'amministratore può cambiarne lo stato da Attivo a Bloccato, o viceversa, e eliminarne le recensioni ritenute inappropriate.
+
+    \item \textbf{Login}
+    
+    Permette all'amministratore di loggarsi.
+    
+\end{itemize}
+
+
+\section{HTML}
+La struttura delle pagine è stata scritta in HTML5, rispettando la sintassi XML.
+
+\paragraph{}Per evitare di ripetere linee di codice, nella cartella \textit{componenti} si trovano i file \textit{.html} il cui codice o si ripete all'interno di una stessa pagina, o è comune a più pagine.
+
+\noindent Tra questi file, i più importanti sono \textit{base.html} e \textit{base\_admin.html}.
+
+\noindent Infatti, essendo la struttura delle pagine la stessa, come si può intuire dal nome si è scelto di utilizzare questi due file come "base": uno per le pagine utente e uno per le pagine admin.
+
+\noindent I due file contengono la sezione \textit{<head>}, e parte del tag \textit{<body>}: il codice relativo all'header, alla barra di ricerca, alla breadcrumb, e al menù.
+
+\noindent Come conseguenza di questa scelta, si è reso necessario l'utilizzo di segnaposti per i \textit{meta-name} \textit{description} e \textit{keywords}, per il tag \textit{<title>}, per i sueggerimenti della barra di ricerca, per la breadcrumb e per il menù.
+
+\paragraph*{}Tutti i segnaposto sono scritti come \textbf{\%segnaposto\%} e vengono sostituiti tramite \textit{php}.
+
+\paragraph*{}Tutte le pagine \textit{.html} sono quindi strutturate così:
+\begin{itemize}
+    \item [-] segnaposto \%base\%
+    \item [-] contenuto della pagina
+\end{itemize}
+
+\paragraph*{Nota:}L'unica pagina che non utilizza questa tecnica è \textit{login\_admin.html} perchè non è previsto il menù.
+
+\paragraph{}Il segnaposto \%base\% verrà poi sostituito con il codice del file \textit{base.html} per le pagine utente e con il codice del file \textit{base\_admin.html} per le pagine admin.
+
+\paragraph{}La validità di ciascuna pagina è stata testata tramite il tool \href{https://validator.w3.org/}{Markup Validation Service}, fornito da W3C, utilizzando il codice HTML generato dagli script PHP.
+
+\section{CSS}
+Per il codice CSS è stato utilizzato \textit{CSS3}.
+
+\subsection{Utilizzo di Flexbox}
+Avendo scelto di utilizzare \textit{CSS3} è stato possibile utilizzare Flexbox.
+In particolare, il layout Flex è stato utilizzato per disporre gli elementi dell'\textit{header} e per disporre il menù e il contenuto delle pagine. 
+Inoltre, nelle pagine che richiedevano un elenco dei film, è stato sfruttato per disporre le card.
+Le card stesse, per distribuire gli elementi al loro interno, ne fanno uso.
+
+\subsection{Media query}
+Per rendere il sito responsive e quindi adattabile a schermi di dimensioni differenti sono stati introdotti dei breakpoint
+facendo uso delle media query.
+I breakpoint stabiliti sono: 75em, 60em, 35em.
+Le regole applicate a schermi fino a 75em rendono raggiungibile il menù (situato a fine pagina) tramite un link all'interno dell'header.
+Adottando questo metodo non sono state necessarie regole per rendere visibile il contenuto di un possibile menu ad hamburger.
+
+Data la quantià limitata di pagine, le media query sono state utilizzate anche per le regole per la stampa tramite \textit{@media print}.
+
+\subsection{CSS per la stampa}
+Per la stampa sono stati eliminati tutti gli elementi ritenuti superflui ai fini della stampa, come pulsanti, barra di ricerca, form per la recensione e menù.
+
+Inoltre, per minimizzare l'uso del colore e dello spazio, per la stampa si è scelto di eliminare le immagini di copertina dei film, e lasciarle esclusivamente nella pagina del film.
+
+Per evitare la separazione di contenuti, sono state introdotte delle regole per le interruzioni di pagina.
+
+Considerando superfluo e poco sensato l'utilizzo della stampa per le pagine di login e registrazione, per queste due pagine non sono state previste delle regole.
+
+\section{PHP}
+Il rendering delle pagine viene fatto lato server sostituendo i segnaposto presenti nelle pagine HTML
+con il contenuto opportuno.
+
+\subsection{Connessione al DB}
+Il file \textit{connessione.php} è il file che contiene le funzioni per la gestione della connessione al DB.
+In questo file, infatti, si trovano le funzioni che aprono e chiudono la connessione e quelle che interrogano il DB.
+
+Si è scelto di aprire la connessione all'inizio degli script e chiuderla quando non è più necessaria.
+
+Se all'interno dello script, vengono chiamate alcune funzioni che richiedono la connessione aperta, questa viene passata come parametro. 
+
+\subsection{\textit{\$\_SESSION}}
+Il file \textit{sessione.php} è stato creato per personalizzare e gestire le sessioni tramite la variabile superglobale \textit{\$\_SESSION}.
+
+Questa variabile viene utilizzata per eseguire dei controlli sullo stato loggato/non loggato e sul tipo di account che sta navigando (amministratore o utente).
+
+Il sito, infatti, non prevede la possibilità di essere loggati contemporaneamente come sia come utente che come amministratore.
+Quando la sessione è attiva come utente, e si effettua la login come amministratore, la sessione utente viene terminata. Questo viene fatto anche a situazione inversa.
+
+\subsection{Controllo sulle form}
+
+I controlli sulle form vengono effettuati sia tramite \textit{php} che tramite \textit{javascript}.
+
+I controlli sugli input effettuati dagli script \textit{php}, mostrano eventuali messaggi d'errore. Nel caso non ci siano errori, vengono mostrati dei messaggi per informare l'utente circa il successo delle operazioni.
+
+Per una questione di sicurezza, prima di memorizzare dati inseriti dall'utente nel db, gli script php effettuano una pulizia dell'input tramite due funzioni offerte dal linguaggio: \textit{trim} e \textit{htmlentities}: la prima per eliminare spazi vuoti prima e dopo l'input, e la seconda per trasformare i caratteri speciali in entità html.
+
+\section{JS}
+\textit{Javascript} viene utilizzato per effettuare i controlli sui campi delle form, segnalare gli errori ed assistere l'utente durante la fase di inserimento dei dati.
+Viene utilizzato lato client per gestire l'invio dei dati delle form in modo da limitare le interrogazioni al server: se una form contiene dei valori non validi, infatti, la richiesta al server viene bloccata.
+
+Nel caso in cui \textit{Javascript} sia disabilitato le richieste al server vengono inoltrate in ogni caso e i messaggi di errore vengono visualizzati nella pagina di risposta.
+
+Le pagine in cui sono stati inseriti gli script sono:
+
+\paragraph{Utente:}
+\begin{itemize}
+    \item[-] \textit{login.html}
+    \item[-] \textit{registrazione.html}
+\end{itemize}
+
+\paragraph{Amministratore:}
+\begin{itemize}
+    \item[-]  \textit{ins\_film\_admin.html}
+\end{itemize}
+
+
+
+\section{Accessibilità}
+
+\subsection{Assenza di \textit{CSS}}
+In assenza di \textit{CSS}, il sito mantiene una struttura e un aspetto comprensibile.
+
+\subsection{Assenza di \textit{JS}}
+In assenza di \textit{Javascript} tutti i controlli vengono comunque eseguiti tramite \textit{php}.
+%Gli elementi che richiedono \textit{Javascript}, in sua assenza vengono nascosti.%
+
+\subsection{Lingua}
+
+\subsection{Attributi ARIA}
+
+\begin{itemize}
+    \item [-] \textit{\textbf{aria-label}}
+    
+    L'attributo \textit{aria-label} è stato utilizzato per la breadcrumb e per il menù.
+    Inoltre è stato utilizzato per gli elementi interattivi come input o button, per fornire informazioni ulteriori.
+
+    \item [-] \textit{\textbf{aria-hidden}}
+    
+    L'attributo \textit{aria-hidden="true"} è stato utilizzato per nascondere elementi che non sono utili a utenti che utilizzano gli screen reader.
+
+    In particolare, la valutazione dei film tramite le stelle è stata nascosta per queste categorie di utenti, ed è stata aggiunto uno \textit{span} con la valutazione, che viene nascosto agli altri utenti tramite \textit{css} con la classe "aiuti".
+
+    \textit{aria-hidden="true"} viene utilizzato anche per "saltare" l'immagine di copertina dei film.
+
+    \item [-] \textit{\textbf{role}}
+    
+    L'attributo aria \textit{role} è stato usato per identificare il contenuto principale delle pagine tramite \textit{role="main"}, e per identificare la barra di ricerca tramite \textit{role="searchbox"}.
+    Avendo utilizzato il tag semantico \textit{<nav>} per la breadcrumb e per il menù si è reso superfluo l'uso dell'attributo \textit{role="navigation"}.
+
+\end{itemize}
+
+\subsection{Tabindex e accesskey}
+
+\paragraph*{Tabindex:}
+data la struttura del sito, non è sembrato necessario modificare l’ordine dei tabindex manualmente.
+É stato utilizzato esclusivamente per rendere non raggiungibile tramite la navigazione sequenziale da tastiera le copertine dei film.
+
+\paragraph*{Acccesskey:}
+si è inoltre fatto uso di accesskey. In questo caso, si è cercato di impostare come accesskey l'iniziale dell'elemento a cui fa riferimento.
+
+\subsection{Contrasti}
+
+Per l'utilizzo dei colori si è prestata attenzione ai contrasti minimi per il rispetto degli standard del WCAG.
+
+\subsection{Tabelle}
+Per le due tabelle presenti nella sezione amministratore, oltre alla corretta suddivisione in \textit{thead}, \textit{tbody} e \textit{tfoot} si è fatto uso dell'attributo \textit{summary} per fornire una descrizione della tabella a cui fa riferimento, del tag \textit{<caption>}, dei tag \textit{<th>} per le intestazioni e dell'attributo \textit{scope}.
+
+\section{Test}
+
+\section{Suddivisone del lavoro}
+
+\begin{itemize}
+    \item [] \textbf{Stella Mirko}
+    \begin{itemize}
+        \item codice \textit{html}
+        \item script \textit{php}
+        \item script \textit{javascript}
+        \item relazione
+        \item css
+    \end{itemize}
+    \item [] \textbf{Franco Sonia}
+    \begin{itemize}
+        \item codice \textit{html}
+        \item script \textit{php}
+        \item relazione
+        \item css
+        \item css per la stampa
+        \item riempimento db
+    \end{itemize}
+    \item [] \textbf{Bousapnamene Ruth Genevieve}
+    \begin{itemize}
+        \item tabelle pagina amministratore
+    \end{itemize}
+    \item [] \textbf{Ibra Elton}
+    \begin{itemize}
+        \item 
+    \end{itemize}
+\end{itemize}
 
 \end{document}
