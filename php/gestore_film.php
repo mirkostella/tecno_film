@@ -1,7 +1,7 @@
 <?php
 
 require_once("controlli_form.php");
-require_once("upload_img.php");
+require_once("gestore_img.php");
 
 class GestoreFilm{
     public $id=null;

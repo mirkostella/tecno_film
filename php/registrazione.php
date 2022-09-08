@@ -4,7 +4,7 @@
 	require_once('connessione.php');
 	require_once('struttura.php');
 	require_once('controlli_form.php');
-	require_once('upload_img.php');
+	require_once('gestore_img.php');
 
 	$pagina=file_get_contents("../html/registrazione.html");
 

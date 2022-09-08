@@ -2,7 +2,7 @@
     require_once("sessione.php");
     require_once("connessione.php");
     require_once("gestore_film.php");
-    require_once("upload_img.php");
+    require_once("gestore_img.php");
     require_once("struttura.php");
     require_once("lingua.php");
     

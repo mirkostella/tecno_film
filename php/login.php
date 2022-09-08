@@ -5,7 +5,7 @@
 
     //se la sessione è già aperta come utente normale, mi porta direttamente alla home
     if($_SESSION['loggato'] == true && $_SESSION['admin'] == false){
-        header('location: ../php/index.php');
+        header('location: ../php/home.php');
         exit();
     }
 
@@ -77,7 +77,7 @@
                 exit();
             }
             else{
-                header('location: ../php/index.php');
+                header('location: ../php/home.php');
                 exit();
             }      
         }

@@ -39,8 +39,8 @@
 \contentsline {subsection}{\numberline {9.2}Assenza di \textit {JS}}{11}{subsection.9.2}%
 \contentsline {subsection}{\numberline {9.3}Lingua}{11}{subsection.9.3}%
 \contentsline {subsection}{\numberline {9.4}Attributi ARIA}{11}{subsection.9.4}%
-\contentsline {subsection}{\numberline {9.5}Tabindex e accesskey}{11}{subsection.9.5}%
-\contentsline {subsection}{\numberline {9.6}Contrasti}{11}{subsection.9.6}%
+\contentsline {subsection}{\numberline {9.5}Tabindex e accesskey}{12}{subsection.9.5}%
+\contentsline {subsection}{\numberline {9.6}Contrasti}{12}{subsection.9.6}%
 \contentsline {subsection}{\numberline {9.7}Tabelle}{12}{subsection.9.7}%
 \contentsline {section}{\numberline {10}Test}{12}{section.10}%
 \contentsline {section}{\numberline {11}Suddivisone del lavoro}{12}{section.11}%

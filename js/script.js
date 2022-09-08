@@ -175,7 +175,7 @@ function aggiungiMostra(elemento,id){
     var vediP = document.createElement("input");
         vediP.type = "button";
         vediP.id=id;
-        vediP.value = "Mostra";
+        vediP.value = "Mostra password";
         vediP.classList = "btnVediPassword";
         elemento.insertAdjacentElement("afterend", vediP);
         return vediP;

@@ -409,10 +409,20 @@ Le pagine in cui sono stati inseriti gli script sono:
 In assenza di \textit{CSS}, il sito mantiene una struttura e un aspetto comprensibile.
 
 \subsection{Assenza di \textit{JS}}
-In assenza di \textit{Javascript} tutti i controlli vengono comunque eseguiti tramite \textit{php}.
-%Gli elementi che richiedono \textit{Javascript}, in sua assenza vengono nascosti.%
+In assenza di \textit{Javascript} tutti i controlli vengono comunque eseguiti tramite \textit{php}.ù
+Gli elementi che richiedono \textit{Javascript}, come ad esempio il pulsante \textit{Mostra password}, in sua assenza vengono nascosti.
 
 \subsection{Lingua}
+
+Il sito ha come lingua principale l'italiano. Per le parole che hanno lingua inglese, sono stati aggiunti gli opportuni tag \textit{<span>} con le indicazione della lingua usata.
+
+Quando è stato possibile, l'aggiunta degli \textit{<span>} sulla lingua sono stati aggiunti direttamente nel file \textit{html}. Questo però non è sempre stato possibile. Ad esempio, per titoli dei film, per nomi o per parole appartenenti alla trama, o semplicemente per alcuni generi dei film, essendo presi dal db ed essendo quindi elementi dinamici.
+
+In quest'ultimo caso, è stata adottata la seguente tecnica: all'inserimento dei film tramite il form, le parole in inglese devono essere racchiuse tra due accenti circonflessi, così:
+
+\textbf{\^{}}PAROLA\textbf{\^{}}
+
+I due \textbf{\^{}}, tramite un'apposita funzione, vengono poi sostituiti tramite \textit{php} con lo \textit{span}.
 
 \subsection{Attributi ARIA}
 
@@ -477,11 +487,11 @@ Per le due tabelle presenti nella sezione amministratore, oltre alla corretta su
     \end{itemize}
     \item [] \textbf{Bousapnamene Ruth Genevieve}
     \begin{itemize}
-        \item tabelle pagina amministratore
+        \item tabelle pagina \textit{Riepilogo} sezione amministratore
     \end{itemize}
     \item [] \textbf{Ibra Elton}
     \begin{itemize}
-        \item 
+        \item creazione tabelle db
     \end{itemize}
 \end{itemize}
 

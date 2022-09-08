@@ -17,7 +17,7 @@
     $pagina=str_replace("%descrizione%","Se sei un admin, qua trovi il riepilogo dell'utente %username%", $pagina);
     $pagina=str_replace("%keywords%","TecnoFilm, Utente, Profilo, Segnalazioni, Recensioni", $pagina);
     $pagina=str_replace("%titoloPagina%","TecnoFilm-Admin: Segnalazioni", $pagina);
-    $pagina=str_replace("%breadcrumb%","<a href=\"../php/amministratore_loggato.php\">Riepilogo</a> &gt; <span class=\"grassetto\">Segnalazioni utente: %username%</span>", $pagina);
+    $pagina=str_replace("%breadcrumb%","<a href=\"../php/riepilogo_admin.php\">Riepilogo</a> &gt; <span class=\"grassetto\">Segnalazioni utente: %username%</span>", $pagina);
 
     $connessione=new Connessione();
     if(!$connessione->apriConnessione()){
@@ -27,6 +27,19 @@
     $id=$_GET['id'];
     if(isset($_GET['eliminaRecensione'])){
         Recensione::elimina($connessione, $_GET['idRecensione']);
+    }
+
+    if(isset($_GET['cambia_stato'])){
+        if($_SESSION['loggato']==true && $_SESSION['admin']==true){
+            if(isset($_GET['stato'])){
+                modifica_statoUtente($connessione, $_GET['stato'], $id);
+            }
+        }
+        else{
+            $connessione->chiudiConnessione();
+            header('Location: ../php/login_admin.php');
+            exit();
+        }
     }
     
     $query_info_utente="SELECT utente.ID as u_ID, username, nome, cognome, sesso, stato, email, data_nascita, foto_utente.path as path

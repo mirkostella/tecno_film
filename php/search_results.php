@@ -18,7 +18,7 @@
     $pagina=str_replace("%descrizione%",'Qui trovi i risultati di ricerca per le parole: '.$_GET['input_ricerca'].'', $pagina);
     $pagina=str_replace("%keywords%","TecnoFilm, Risultati, Ricerca", $pagina);
     $pagina=str_replace("%titoloPagina%","TecnoFilm: Risultati ricerca", $pagina);
-    $pagina=str_replace("%breadcrumb%",'<a href = "../php/index.php" xml:lang = "en" lang="en">Home </a> &gt; <span class="grassetto">Risultati per "'.$_GET['input_ricerca'].'" </span>', $pagina);
+    $pagina=str_replace("%breadcrumb%",'<a href = "../php/home.php" xml:lang = "en" lang="en">Home </a> &gt; <span class="grassetto">Risultati per "'.$_GET['input_ricerca'].'" </span>', $pagina);
     $struttura->aggiungiMenu($pagina,"","");
     $pagina=str_replace("%input_ricerca%", $_GET['input_ricerca'], $pagina);
             

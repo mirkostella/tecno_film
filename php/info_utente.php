@@ -17,5 +17,9 @@
             return false;
     }
 
+    function modifica_statoUtente($connessione, $stato, $id){
+        $query="UPDATE utente SET stato ='$stato' WHERE ID = $id";
+        $connessione->eseguiQuery($query);
+    }
 
 ?>
