@@ -750,25 +750,14 @@ div.genereFilm{
     margin-left: 0.5em;
     display: inline-block;
 }
-
-div.genereFilm{
-    display: inline-block;
-    white-space: nowrap;
-    height: 25%;
-}
-.genereFilm label{
-    margin-left: 0.5em;
-    display: inline-block;
-}
 #formFilm div.ordinamento{
     padding: 0 5%;
     text-align: left;
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    
-    
-    }
+    height: 20%;
+}
 
 /* ------------------------- pagina regolamento ------------------------- */
 dt{
@@ -826,16 +815,17 @@ dt{
     }
     #ricerca{
         margin: auto;
-        margin-bottom: 1em;
-        order:1;
+        margin-top: 1em;
+        order:2;
     }
-    #cercaTitolo{max-width: none;}
+
     #logo{
         text-align: center;
         font-size: 2.9em;
         white-space: normal;
-        order:2;
+        order:1;
     }
+
     #account{
         flex-wrap: wrap;
         order: 3;
