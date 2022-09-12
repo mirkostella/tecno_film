@@ -12,8 +12,8 @@
             if($suggerimenti){
                 foreach($suggerimenti as $i=>$valore){
                     $titolo=$suggerimenti[$i]["titolo"];
-                    $titoloLang=aggiungiSpanLang($titolo);
-                    $lista=$lista."<option>$titoloLang</option>";
+                    $titoloNoLang=eliminaDelimitatoriLingua($titolo);
+                    $lista=$lista."<option>$titoloNoLang</option>";
                 }
             }
             $componente=str_replace("%suggerimenti%",$lista,$componente);

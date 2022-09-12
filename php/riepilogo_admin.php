@@ -5,6 +5,7 @@
     require_once("struttura.php");
     require_once("connessione.php");
     require_once ("info_utente.php");
+    require_once ("lingua.php");
 
     if($_SESSION['admin']==false){
         header('location: ../php/login_admin.php');
@@ -71,7 +72,7 @@
         $pAcquisti=$value_f['prezzo_acquisto']*$value_f['N_acquisti'];
 
         $rigaFilm=str_replace("%idFilm%","Film".$value_f['ID'],$rigaFilm);
-        $rigaFilm=str_replace("%titolo%",$value_f['titolo'],$rigaFilm);
+        $rigaFilm=str_replace("%titolo%",aggiungiSpanLang($value_f['titolo']),$rigaFilm);
         $rigaFilm=str_replace("%prezzoN%",$value_f['prezzo_noleggio'],$rigaFilm);
         $rigaFilm=str_replace("%prezzoA%",$value_f['prezzo_acquisto'],$rigaFilm);
         $rigaFilm=str_replace("%noleggi%",$value_f['N_noleggi'] == null ? 0 : $value_f['N_noleggi'] ,$rigaFilm);

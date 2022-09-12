@@ -22,7 +22,7 @@
     $listaGeneri="";
     foreach($generi as $valore){
         $nuovaVoce='<div class="genereFilm"><input type="checkbox" id="'.eliminaDelimitatoriLingua($valore['nome_genere']).
-        '" name="generi[]" value="'.$valore['nome_genere'].'" class="checkmark" %'.$valore['nome_genere'].'%><label for="'.
+        '" name="generi[]" value="'.$valore['nome_genere'].'" class="checkmark"><label for="'.
         eliminaDelimitatoriLingua($valore['nome_genere']).'">'.aggiungiSpanLang($valore['nome_genere']).'</label></div>';
         $listaGeneri=$listaGeneri.$nuovaVoce;
     }   

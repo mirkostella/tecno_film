@@ -1,5 +1,6 @@
 %base%
         <div id="contenuto" role="main">
+            %esitoTransazione%
            <form action="ins_film_admin.php" method="post" enctype="multipart/form-data" id="formFilm">
             <div class="titoloFilm">
                 <label for="titolo">Titolo</label>
@@ -55,10 +56,9 @@
                 %errTrama%
             </div>
             <input type="submit" id="invio" name="inserisciFilm" value="Inserisci" class="btn">
-            %esitoTransazione%
            </form>
         </div>
     </div>
-<script type="text/javascript" src="../js/script.js"></script>    
+<script src="../js/script.js"></script>    
 </body>
 </html>

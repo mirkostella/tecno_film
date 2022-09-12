@@ -5,6 +5,7 @@
     require_once('card.php');
     require_once('info_film.php');
     require_once('controlli_form.php');
+    require_once('lingua.php');
 
     $pagina=file_get_contents("../html/search_results.html");
 
@@ -25,17 +26,30 @@
     if(isset($_GET['submit_ricerca'])){
         if(isset($_GET['input_ricerca'])){
             $inputRicerca=$connessione->pulisciStringaSQL(test_input($_GET['input_ricerca']));
-            $queryRisultatiRicerca = "SELECT film.ID as id,titolo,nome_genere as genere,copertina,trama,TIME_TO_SEC(durata) as durata,data_uscita as annoUscita,prezzo_acquisto as prezzoA,prezzo_noleggio as prezzoN,
-            path as copertina,descrizione,AVG(valutazione) as valutazione FROM film JOIN appartenenza 
-            ON(film.ID=appartenenza.ID_film) JOIN genere ON (appartenenza.ID_genere=genere.ID) JOIN foto_film ON(film.copertina=foto_film.ID) LEFT JOIN recensione ON (film.ID=recensione.ID_film) WHERE titolo LIKE '%".$inputRicerca."%' GROUP BY id";
-            $ris=$connessione->interrogaDB($queryRisultatiRicerca);
-            $listaCard=creaListaCard($connessione, $ris);
+            $queryTitoli = "SELECT film.ID as id, titolo FROM film";
+            $risQuery = $connessione->interrogaDB($queryTitoli);
+            $films = array();
+            $risultatiRicerca = array();
+
+            foreach($risQuery as &$valore){
+                $valore['titolo']=eliminaDelimitatoriLingua($valore['titolo']);
+                if(stristr($valore['titolo'], $inputRicerca))
+                    array_push($films, $valore['id']);
+            }
+            
+            if($films){
+                foreach($films as $valore){
+                    array_push($risultatiRicerca,recuperaInfo($connessione, $valore));
+                    }
+            }
+            
+            $listaCard=creaListaCard($connessione, $risultatiRicerca);
             if($listaCard){
                 $pagina=str_replace("%risultatiRicerca%", $listaCard, $pagina);
                 $pagina=str_replace("%classifica%", "", $pagina);
             }
             else{
-                $pagina=str_replace("%risultatiRicerca%", "<h3>Ci dispiace, non sono stati trovati risultati</h3>", $pagina);
+                $pagina=str_replace("<dl class=\"listaCards\">%risultatiRicerca%</dl>", "<h3>Ci dispiace, non sono stati trovati risultati</h3>", $pagina);
             }
         }
     }

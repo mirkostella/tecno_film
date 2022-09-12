@@ -316,25 +316,25 @@ FOREIGN KEY (`ID_film`) REFERENCES `film`(`ID`) ON DELETE CASCADE ON UPDATE CASC
 FOREIGN KEY (`ID_utente`) REFERENCES `utente`(`ID`) ON DELETE CASCADE ON UPDATE CASCADE
 )ENGINE = InnoDB;
 
-INSERT INTO `recensione` (`ID_film`, `ID_utente`, `testo`, `valutazione`) VALUES
-('1', '1', 'Molto divertente', '4'),
-('11', '1', 'Interessante', '3'),
-('15', '1', 'Uno dei migliori del genere', '5'),
-('17', '2', 'Regista super', '4'),
-('18', '3', 'Bello, ma mi aspettavo di più', '4'),
-('19', '3', 'Meglio del primo', '5'),
-('20', '3', 'Nè bello nè brutto', '3'),
-('2', '4', 'Per famiglie', '4'),
-('12', '4', 'Wow, interpretazione top', '4'),
-('7', '4', 'Cast bravissimo', '5'),
-('6', '5', 'Che bello!', '5'),
-('12', '6', 'Leto fantastico', '5'),
-('4', '7', 'Bello, come tutti quelli della Marvel', '4'),
-('5', '7', 'Ottimo, mi è piaciuto', '4'),
-('8', '8', 'Mi aspettavo di meglio', '3'),
-('6', '9', 'Wow!', '5'),
-('8', '9', 'Niente di che', '3'),
-('4', '10', 'La Marvel non delude', '5');
+INSERT INTO `recensione` (`ID_film`, `ID_utente`, `testo`, `data`, `valutazione`) VALUES
+('1', '1', 'Molto divertente', '2022/04/21 17:08:17', '4'),
+('11', '1', 'Interessante', '2021/12/27 20:52:17', '3'),
+('15', '1', 'Uno dei migliori del genere', '2021/07/30 15:37:18', '5'),
+('17', '2', 'Regista super', '2022/01/22 18:28:47', '4'),
+('18', '3', 'Bello, ma mi aspettavo di più', '2022/05/02 09:38:36', '4'),
+('19', '3', 'Meglio del primo', '2022/03/12 10:17:50', '5'),
+('20', '3', 'Nè bello nè brutto', '2021/12/30 20:52:53', '3'),
+('2', '4', 'Per famiglie', '2021/10/24 22:31:45', '4'),
+('12', '4', 'Wow, interpretazione top', '2022/01/28 12:12:21', '4'),
+('7', '4', 'Cast bravissimo','2022/02/15 23:52:57', '5'),
+('6', '5', 'Che bello!', '2021/09/31 20:15:00', '5'),
+('12', '6', 'Leto fantastico', '2022/08/28 00:00:53', '5'),
+('4', '7', 'Bello, come tutti quelli della Marvel', '2022/07/17 23:02:43', '4'),
+('5', '7', 'Ottimo, mi è piaciuto', '2021/11/30 17:35:11', '4'),
+('8', '8', 'Mi aspettavo di meglio', '2021/08/08 01:47:11', '3'),
+('6', '9', 'Wow!', '2022/05/07 18:03:58', '5'),
+('8', '9', 'Niente di che', '2021/03/08 19:03:41', '3'),
+('4', '10', 'La Marvel non delude', '2022/09/06 13:11:17', '5');
 
 
 CREATE TABLE `segnalazione`(

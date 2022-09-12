@@ -180,12 +180,14 @@ function aggiungiMostra(elemento,id){
         elemento.insertAdjacentElement("afterend", vediP);
         return vediP;
 }
+
 function mostraNascondiPassword(elemento){
     if(elemento.type=="password")
         elemento.type="text";
     else
         elemento.type="password";
 }
+
 function creaDivMessaggio(messaggio){
     var nuovoDiv=document.createElement("div");
     nuovoDiv.classList.add("error_box");
@@ -196,6 +198,7 @@ function mostraMessaggio(elemento,messaggio){
     var nuovoDiv=creaDivMessaggio(messaggio); 
     elemento.after(nuovoDiv);
 }
+
 function eliminaMessaggiSuccessivi(elemento){
     var stop=false;
         while(!stop){
@@ -247,6 +250,7 @@ function disabilitaDateSuccessive(campo,data){
     var dataStringa=anno+"-"+mese+"-"+giorno;
     campo.max=dataStringa;
 }
+
 //################################ PAGINA DI LOGIN UTENTE ##################################
 function init_login(){
     //istruzioni da eseguire solo se mi trovo nella pagina di login
@@ -329,10 +333,6 @@ function init_registrazione(){
                 e.preventDefault();
                 mostraMessaggio(e.target,"Errore nell'inserimento dei dati: sono presenti dei campi non validi");
             }
-            // else{
-            //     e.preventDefault();
-            //     mostraMessaggio(e.target,"I dati sarebbero stati inviati");
-            // }
         })
     }
 }
@@ -422,6 +422,17 @@ function init_pagina_film(){
     }
 }
 
+function torna_su_init(){
+    var btn = document.getElementById("scrollBtn"); 
+
+    if(window.pageYOffset > 50 && window.screen.availWidth <= 768) {
+        btn.classList.remove("nascosto"); 
+    } else {
+        if(!btn.classList.contains("nascosto"))
+            btn.classList.add("nascosto"); 
+    }
+}
+
 //################################ AL CARICAMENTO DELLA PAGINA GENERICA ##################################
 window.onload=function(){  
     //pagine utente 
@@ -431,4 +442,5 @@ window.onload=function(){
     //pagine amministratore
     init_amministratore_login();
     init_amministratore_ins_film();
+    window.onscroll = torna_su_init();
 }

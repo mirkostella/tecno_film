@@ -64,6 +64,26 @@ hr{
     border-radius: 5px;
 }
 
+#scrollBtn{
+    position: fixed; 
+    right: 1em; 
+    bottom: 1em;
+    background-image: url(../img/img_componenti/top_arrow.svg);
+    background-repeat: no-repeat;
+    background-position: center; 
+    width: 3em; 
+    height: 3em; 
+    text-indent:100%;
+    white-space:nowrap;
+    overflow:hidden;
+    background-size: 3em;
+    z-index: 999;
+}
+
+.nascosto{
+    display: none;
+}
+
 input[class="btn btnAzione"]{
     background-color: var(--colore-btn-azione);
     color: white;
@@ -599,6 +619,7 @@ p{
 .reg_log fieldset:first-child,.reg_log input:not(input[type="submit"]){background-color: var(--colore-dettagli-card);}
 .reg_log #datiAccount input[type="file"]{
     margin-bottom: 1em;
+    font-size: smaller;
 }
 .reg_log #invia{ 
     margin-bottom: 1em;
