@@ -34,7 +34,7 @@
     $pagina=str_replace("%descrizione%","Informazioni e recensioni del film %titoloNoLang%", $pagina);
     $pagina=str_replace("%keywords%","%titoloNoLang%, TecnoFilm, %genereNoLang%, Acquisto, Noleggio, recensione", $pagina);
     $pagina=str_replace("%titoloPagina%","TecnoFilm: %titoloNoLang%", $pagina);
-    $pagina=str_replace("%breadcrumb%", "<a href=\"../php/home.php\" xml:lang=\"en\" lang=\"en\">Home</a> &gt; <span class=\"grassetto\">%titoloLang%</span>", $pagina);
+    $pagina=str_replace("%breadcrumb%", "<a href=\"../php/index.php\" xml:lang=\"en\" lang=\"en\">Home</a> &gt; <span class=\"grassetto\">%titoloLang%</span>", $pagina);
 
     if(isset($_GET['confermaAcquisto'])){
         //se é giá stato fatto l'acquisto indirizzo l'utente alla pagina del film
@@ -114,8 +114,9 @@
             if($gestore->gestisciInserisciRecensione($connessione, $nuovaRecensione,$pagina)){
                 $pagina=str_replace('%formRecensione%',"",$pagina);
             }
-            else
-                header('location: ../php/login.php');
+            else{
+                $pagina=str_replace('%messaggioEsitoRecensione%','<div class="error_box">Inserimento non avvenuto</div>',$pagina);
+            }
 
         }
     }   

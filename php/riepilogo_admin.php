@@ -47,14 +47,12 @@
         $righe .= $rigaUtente;
     }
 
-    $tabellaUtenti = file_get_contents("../componenti/tabella_utenti.html"); //prendo la struttura della tabella degli utenti
-    $tabellaUtenti=str_replace("%rUtenti%",$righe,$tabellaUtenti); //sostituisco la stringa %rUtenti% con le righe costruite sopra 
+    $pagina=str_replace("%rUtenti%",$righe,$pagina); //sostituisco la stringa %rUtenti% con le righe costruite sopra 
         
     /* ...................parte film................................*/
 
     $query_film="SELECT film.ID, film.titolo, film.prezzo_noleggio, film.prezzo_acquisto, n_noleggi.N_noleggi, n_acquisti.N_acquisti FROM film LEFT JOIN n_noleggi ON (film.ID = n_noleggi.ID) LEFT JOIN n_acquisti ON (film.ID = n_acquisti.ID)";
 
-    $tabellaFilm = file_get_contents("../componenti/tabella_film.html");
     $risultato_f=$connessione->interrogaDB($query_film);
     
     $totNoleggi=0;
@@ -91,17 +89,13 @@
         $righe_f .= $rigaFilm;
     }
 
-    $tabellaFilm=str_replace("%rFilm%",$righe_f,$tabellaFilm);
+    $pagina=str_replace("%rFilm%",$righe_f,$pagina);
 
-    $tabellaFilm=str_replace("%totNoleggi%",$totNoleggi,$tabellaFilm);
-    $tabellaFilm=str_replace("%totAcquisti%",$totAcquisti,$tabellaFilm);
-    $tabellaFilm=str_replace("%totIAcquisti%",$totIAcquisti,$tabellaFilm);
-    $tabellaFilm=str_replace("%totINoleggi%",$totINoleggi,$tabellaFilm);
-    $tabellaFilm=str_replace("%totIncassi%",$totIncassi,$tabellaFilm);
-    
-    
-    $pagina=str_replace("%tabellaUtenti%",$tabellaUtenti,$pagina);
-    $pagina=str_replace("%tabellaFilm%",$tabellaFilm,$pagina);
+    $pagina=str_replace("%totNoleggi%",$totNoleggi,$pagina);
+    $pagina=str_replace("%totAcquisti%",$totAcquisti,$pagina);
+    $pagina=str_replace("%totIAcquisti%",$totIAcquisti,$pagina);
+    $pagina=str_replace("%totINoleggi%",$totINoleggi,$pagina);
+    $pagina=str_replace("%totIncassi%",$totIncassi,$pagina);
 
     $connessione->chiudiConnessione();
     

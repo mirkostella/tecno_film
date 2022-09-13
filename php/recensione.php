@@ -37,14 +37,14 @@ abstract class Recensione{
             'errValutazione' => ""
         );
         if($array['testo']=="")
-            $err['errTesto']="Campo testo obbligatorio";
+            $err['errTesto']='<div class="error_box">Campo testo obbligatorio</div>';
         else{
             if(strlen($array['testo'])<3 || strlen($array['testo'])>100){
-                $err['errTesto']="Il testo deve essere lungo tra i 3 e i 100 caratteri";
+                $err['errTesto']='<div class="error_box">Il testo deve essere lungo tra i 3 e i 100 caratteri</div>';
             }
         }
         if($array['valutazione']==""){
-            $err['errValutazione']="Campo valutazione obbligatorio";
+            $err['errValutazione']='<div class="error_box">Campo valutazione obbligatorio</div>';
         }
         $this->messaggioErrori=$err;
         $num=0;

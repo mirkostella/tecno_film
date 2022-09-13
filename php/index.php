@@ -7,7 +7,7 @@
     require_once ('info_film.php');
     require_once ('lingua.php');
     
-    $pagina=file_get_contents("../html/home.html");
+    $pagina=file_get_contents("../html/index.html");
 
     $connessione = new Connessione();
     if(!$connessione->apriConnessione()){
@@ -20,7 +20,7 @@
     $pagina=str_replace("%keywords%","TecnoFilm, Nuove uscite, Acquisto, Noleggio, Film", $pagina);
     $pagina=str_replace("%titoloPagina%","TecnoFilm: Home", $pagina);
     $pagina=str_replace("%breadcrumb%","<span xml:lang=\"en\" lang=\"en\" class=\"grassetto\">Home</span>", $pagina);
-    $inAttivo="<li><a href=\"../php/home.php\" xml:lang=\"en\" lang=\"en\" accesskey=\"h\">Home</a></li>";
+    $inAttivo="<li><a href=\"../php/index.php\" xml:lang=\"en\" lang=\"en\" accesskey=\"h\">Home</a></li>";
     $attivo="<li xml:lang=\"en\" lang=\"en\" id=\"attivo\" accesskey=\"h\">Home</li>";
     $struttura->aggiungiMenu($pagina,$inAttivo,$attivo);
     $ncard=5;

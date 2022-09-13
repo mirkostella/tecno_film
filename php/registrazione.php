@@ -97,8 +97,8 @@
 		else
 			$pagina=str_replace('%error_email%', '', $pagina);
 			
-		$query_email="SELECT * FROM utente WHERE BINARY email='".$email."'"; //CASE SENSITIVE??
-		$query_user ="SELECT * FROM utente WHERE BINARY username='".$username."'"; //CASE SENSITIVE??
+		$query_email="SELECT * FROM utente WHERE BINARY email='".$email."'"; 
+		$query_user ="SELECT * FROM utente WHERE BINARY username='".$username."'";
 
 		if($connessione->interrogaDB($query_email)){
 			$pagina=str_replace('%error_email_usata%', "<div class=\"error_box\">L'email inserita è già in uso.</div>", $pagina);

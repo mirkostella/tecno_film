@@ -73,7 +73,7 @@
         }
     }
 
-    //restituisce i film che non sono stati acquistati o noleggiati dello stesso genere dell'ultimo film acquistato o noleggiato.
+    //restituisce i 5 film che non sono stati acquistati o noleggiati dello stesso genere dell'ultimo film acquistato o noleggiato.
     //i film vengono ordinati prima per data e poi per valutazione (maggiore uguale a 3 stelle)
     
     function recuperaSceltiPerTe($connessione){

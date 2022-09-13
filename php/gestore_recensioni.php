@@ -173,7 +173,6 @@ class GestoreRecensioni{
             }
             //sono presenti errori nella compilazione della nuova recensione e stampo i messaggi di errore
             else{
-                $pagina=str_replace('%messaggioEsitoRecensione%','<div class="error_box">Inserimento non avvenuto</div>',$pagina);
                 return false;
             }
         }

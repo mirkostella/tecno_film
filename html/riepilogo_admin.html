@@ -1,27 +1,58 @@
 %base%
         <div id="contenuto" role="main">
             <ul id="menuProposte">
-                <li><a href="#riepilogoFilm">Tabella film</a></li>
-                <li><a href="#riepilogoUtenti">Tabella utenti</a></li>
+                <li><a href="#riepilogoUtenti">Riepilogo utenti</a></li>
+                <li><a href="#riepilogoFilm">Riepilogo film</a></li>
             </ul>
-            <h1>Tabelle riassuntive</h1>
-            <p>Questa pagina ha lo scopo di riassumere in tabelle i dati che possono essere di interesse all'amministratore.
-                Di seguito si possono trovare la tabella utenti e la tabella film.
-            </p>
-            <p>
-                La tabella utenti permette di consultare lo stato degli utenti
-                e di collegarsi alla pagina relativa ai commenti segnalati cliccando sul link vedi nella relativa colonna dell'utente.
-                Nella pagina dedicata ai commenti segnalati é possibile eliminare i commenti segnalati e cambiare lo stato di un utente.
-            </p>
-            <p>
-                La tabella film permette di consultare i dati che riguardano il noleggio e l'acquisto dei film e di 
-                visualizzare gli incassi ottenuti. 
-            </p>
-            <h2 id="riepilogoUtenti">Riepilogo utenti registrati</h2>
-            %tabellaUtenti%
-            <h2 id="riepilogoFilm">Riepilogo noleggi e acquisti film</h2>
-            %tabellaFilm%
+
+            <h1 id="riepilogoUtenti">Riepilogo utenti</h1>
+            <table class="tbl" id="tblUtenti" summary="Nella tabella vengono mostrati l'username, l'email, lo stato e il numero delle segnalazioni di ogni utente. Tramite il pulsante 'vedi' si accede alla pagina di riepilogo dell'utente selezionato.">
+                <caption>Panoramica utenti</caption>
+                <thead>
+                    <tr>
+                        <th scope="col" xml:lang="en" lang="en">Username</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Stato</th>
+                        <th scope="col">Numero segnalazioni</th>
+                        <th scope="col">Segnalazioni</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    %rUtenti%
+                </tbody>
+            </table>
+            <h1 id="riepilogoFilm">Riepilogo film</h1>
+            <table class="tbl" summary="Tabella che per ogni film del sito mostra il prezzo di acquisto, il prezzo di noleggio, il numero di acquisti, il numero di noleggi e i relativi incassi portati dal film.">
+                <caption>Panoramica film</caption>
+                <thead>
+                    <tr>
+                        <th scope="col">Titolo</th>
+                        <th scope="col">Prezzo noleggio</th>
+                        <th scope="col">Prezzo acquisto</th>
+                        <th scope="col">Noleggi</th>
+                        <th scope="col">Acquisti</th>
+                        <th scope="col">Incassi noleggi</th>
+                        <th scope="col">Incassi acquisti</th>
+                        <th scope="col">Incassi acquisti e noleggi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    %rFilm%
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th scope="row">Totale:</th>
+                        <td colspan="2"></td>
+                        <td data-title="Numero noleggi" class="grassetto">%totNoleggi%</td>
+                        <td data-title="Numero acquisti" class="grassetto">%totAcquisti%</td>
+                        <td data-title="Incassi noleggi" class="grassetto">%totINoleggi%&euro;</td>
+                        <td data-title="Incassi acquisti" class="grassetto">%totIAcquisti%&euro;</td>
+                        <td data-title="Incassi noleggi/acquisti" class="grassetto">%totIncassi%&euro;</td>
+                    </tr>
+                </tfoot>
+            </table>
         </div> 
     </div>   
+    <script src="../js/script.js"></script>   
 </body>
 </html>

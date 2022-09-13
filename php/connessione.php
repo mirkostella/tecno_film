@@ -1,10 +1,10 @@
 <?php 
 
 class Connessione{
-    const HOST="localhost";
-    const USERNAME="root";
-    const PASSWORD="";
-    const NOME_DATABASE="tec_web";
+    const HOST="127.0.0.1";
+    const USERNAME="sfranco";
+    const PASSWORD="queishu6Nap1Ohde";
+    const NOME_DATABASE="sfranco";
 
     public $conn=null;
 

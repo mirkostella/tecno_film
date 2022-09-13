@@ -1,16 +1,16 @@
 <form action="pagina_film.php" id="scriviRecensione" method="post">
         <input type="hidden" name="idFilm" value="%id%">
         <label for="testoRecensione">Inserisci la tua recensione:</label>
-        %errTesto%
         <textarea name="testoRecensione" id="testoRecensione" cols="30" rows="10" 
         placeholder="Scrivi recensione">%testoRecensione%</textarea>
-        %errValutazione%
+        %errTesto%
         <select name="valutazioneRecensione">
-        <option value="1">1 stella</option>
-        <option value="2">2 stelle</option>
-        <option value="3">3 stelle</option>
-        <option value="4">4 stelle</option>
-        <option value="5">5 stelle</option>
+                <option value="1">1 stella</option>
+                <option value="2">2 stelle</option>
+                <option value="3">3 stelle</option>
+                <option value="4">4 stelle</option>
+                <option value="5">5 stelle</option>
         </select>
-        <input type="submit" name="inviaRecensione" value="Invia recensione" class="btn" aria-label="Inserisci la recensione"/>
+        %errValutazione%
+        <input type="submit" id="inviaRecensione" name="inviaRecensione" value="Invia recensione" class="btn" aria-label="Inserisci la recensione">
 </form>

@@ -25,7 +25,7 @@
     $generiFilm=recuperaGeneri($connessione, $_GET['idFilm']);
     $film=new Card($infoFilm,$generiFilm);
     $titoloLang=aggiungiSpanLang($film->titolo);
-    $pagina=str_replace("%breadcrumb%", "<a href=\"../php/home.php\" xml:lang=\"en\" lang=\"en\">Home</a> &gt; <a href=\"../php/pagina_film.php?idFilm=".$_GET['idFilm']."\">".$titoloLang."</a> &gt; <span class=\"grassetto\">Conferma %tipoConferma%</span>", $pagina);
+    $pagina=str_replace("%breadcrumb%", "<a href=\"../php/index.php\" xml:lang=\"en\" lang=\"en\">Home</a> &gt; <a href=\"../php/pagina_film.php?idFilm=".$_GET['idFilm']."\">".$titoloLang."</a> &gt; <span class=\"grassetto\">Conferma %tipoConferma%</span>", $pagina);
 
     if(isset($_GET['noleggio']))
         $pagina=str_replace("%tipoConferma%", "noleggio", $pagina);

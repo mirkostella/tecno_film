@@ -422,6 +422,11 @@ function init_pagina_film(){
             controlloLunghezzaCampo(e.target, 3);
             e.preventDefault();
         });
+        var btn_invio=document.getElementById("inviaRecensione");
+        btn_invio.addEventListener("click",e => {
+            if(!controlloLunghezzaCampo(recensioneHTML, 3))
+                e.preventDefault();
+        });
     }
 }
 

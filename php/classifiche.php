@@ -16,7 +16,7 @@
     $pagina=str_replace("%descrizione%","Qui trovi le classifiche in base agli acquisti, i noleggi e le valutazioni dei nostri utenti. Puoi vedere la Top 5 della settimana, i 10 film più visti, e i 10 film più votati", $pagina);
     $pagina=str_replace("%keywords%","TecnoFilm, classifiche, film, Top 5, più visti, più votati", $pagina);
     $pagina=str_replace("%titoloPagina%","TecnoFilm: Classifiche", $pagina);
-    $pagina=str_replace("%breadcrumb%","<a href = \"../php/home.php\" xml:lang = \"en\" lang=\"en\">Home</a> &gt; <span class=\"grassetto\">Classifiche</span>", $pagina);
+    $pagina=str_replace("%breadcrumb%","<a href = \"../php/index.php\" xml:lang = \"en\" lang=\"en\">Home</a> &gt; <span class=\"grassetto\">Classifiche</span>", $pagina);
     $inAttivo="<li><a href=\"../php/classifiche.php\" accesskey=\"c\">Classifiche</a></li>";
     $attivo="<li id=\"attivo\" accesskey=\"c\">Classifiche</li>";
     $struttura->aggiungiMenu($pagina,$inAttivo,$attivo);
