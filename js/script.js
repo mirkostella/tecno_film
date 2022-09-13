@@ -418,18 +418,26 @@ function init_amministratore_ins_film(){
 function init_pagina_film(){
     if(document.getElementById("recensioni")){  
         var recensioneHTML=document.getElementById("testoRecensione");
-        recensioneHTML.addEventListener("focusout",e=>{controlloLunghezzaCampo(e.target, 3)});
+        recensioneHTML.addEventListener("focusout",e=>{
+            controlloLunghezzaCampo(e.target, 3);
+            e.preventDefault();
+        });
     }
 }
 
 function torna_su_init(){
+    console.log(window.pageYOffset);
+    console.log(window.screen.availWidth);
     var btn = document.getElementById("scrollBtn"); 
 
     if(window.pageYOffset > 50 && window.screen.availWidth <= 768) {
         btn.classList.remove("nascosto"); 
+        console.log("rimosso nascosto");
     } else {
-        if(!btn.classList.contains("nascosto"))
+        if(!btn.classList.contains("nascosto")){
             btn.classList.add("nascosto"); 
+            console.log("aggiunto nascosto");
+        }
     }
 }
 
@@ -442,5 +450,5 @@ window.onload=function(){
     //pagine amministratore
     init_amministratore_login();
     init_amministratore_ins_film();
-    window.onscroll = torna_su_init();
+    window.onscroll = torna_su_init;
 }
